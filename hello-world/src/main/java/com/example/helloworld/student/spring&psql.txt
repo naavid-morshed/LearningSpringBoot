@@ -1,0 +1,25 @@
+SpringBoot and Postgres notes:
+
+SpringBoot:
+
+
+
+Postgres:
+    (basic commands): 
+	1. "C:\Program Files\PostgreSQL\16\bin\psql" -U postgres [to log into postgres as super user]
+	2. \l [list db]
+	3. \du [check priviledge]
+	4. 
+    (queries):
+	1. create database student [create db named student]
+	2. grant all privileges on database "dn_name" to user [quotation necessary]
+	3. \c student [will connect to db named student]
+	4. \d [to check relations]
+	5. \d student [will list rows and columns of table named student, won't work if not connceted to named db first]
+	6. 
+
+Misc:
+	1. Period.between(dateOfBirth, LocalDate.now()).getYears(); [for calculating years between var dateOfBirth and now]
+
+Jar Command:
+	1. Java -jar jarName --server.port=8081 [run jar on port 8081]
