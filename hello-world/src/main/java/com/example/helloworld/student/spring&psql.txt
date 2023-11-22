@@ -1,14 +1,22 @@
 SpringBoot and Postgres notes:
 
 SpringBoot:
-
+    1. For Java 21, Lombok version has to be at least 1.18.30
+    2. To manually add Lombok-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
+    3.
 
 
 Postgres:
     (basic commands): 
 	1. "C:\Program Files\PostgreSQL\16\bin\psql" -U postgres [to log into postgres as super user]
 	2. \l [list db]
-	3. \du [check priviledge]
+	3. \du [check privilege]
 	4. 
     (queries):
 	1. create database student [create db named student]
