@@ -5,13 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 @Service // same as Component, they specify that this class would be injected
 public class StudentService {
-
     private final StudentRepository studentRepository;
 
     @Autowired // @Autowired for dependency injection
