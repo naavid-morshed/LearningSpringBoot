@@ -1,0 +1,50 @@
+List of all MySQL commands:
+Note that all text commands must be first on line and end with ';'
+?         (\?) Synonym for `help'.
+clear     (\c) Clear the current input statement.
+connect   (\r) Reconnect to the server. Optional arguments are db and host.
+delimiter (\d) Set statement delimiter.
+ego       (\G) Send command to mysql server, display result vertically.
+exit      (\q) Exit mysql. Same as quit.
+go        (\g) Send command to mysql server.
+help      (\h) Display this help.
+notee     (\t) Don't write into outfile.
+print     (\p) Print current command.
+prompt    (\R) Change your mysql prompt.
+quit      (\q) Quit mysql.
+rehash    (\#) Rebuild completion hash.
+source    (\.) Execute an SQL script file. Takes a file name as an argument.
+status    (\s) Get status information from the server.
+tee       (\T) Set outfile [to_outfile]. Append everything into given outfile.
+use       (\u) Use another database. Takes database name as argument.
+charset   (\C) Switch to another charset. Might be needed for processing binlog with multi-byte charsets.
+warnings  (\W) Show warnings after every statement.
+nowarning (\w) Don't show warnings after every statement.
+
+Data types of SQL:
+    1. INT
+    2. Decimal(10,4) [10 total digits, 4 of those digits are after decimal point]
+    3. Varchar(length) [length is of type Integer]
+    4. BLOB [Binary Large Object, stores lots of binary data]
+    5. Date
+    6. Timestamp
+
+CLI commands:
+    1. create database morshed;
+    2. USE morshed; [without this, mysql cannot create table inside that database]
+                    [however, during table creation, CREATE TABLE morshed.student_table
+                     will automatically connect the table to morshed database]
+    3. CREATE TABLE student_table (
+           student_id Int PRIMARY KEY,
+           name VARCHAR(20),
+           major VARCHAR(20)
+           # PRIMARY KEY(student_id) [this also works]
+       );
+    4. DESCRIBE student_table; [will describe the table and all its infos]
+    5. DROP TABLE student_table; [will delete the table]
+    6. ALTER TABLE student_table ADD gpa DECIMAL(3,2); [will add a new column to table]
+    7. ALTER TABLE student_table DROP COLUMN gpa; [if that db is not in use mode then use db_name.student_table]
+    8. INSERT INTO student_table VALUES (1,'Naavid Morshed','CSE');
+
+
+
