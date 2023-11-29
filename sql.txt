@@ -29,14 +29,15 @@ Data types of SQL:
     5. Date
     6. Timestamp
 
-CLI commands:
+CLI commands: [sql works in both upper and lower cases,
+               upper case is convention so the queries are easier to read]
     1. create database morshed;
     2. USE morshed; [without this, mysql cannot create table inside that database]
                     [however, during table creation, CREATE TABLE morshed.student_table
                      will automatically connect the table to morshed database]
     3. CREATE TABLE student_table (
            student_id Int PRIMARY KEY,
-           name VARCHAR(20),
+           name VARCHAR(20) NOT NULL,
            major VARCHAR(20)
            # PRIMARY KEY(student_id) [this also works]
        );
@@ -45,6 +46,12 @@ CLI commands:
     6. ALTER TABLE student_table ADD gpa DECIMAL(3,2); [will add a new column to table]
     7. ALTER TABLE student_table DROP COLUMN gpa; [if that db is not in use mode then use db_name.student_table]
     8. INSERT INTO student_table VALUES (1,'Naavid Morshed','CSE');
+    9. INSERT INTO student_table(student_id, name) VALUES (2,'Saleh Ahmed');
+      [for specifying which infos will be posted in the table,
+       in this example I chose to forgo the field major]
+   10. UNIQUE [use after declaration to specify that particular field cannot have duplicate values]
+   11. 
+
 
 
 
