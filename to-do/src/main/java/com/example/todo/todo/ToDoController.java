@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/todo")
+@CrossOrigin("*")
 public class ToDoController {
 
     private final ToDoService toDoService;
