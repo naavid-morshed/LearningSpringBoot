@@ -3,18 +3,19 @@ package com.example.shop.product.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity @Table
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Entity
+@Table
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String product;
+    private String name;
     private String specifications;
     private Double price;
 
-    public Product(String product, String specifications, Double price) {
-        this.product = product;
+    public Product(String name, String specifications, Double price) {
+        this.name = name;
         this.specifications = specifications;
         this.price = price;
     }

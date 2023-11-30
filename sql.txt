@@ -28,6 +28,12 @@ Data types of SQL:
     4. BLOB [Binary Large Object, stores lots of binary data]
     5. Date
     6. Timestamp
+    7. Text [String value of unspecified length]
+    8. CHAR(2) [fixed length with fixed char, no more no less]
+
+Operators:
+    1. AND OR
+    2. =, <, >, <=, +=, <> [<> is not equals to]
 
 CLI commands: [sql works in both upper and lower cases,
                upper case is convention so the queries are easier to read]
@@ -36,7 +42,7 @@ CLI commands: [sql works in both upper and lower cases,
                     [however, during table creation, CREATE TABLE morshed.student_table
                      will automatically connect the table to morshed database]
     3. CREATE TABLE student_table (
-           student_id Int PRIMARY KEY,
+           student_id Int PRIMARY KEY AUTO_INCREMENT,
            name VARCHAR(20) NOT NULL,
            major VARCHAR(20)
            # PRIMARY KEY(student_id) [this also works]
@@ -50,8 +56,19 @@ CLI commands: [sql works in both upper and lower cases,
       [for specifying which infos will be posted in the table,
        in this example I chose to forgo the field major]
    10. UNIQUE [use after declaration to specify that particular field cannot have duplicate values]
-   11. 
+   11. DELETE FROM student_table WHERE student_id=2;
+   12. UPDATE student_table SET major='Biology' where name='Naavid Morshed' AND major='CSE';
+   13. SELECT name FROM student_table ORDER BY name DESC;
+   14. SELECT * from student_table LIMIT 10 ORDER BY student_id ASC AND name LIKE 'h%';
+      [will limit output to 10 rows]
 
-
-
-
+   15. SELECT *
+       from student_table
+       WHERE name LIKE 'n%'  [LIKE is for pattern recognition] [avoid LIKE, performance hog most likely ]
+       ORDER BY student_id ASC ,name DESC [order by student_id on ascending order first then by name on descending order ]
+       LIMIT 10;
+   16. CREATE INDEX name_index ON student_table(name); [INDEX is assigned to a column for faster pattern recognition]
+                                                       [At the cost of slower writes and additional memory]
+   17. SELECT major FROM student_table WHERE name IN ('Naavid Morshed','Saleh Ahmed')
+      [IN works like OR, but much more compact]
+   18.

@@ -34,7 +34,7 @@ public class ProductConfig {
 //                    "Graphics Processing Unit",
 //                    1500.00
 //            );
-
+//
 //            productRepo.saveAll(
 //                    List.of(product1, product2, product3)
 //            );

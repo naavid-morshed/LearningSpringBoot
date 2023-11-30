@@ -1,5 +1,6 @@
 package com.example.shop.product.controller;
 
+import com.example.shop.product.Model.ProductBody;
 import com.example.shop.product.entity.Product;
 import com.example.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
+
     }
 
     @GetMapping()
@@ -34,8 +36,8 @@ public class ProductController {
     }
 
     @PostMapping("addProduct")
-    public Product addProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
+    public Product addProduct(@RequestBody ProductBody productBody) {
+        return productService.saveProduct(productBody);
     }
 
     @PostMapping("addProducts")
@@ -45,12 +47,10 @@ public class ProductController {
 
     @PutMapping("id/{id}")
     public Product updateProduct(
-            @PathVariable("id") Long id,
-            @RequestParam(required = false) String product,
-            @RequestParam(required = false) String specifications,
-            @RequestParam(required = false) Double price
+            @RequestBody ProductBody productBody,
+            @PathVariable Long id
     ) {
-        return productService.updateProduct(id, product, specifications, price);
+        return productService.updateProduct(id, productBody);
     }
 
     @DeleteMapping("id/{id}")

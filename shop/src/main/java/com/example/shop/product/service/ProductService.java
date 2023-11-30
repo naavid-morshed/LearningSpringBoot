@@ -1,5 +1,6 @@
 package com.example.shop.product.service;
 
+import com.example.shop.product.Model.ProductBody;
 import com.example.shop.product.entity.Product;
 import com.example.shop.product.repository.ProductRepo;
 import jakarta.transaction.Transactional;
@@ -28,11 +29,12 @@ public class ProductService {
     }
 
     public List<Product> getProductByName(String product) {
-        return repo.findByProduct(product);
+        return repo.findByName(product);
     }
 
-    public Product saveProduct(Product product) {
-        return repo.save(product);
+    public Product saveProduct(ProductBody productBody) {
+        Product newProduct = new Product(productBody.getName(), productBody.getSpecifications(), productBody.getPrice());
+        return repo.save(newProduct);
     }
 
     public List<Product> saveProducts(List<Product> products) {
@@ -44,17 +46,25 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(Long id, String product, String specifications, Double price) {
-        Product existingProduct = repo.findById(id).orElseThrow(
-                () -> new IllegalStateException("Task with ID: " + id + " does not exist")
-        );
+    public Product updateProduct(Long id, ProductBody productBody) {
+
         try {
-            if (product != null && !product.isEmpty() ) {
-                existingProduct.setProduct(product);
+            Product toBeUpDatedProduct = repo.findProductById(id);
+            if (toBeUpDatedProduct == null) {
+                throw new RuntimeException("Product with ID: " + id + " does not exist");
             }
-            if (specifications != null && !specifications.isEmpty()) existingProduct.setSpecifications(specifications);
-            if (price!= null && price != 0) existingProduct.setPrice(price);
-            return repo.save(existingProduct);
+            if (productBody.getName() != null) {
+                toBeUpDatedProduct.setName(productBody.getName());
+            }
+            if (productBody.getSpecifications() != null) {
+                toBeUpDatedProduct.setSpecifications(productBody.getSpecifications());
+            }
+            if (productBody.getPrice() != null) {
+                toBeUpDatedProduct.setPrice(productBody.getPrice());
+            }
+
+            repo.save(toBeUpDatedProduct);
+            return toBeUpDatedProduct;
         } catch (Exception exception) {
             throw new IllegalStateException(exception.getMessage());
         }
