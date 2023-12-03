@@ -1,5 +1,7 @@
 package com.example.shop.product.entity;
 
+import com.example.shop.product.Model.OrderModel;
+import com.example.shop.product.Model.OrderProductItemModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,5 +32,12 @@ public class OrderProductItem {
         this.price = price;
         this.order = order;
         this.product = product;
+    }
+
+    public OrderProductItem(OrderProductItemModel orderProductItemModel) {
+        this.id = orderProductItemModel.getId();
+        this.price = orderProductItemModel.getPrice();
+        this.order = orderProductItemModel.getOrder();
+        this.product = orderProductItemModel.getProduct();
     }
 }

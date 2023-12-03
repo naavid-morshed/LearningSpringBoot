@@ -1,12 +1,17 @@
 package com.example.shop.product.entity;
 
+import com.example.shop.product.Model.OrderModel;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-@Entity @Table(name = "order_item")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Table(name = "order_item")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,13 +19,16 @@ public class Order {
     private String deliveryAddress;
     // what is CascadeType?
     @OneToMany
-    private List<Product> productList;
+    private List<OrderProductItem> orderProductItemList;
 
-//    @OneToMany
-//    private List<OrderProductItem> orderProductItemList;
-
-    public Order(String deliveryAddress, List<Product> productList) {
+    public Order(String deliveryAddress, List<OrderProductItem> orderProductItemList) {
         this.deliveryAddress = deliveryAddress;
-        this.productList = productList;
+        this.orderProductItemList = orderProductItemList;
+    }
+
+    public Order(OrderModel order) {
+        this.id = order.getId();
+        this.deliveryAddress = order.getDeliveryAddress();
+        this.orderProductItemList = order.getOrderProductItemList();
     }
 }

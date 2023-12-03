@@ -1,5 +1,6 @@
 package com.example.shop.product.entity;
 
+import com.example.shop.product.Model.ProductModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,5 +19,12 @@ public class Product {
         this.name = name;
         this.specifications = specifications;
         this.price = price;
+    }
+
+    public Product(ProductModel productModel) {
+        this.id = productModel.getId();
+        this.name = productModel.getName();
+        this.specifications = productModel.getSpecifications();
+        this.price = productModel.getPrice();
     }
 }
