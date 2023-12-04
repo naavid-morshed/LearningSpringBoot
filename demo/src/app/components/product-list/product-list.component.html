@@ -1,0 +1,52 @@
+<div class="row my-2">
+  <div class="col-9">
+    <input  type="number" [min]="minPrice" [max]="maxPrice" [(ngModel)]="fromVal">
+    <input class="mx-1" type="number" [min]="fromVal" [max]="maxPrice" [(ngModel)]="toVal">
+    <input type="submit" class="btn btn-info" value="Find" (click)="sortFromAndTo()">
+  </div>
+  <div class="col-3 d-flex justify-content-end">
+    <input [disabled]="disableButton"
+           type="button"
+           class="btn btn-primary me-1"
+           value="High to Low"
+           (click)="highToLow()">
+    <input [disabled]="!disableButton"
+           type="button"
+           class="btn btn-primary"
+           value="Low to High"
+           (click)="lowToHigh()">
+  </div>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Specifications</th>
+      <th scope="col" class="text-center">Price</th>
+      <th scope="col" class="text-center">Edit</th>
+      <th scope="col" class="text-center">Remove</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let item of product_list">
+      <td>
+        {{ item.name }}
+      </td>
+      <td>
+        {{ item.specifications }}
+      </td>
+      <td>
+        {{ item.price}}
+      </td>
+      <td class="text-center">
+        <fa-icon (click)="editItem(item)" [ngStyle]="{'color':'red'}" [icon]="faEdit"></fa-icon>
+      </td>
+      <td class="text-center">
+        <fa-icon (click)="deleteItem(item)" [ngStyle]="{'color':'red'}" [icon]="faTime"></fa-icon>
+      </td>
+    </tr>
+  </tbody>
+
+</table>
