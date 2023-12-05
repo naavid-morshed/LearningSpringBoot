@@ -1,12 +1,13 @@
 package com.example.shop.product.service;
 
-import com.example.shop.product.Model.ProductBody;
+import com.example.shop.product.Model.ProductModel;
 import com.example.shop.product.entity.Product;
 import com.example.shop.product.repository.ProductRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,21 +25,35 @@ public class ProductService {
         return repo.findAll();
     }
 
-    public Optional<Product> getProductById(Long id) {
-        return repo.findById(id);
+    public Optional<ProductModel> getProductById(Long id) {
+        Product product = repo.findById(id).orElseThrow(
+                () -> new RuntimeException("Product by id: " + id + " does not exist.")
+        );
+        return Optional.of(new ProductModel(product));
     }
 
-    public List<Product> getProductByName(String product) {
-        return repo.findByName(product);
+    public List<ProductModel> getProductByName(String productName) {
+        List<Product> productList = repo.findByName(productName);
+        List <ProductModel> productModelList = new ArrayList<>();
+
+        for (Product product: productList) {
+            productModelList.add(new ProductModel(product));
+        }
+        return  productModelList;
     }
 
-    public Product saveProduct(ProductBody productBody) {
-        Product newProduct = new Product(productBody.getName(), productBody.getSpecifications(), productBody.getPrice());
-        return repo.save(newProduct);
+    public Product addProduct(ProductModel productModel) {
+        return repo.save(new Product(productModel));
     }
 
-    public List<Product> saveProducts(List<Product> products) {
-        return repo.saveAll(products);
+    public List<Product> addProducts(List<ProductModel> productModelList) {
+
+        List<Product> productList = new ArrayList<>();
+        for (ProductModel productModel : productModelList) {
+            productList.add(new Product(productModel));
+        }
+
+        return repo.saveAll(productList);
     }
 
     public void deleteProduct(Long id) {
@@ -46,27 +61,26 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(Long id, ProductBody productBody) {
+    public Product updateProduct(ProductModel productModel) {
 
         try {
-            Product toBeUpDatedProduct = repo.findProductById(id);
+            Product toBeUpDatedProduct = repo.findProductById(productModel.getId());
             if (toBeUpDatedProduct == null) {
-                throw new RuntimeException("Product with ID: " + id + " does not exist");
+                throw new RuntimeException("Product with ID: " + productModel.getId() + " does not exist");
             }
-            if (productBody.getName() != null) {
-                toBeUpDatedProduct.setName(productBody.getName());
+            if (productModel.getName() != null) {
+                toBeUpDatedProduct.setName(productModel.getName());
             }
-            if (productBody.getSpecifications() != null) {
-                toBeUpDatedProduct.setSpecifications(productBody.getSpecifications());
+            if (productModel.getSpecifications() != null) {
+                toBeUpDatedProduct.setSpecifications(productModel.getSpecifications());
             }
-            if (productBody.getPrice() != null) {
-                toBeUpDatedProduct.setPrice(productBody.getPrice());
+            if (productModel.getPrice() != null) {
+                toBeUpDatedProduct.setPrice(productModel.getPrice());
             }
 
-            repo.save(toBeUpDatedProduct);
-            return toBeUpDatedProduct;
+            return repo.save(toBeUpDatedProduct);
         } catch (Exception exception) {
-            throw new IllegalStateException(exception.getMessage());
+            throw new RuntimeException(exception.getMessage());
         }
     }
 }

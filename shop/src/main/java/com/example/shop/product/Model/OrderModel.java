@@ -23,5 +23,4 @@ public class OrderModel {
         this.deliveryAddress = order.getDeliveryAddress();
         this.orderProductItemList = order.getOrderProductItemList();
     }
-
 }

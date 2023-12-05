@@ -35,7 +35,6 @@ public class OrderProductItem {
     }
 
     public OrderProductItem(OrderProductItemModel orderProductItemModel) {
-        this.id = orderProductItemModel.getId();
         this.price = orderProductItemModel.getPrice();
         this.order = orderProductItemModel.getOrder();
         this.product = orderProductItemModel.getProduct();

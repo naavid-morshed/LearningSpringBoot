@@ -1,5 +1,7 @@
 package com.example.shop.product.service;
 
+import com.example.shop.product.Model.OrderModel;
+import com.example.shop.product.Model.OrderProductItemModel;
 import com.example.shop.product.Model.ProductModel;
 import com.example.shop.product.entity.Order;
 import com.example.shop.product.entity.OrderProductItem;
@@ -8,6 +10,7 @@ import com.example.shop.product.repository.OrderRepo;
 import com.example.shop.product.repository.ProductRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,15 +32,18 @@ public class OrderService {
     @Transactional
     public Order createOrder(String address, List<Long> productIdList) {
         Order order = new Order(address, new ArrayList<OrderProductItem>());
-        orderRepo.save(order);
+//        OrderModel orderModel = new OrderModel(order);
 
         for (Long productId : productIdList) {
             Product product = productRepo.findById(productId).orElseThrow(
                     () -> new RuntimeException("Product with ID: " + productId + " does not exist")
             );
-            ProductModel productModel = new ProductModel(product);
 
-            OrderProductItem orderProductItem = new OrderProductItem(productModel.getPrice(), order, product);
+//            ProductModel productModel = new ProductModel(product);
+
+            OrderProductItemModel orderProductItemModel = new OrderProductItemModel(order, product);
+
+            OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
 
             order.getOrderProductItemList().add(orderProductItem);
         }

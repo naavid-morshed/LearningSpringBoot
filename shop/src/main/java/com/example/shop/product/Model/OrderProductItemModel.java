@@ -1,6 +1,7 @@
 package com.example.shop.product.Model;
 
 import com.example.shop.product.entity.Order;
+import com.example.shop.product.entity.OrderProductItem;
 import com.example.shop.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +17,18 @@ public class OrderProductItemModel {
     private Double price;
     private Order order;
     private Product product;
+
+    public OrderProductItemModel(OrderProductItem orderProductItem) {
+        this.id = orderProductItem.getId();
+        this.price = orderProductItem.getPrice();
+        this.order = orderProductItem.getOrder();
+        this.product = orderProductItem.getProduct();
+    }
+
+    public OrderProductItemModel(Order order, Product product) {
+        this.id = product.getId();
+        this.price = product.getPrice();
+        this.order = order;
+        this.product = product;
+    }
 }

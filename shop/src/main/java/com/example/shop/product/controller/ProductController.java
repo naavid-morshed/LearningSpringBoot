@@ -1,6 +1,6 @@
 package com.example.shop.product.controller;
 
-import com.example.shop.product.Model.ProductBody;
+import com.example.shop.product.Model.ProductModel;
 import com.example.shop.product.entity.Product;
 import com.example.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +26,28 @@ public class ProductController {
     }
 
     @GetMapping("productId/{id}")
-    public Optional<Product> getProductById(@PathVariable Long id) {
+    public Optional<ProductModel> getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
-    @GetMapping("productName/{product}")
-    public List<Product> getProductByName(@PathVariable String product) {
-        return productService.getProductByName(product);
+    @GetMapping("productName/{productName}")
+    public List<ProductModel> getProductByName(@PathVariable String productName) {
+        return productService.getProductByName(productName);
     }
 
     @PostMapping("addProduct")
-    public Product addProduct(@RequestBody ProductBody productBody) {
-        return productService.saveProduct(productBody);
+    public Product addProduct(@RequestBody ProductModel productModel) {
+        return productService.addProduct(productModel);
     }
 
     @PostMapping("addProducts")
-    public List<Product> addProducts(@RequestBody List<Product> productList) {
-        return productService.saveProducts(productList);
+    public List<Product> addProducts(@RequestBody List<ProductModel> productList) {
+        return productService.addProducts(productList);
     }
 
-    @PutMapping("id/{id}")
-    public Product updateProduct(
-            @RequestBody ProductBody productBody,
-            @PathVariable Long id
-    ) {
-        return productService.updateProduct(id, productBody);
+    @PutMapping("update")
+    public Product updateProduct(@RequestBody ProductModel productModel) {
+        return productService.updateProduct(productModel);
     }
 
     @DeleteMapping("id/{id}")

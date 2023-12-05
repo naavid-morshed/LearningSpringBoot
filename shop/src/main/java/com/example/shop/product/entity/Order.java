@@ -17,8 +17,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String deliveryAddress;
-    // what is CascadeType?
-    @OneToMany
+    // what is CascadeType?, mappedBy = "order_item",
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderProductItem> orderProductItemList;
 
     public Order(String deliveryAddress, List<OrderProductItem> orderProductItemList) {
@@ -26,9 +26,8 @@ public class Order {
         this.orderProductItemList = orderProductItemList;
     }
 
-    public Order(OrderModel order) {
-        this.id = order.getId();
-        this.deliveryAddress = order.getDeliveryAddress();
-        this.orderProductItemList = order.getOrderProductItemList();
+    public Order(OrderModel orderModel) {
+        this.deliveryAddress = orderModel.getDeliveryAddress();
+        this.orderProductItemList = orderModel.getOrderProductItemList();
     }
 }
