@@ -33,7 +33,7 @@ export class ShopApiService {
       "specifications": product.specifications,
       "price": product.price
     };
-    
+
     return this.http.put<Product_body>(
       `${this.apiUrl}/id/${product.id}`,
       productBody,

@@ -86,7 +86,7 @@ export class ProductListComponent {
     this.sortFromAndTo();
   }
 
-  public editItem(item: PRODUCT): void {
+  public updateProduct(item: PRODUCT): void {
     console.log(item)
   }
 
