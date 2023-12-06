@@ -1,6 +1,5 @@
 package com.example.shop.product.entity;
 
-import com.example.shop.product.Model.OrderModel;
 import com.example.shop.product.Model.OrderProductItemModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,15 +27,9 @@ public class OrderProductItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public OrderProductItem(Double price, Order order, Product product) {
-        this.price = price;
-        this.order = order;
-        this.product = product;
-    }
-
     public OrderProductItem(OrderProductItemModel orderProductItemModel) {
         this.price = orderProductItemModel.getPrice();
-        this.order = orderProductItemModel.getOrder();
-        this.product = orderProductItemModel.getProduct();
+        this.order = new Order(orderProductItemModel.getOrderModel()); //
+        this.product = new Product(orderProductItemModel.getProductModel());
     }
 }

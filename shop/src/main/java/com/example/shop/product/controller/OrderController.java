@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/")
@@ -22,6 +23,7 @@ public class OrderController {
         try {
             return orderService.createOrder(address, productIdList);
         } catch (Exception exception) {
+            exception.printStackTrace();
             throw new RuntimeException(exception.getMessage());
         }
     }

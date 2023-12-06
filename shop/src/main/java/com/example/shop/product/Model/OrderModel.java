@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,11 +17,16 @@ import java.util.List;
 public class OrderModel {
     private Long id;
     private String deliveryAddress;
-    private List<OrderProductItem> orderProductItemList;
+    private List<OrderProductItemModel> orderProductItemModelList = new ArrayList<>();
 
     public OrderModel(Order order) {
         this.id = order.getId();
         this.deliveryAddress = order.getDeliveryAddress();
-        this.orderProductItemList = order.getOrderProductItemList();
+//        if(this.getOrderProductItemModelList() != null) {
+//            this.orderProductItemModelList = new ArrayList<>();
+//        }
+        for (OrderProductItem orderProductItem : order.getOrderProductItemList()) {
+            this.orderProductItemModelList.add(new OrderProductItemModel((orderProductItem)));
+        }
     }
 }
