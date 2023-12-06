@@ -31,7 +31,6 @@ public class OrderService {
     public OrderModel createOrder(OrderModel orderModel) {
         Order order = new Order(orderModel);
         orderRepo.save(order);
-        System.err.println(order);
 
         for (OrderProductItemModel orderProductItemModel : orderModel.getOrderProductItemModelList()) {
             Product product = productRepo.findById(orderProductItemModel.getProductModel().getId())

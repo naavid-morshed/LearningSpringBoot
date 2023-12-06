@@ -20,9 +20,8 @@ public class OrderProductItemModel {
         this.id = orderProductItem.getId();
         this.price = orderProductItem.getPrice();
 
-        this.setOrderModel(new OrderModel(orderProductItem.getOrder()));
-//        this.orderModel.setDeliveryAddress(orderProductItem.getOrder().getDeliveryAddress());
-        this.setProductModel(new ProductModel(orderProductItem.getProduct()));
+        this.orderModel = new OrderModel(orderProductItem.getOrder());
+        this.productModel = new ProductModel(orderProductItem.getProduct());
     }
 
 //    public OrderProductItemModel(OrderModel orderModel, ProductModel productModel) {
