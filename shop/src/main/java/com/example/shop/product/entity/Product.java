@@ -22,6 +22,7 @@ public class Product {
     }
 
     public Product(ProductModel productModel) {
+        this.id = productModel.getId();
         this.name = productModel.getName();
         this.specifications = productModel.getSpecifications();
         this.price = productModel.getPrice();

@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<Product> getProducts() {
+    public List<ProductModel> getProducts() {
         return productService.getProducts();
     }
 
@@ -36,17 +36,17 @@ public class ProductController {
     }
 
     @PostMapping("addProduct")
-    public Product addProduct(@RequestBody ProductModel productModel) {
+    public ProductModel addProduct(@RequestBody ProductModel productModel) {
         return productService.addProduct(productModel);
     }
 
     @PostMapping("addProducts")
-    public List<Product> addProducts(@RequestBody List<ProductModel> productList) {
+    public List<ProductModel> addProducts(@RequestBody List<ProductModel> productList) {
         return productService.addProducts(productList);
     }
 
     @PutMapping("update")
-    public Product updateProduct(@RequestBody ProductModel productModel) {
+    public ProductModel updateProduct(@RequestBody ProductModel productModel) {
         return productService.updateProduct(productModel);
     }
 

@@ -1,6 +1,7 @@
 package com.example.shop.product.entity;
 
 import com.example.shop.product.Model.OrderProductItemModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,21 +16,22 @@ import lombok.Setter;
 @Table
 public class OrderProductItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "order_product_item_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_item_id")
+    @JsonBackReference
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     public OrderProductItem(OrderProductItemModel orderProductItemModel) {
+        this.id = orderProductItemModel.getId();
         this.price = orderProductItemModel.getPrice();
-        this.order = new Order(orderProductItemModel.getOrderModel()); //
-        this.product = new Product(orderProductItemModel.getProductModel());
     }
 }

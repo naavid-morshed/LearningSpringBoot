@@ -1,8 +1,10 @@
 package com.example.shop.product.controller;
 
+import com.example.shop.product.Model.OrderModel;
 import com.example.shop.product.entity.Order;
 import com.example.shop.product.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +21,9 @@ public class OrderController {
     }
 
     @PostMapping("order")
-    public Order createOrder(@RequestParam String address, @RequestBody List<Long> productIdList) {
+    public OrderModel createOrder(@RequestBody OrderModel orderModel) {
         try {
-            return orderService.createOrder(address, productIdList);
+            return orderService.createOrder(orderModel);
         } catch (Exception exception) {
             exception.printStackTrace();
             throw new RuntimeException(exception.getMessage());
@@ -56,9 +58,9 @@ public class OrderController {
 //    }
 
     @GetMapping("orders")
-    public List<Order> getAllOrders() {
+    public ResponseEntity<List<Order>> getAllOrders() {
         try {
-            return orderService.getAllOrders();
+            return ResponseEntity.ok(orderService.getAllOrders());
         } catch (Exception exception) {
             throw new RuntimeException(exception.getMessage());
         }

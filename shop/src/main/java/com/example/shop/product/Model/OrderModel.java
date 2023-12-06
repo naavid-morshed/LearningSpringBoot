@@ -22,9 +22,7 @@ public class OrderModel {
     public OrderModel(Order order) {
         this.id = order.getId();
         this.deliveryAddress = order.getDeliveryAddress();
-//        if(this.getOrderProductItemModelList() != null) {
-//            this.orderProductItemModelList = new ArrayList<>();
-//        }
+
         for (OrderProductItem orderProductItem : order.getOrderProductItemList()) {
             this.orderProductItemModelList.add(new OrderProductItemModel((orderProductItem)));
         }

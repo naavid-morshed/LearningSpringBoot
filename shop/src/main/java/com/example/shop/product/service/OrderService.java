@@ -2,7 +2,6 @@ package com.example.shop.product.service;
 
 import com.example.shop.product.Model.OrderModel;
 import com.example.shop.product.Model.OrderProductItemModel;
-import com.example.shop.product.Model.ProductModel;
 import com.example.shop.product.entity.Order;
 import com.example.shop.product.entity.OrderProductItem;
 import com.example.shop.product.entity.Product;
@@ -13,9 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -23,40 +20,41 @@ public class OrderService {
     private final ProductRepo productRepo;
     private final OrderProductItemRepo orderProductItemRepo;
 
-    // Create own service later?
-
     @Autowired
-    public OrderService(OrderRepo orderRepo, ProductRepo productRepo,
-                        OrderProductItemRepo orderProductItemRepo) {
+    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, OrderProductItemRepo orderProductItemRepo) {
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
         this.orderProductItemRepo = orderProductItemRepo;
     }
 
     @Transactional
-    public Order createOrder(String address, List<Long> productIdList) {
+    public OrderModel createOrder(OrderModel orderModel) {
+        Order order = new Order(orderModel);
+        orderRepo.save(order);
+        System.err.println(order);
 
-        OrderModel orderModel = new OrderModel();
-        orderModel.setDeliveryAddress(address);
-        for (Long productId : productIdList) {
+        for (OrderProductItemModel orderProductItemModel : orderModel.getOrderProductItemModelList()) {
+            Product product = productRepo.findById(orderProductItemModel.getProductModel().getId())
+                    .orElseThrow(() -> new RuntimeException("product not found"));
 
-            Product product = productRepo.findById(productId).orElseThrow(
-                    () -> new RuntimeException("Product with ID: " + productId + " does not exist")
-            );
-
-            ProductModel productModel = new ProductModel(product);
-
-            OrderProductItemModel orderProductItemModel = new OrderProductItemModel(orderModel,productModel);
-
-//            OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
-
-            orderModel.getOrderProductItemModelList().add(orderProductItemModel);
-
+            OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
+            orderProductItem.setProduct(product);
+            orderProductItem.setOrder(order);
+            orderProductItemRepo.save(orderProductItem);
         }
-        return orderRepo.save(new Order(orderModel));
+
+        orderRepo.save(order);
+        return new OrderModel(order);
     }
 
     public List<Order> getAllOrders() {
+
+//        List<OrderModel> orderModels = new ArrayList<>();
+//
+//        for (Order order : orders) {
+//            orderModels.add(new OrderModel(order));
+//        }
+
         return orderRepo.findAll();
     }
 

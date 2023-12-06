@@ -19,13 +19,15 @@ public class OrderProductItemModel {
     public OrderProductItemModel(OrderProductItem orderProductItem) {
         this.id = orderProductItem.getId();
         this.price = orderProductItem.getPrice();
-        this.orderModel = new OrderModel(orderProductItem.getOrder());
-        this.productModel = new ProductModel(orderProductItem.getProduct());
+
+        this.setOrderModel(new OrderModel(orderProductItem.getOrder()));
+//        this.orderModel.setDeliveryAddress(orderProductItem.getOrder().getDeliveryAddress());
+        this.setProductModel(new ProductModel(orderProductItem.getProduct()));
     }
 
-    public OrderProductItemModel(OrderModel orderModel, ProductModel productModel) {
-        this.price = productModel.getPrice();
-        this.orderModel = orderModel;
-        this.productModel = productModel;
-    }
+//    public OrderProductItemModel(OrderModel orderModel, ProductModel productModel) {
+//        this.price = productModel.getPrice();
+//        this.orderModel = orderModel;
+//        this.productModel = productModel;
+//    }
 }

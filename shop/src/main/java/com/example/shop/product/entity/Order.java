@@ -2,6 +2,7 @@ package com.example.shop.product.entity;
 
 import com.example.shop.product.Model.OrderModel;
 import com.example.shop.product.Model.OrderProductItemModel;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,14 +20,21 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String deliveryAddress;
-    // what is CascadeType?, mappedBy = "order_item",
-    @OneToMany(cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<OrderProductItem> orderProductItemList = new ArrayList<>();
 
     public Order(OrderModel orderModel) {
         this.deliveryAddress = orderModel.getDeliveryAddress();
-        for (OrderProductItemModel orderProductItemModel : orderModel.getOrderProductItemModelList()) {
-            this.orderProductItemList.add(new OrderProductItem(orderProductItemModel)); //
-        }
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", orderProductItemList=" + orderProductItemList +
+                '}';
     }
 }

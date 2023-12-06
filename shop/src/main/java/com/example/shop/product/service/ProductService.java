@@ -21,8 +21,12 @@ public class ProductService {
         this.repo = repo;
     }
 
-    public List<Product> getProducts() {
-        return repo.findAll();
+    public List<ProductModel> getProducts() {
+        List<ProductModel> productModelList = new ArrayList<>();
+        for(Product product: repo.findAll()){
+            productModelList.add(new ProductModel(product));
+        }
+        return productModelList;
     }
 
     public Optional<ProductModel> getProductById(Long id) {
@@ -42,18 +46,24 @@ public class ProductService {
         return  productModelList;
     }
 
-    public Product addProduct(ProductModel productModel) {
-        return repo.save(new Product(productModel));
+    public ProductModel addProduct(ProductModel productModel) {
+        Product product = new Product(productModel);
+        repo.save(product);
+        return new ProductModel(product);
     }
 
-    public List<Product> addProducts(List<ProductModel> productModelList) {
+    public List<ProductModel> addProducts(List<ProductModel> productModelList) {
 
-        List<Product> productList = new ArrayList<>();
+        List<ProductModel> returnList = new ArrayList<>();
+
         for (ProductModel productModel : productModelList) {
-            productList.add(new Product(productModel));
+            Product product = new Product(productModel);
+            repo.save(product);
+
+            returnList.add(new ProductModel(product));
         }
 
-        return repo.saveAll(productList);
+        return returnList;
     }
 
     public void deleteProduct(Long id) {
@@ -61,7 +71,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(ProductModel productModel) {
+    public ProductModel updateProduct(ProductModel productModel) {
 
         try {
             Product toBeUpDatedProduct = repo.findProductById(productModel.getId());
@@ -78,7 +88,8 @@ public class ProductService {
                 toBeUpDatedProduct.setPrice(productModel.getPrice());
             }
 
-            return repo.save(toBeUpDatedProduct);
+            repo.save(toBeUpDatedProduct);
+            return new ProductModel(toBeUpDatedProduct);
         } catch (Exception exception) {
             throw new RuntimeException(exception.getMessage());
         }
