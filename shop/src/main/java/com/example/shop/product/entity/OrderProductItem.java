@@ -34,4 +34,20 @@ public class OrderProductItem {
         this.id = orderProductItemModel.getId();
         this.price = orderProductItemModel.getPrice();
     }
+
+    public OrderProductItem(Order order, Product product) {
+        this.price = product.getPrice();
+        this.order = order;
+        this.product = product;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderProductItem{" +
+                "id=" + id +
+                ", price=" + price +
+                ", order=" + order +
+                ", product=" + product +
+                '}';
+    }
 }

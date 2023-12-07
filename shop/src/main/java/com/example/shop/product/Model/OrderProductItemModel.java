@@ -13,20 +13,13 @@ import lombok.Setter;
 public class OrderProductItemModel {
     private Long id;
     private Double price;
-    private OrderModel orderModel;
+//    private OrderModel orderModel;
     private ProductModel productModel;
 
     public OrderProductItemModel(OrderProductItem orderProductItem) {
         this.id = orderProductItem.getId();
         this.price = orderProductItem.getPrice();
-
-        this.orderModel = new OrderModel(orderProductItem.getOrder());
+//        this.orderModel = new OrderModel(orderProductItem.getOrder());
         this.productModel = new ProductModel(orderProductItem.getProduct());
     }
-
-//    public OrderProductItemModel(OrderModel orderModel, ProductModel productModel) {
-//        this.price = productModel.getPrice();
-//        this.orderModel = orderModel;
-//        this.productModel = productModel;
-//    }
 }

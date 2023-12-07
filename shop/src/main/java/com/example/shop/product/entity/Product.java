@@ -6,7 +6,7 @@ import lombok.*;
 
 @Entity
 @Table
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,12 +14,6 @@ public class Product {
     private String name;
     private String specifications;
     private Double price;
-
-    public Product(String name, String specifications, Double price) {
-        this.name = name;
-        this.specifications = specifications;
-        this.price = price;
-    }
 
     public Product(ProductModel productModel) {
         this.id = productModel.getId();

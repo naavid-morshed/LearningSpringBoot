@@ -1,7 +1,6 @@
 package com.example.shop.product.controller;
 
 import com.example.shop.product.Model.ProductModel;
-import com.example.shop.product.entity.Product;
 import com.example.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ public class ProductController {
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
-
     }
 
     @GetMapping()
@@ -41,8 +39,8 @@ public class ProductController {
     }
 
     @PostMapping("addProducts")
-    public List<ProductModel> addProducts(@RequestBody List<ProductModel> productList) {
-        return productService.addProducts(productList);
+    public List<ProductModel> addMultipleProducts(@RequestBody List<ProductModel> productList) {
+        return productService.addMultipleProducts(productList);
     }
 
     @PutMapping("update")

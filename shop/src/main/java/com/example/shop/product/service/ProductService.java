@@ -52,7 +52,7 @@ public class ProductService {
         return new ProductModel(product);
     }
 
-    public List<ProductModel> addProducts(List<ProductModel> productModelList) {
+    public List<ProductModel> addMultipleProducts(List<ProductModel> productModelList) {
 
         List<ProductModel> returnList = new ArrayList<>();
 
@@ -74,10 +74,10 @@ public class ProductService {
     public ProductModel updateProduct(ProductModel productModel) {
 
         try {
-            Product toBeUpDatedProduct = repo.findProductById(productModel.getId());
-            if (toBeUpDatedProduct == null) {
-                throw new RuntimeException("Product with ID: " + productModel.getId() + " does not exist");
-            }
+            Product toBeUpDatedProduct = repo.findById(productModel.getId()).orElseThrow(
+                    () -> new RuntimeException("Product with ID: " + productModel.getId() + " does not exist")
+            );
+
             if (productModel.getName() != null) {
                 toBeUpDatedProduct.setName(productModel.getName());
             }
