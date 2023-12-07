@@ -24,8 +24,9 @@ export class ShopApiService {
   }
 
   addProduct(product: Product_body): Observable<Product_body> {
-    return this.http.post<Product_body>(this.apiUrl, product);
+    return this.http.post<Product_body>(`${this.apiUrl}/addProduct`, product, this.httpOptions);
   }
+  
 
   updateProduct(product: PRODUCT): Observable<Product_body> {
     const productBody: Product_body = {

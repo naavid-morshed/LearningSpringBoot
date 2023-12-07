@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+
+      <div>
+        <label>Product Name: <span class="text-danger">*</span></label>
+        <input class="form-control" type="text" formControlName="name">
+      </div>
+
+      <div>
+        <label>Product Specification: <span class="text-danger">*</span></label>
+        <input class="form-control" type="text" formControlName="specification">
+      </div>
+
+      <div>
+        <label>Product Price: <span class="text-danger">*</span></label>
+        <input class="form-control" type="text" formControlName="price">
+      </div>
+
+      <div class="float-end mt-2">
+        <input class="btn btn-primary" type="submit" value="Submit">
+      </div>
+
+    </form>
+  </div>
+  <div class="col-4"></div>
+</div>

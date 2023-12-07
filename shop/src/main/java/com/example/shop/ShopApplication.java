@@ -13,13 +13,13 @@ public class ShopApplication {
         SpringApplication.run(ShopApplication.class, args);
     }
 
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry corsRegistry) {
-                corsRegistry.addMapping("/**").allowedOrigins("http://localhost:4200/");
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer webMvcConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry corsRegistry) {
+//                corsRegistry.addMapping("*").allowedOrigins("http://localhost:4200/");
+//            }
+//        };
+//    }
 }

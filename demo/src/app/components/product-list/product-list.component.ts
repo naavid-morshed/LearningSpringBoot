@@ -23,11 +23,11 @@ import {FormsModule} from "@angular/forms";
 })
 export class ProductListComponent {
 
-  constructor(private productService: ShopApiService) {
+  constructor(private shopApiService: ShopApiService) {
   }
 
   ngOnInit(): void {
-    this.productService.getProductJSON().subscribe(
+    this.shopApiService.getProductJSON().subscribe(
       (product_list: PRODUCT[]): void => {
         this.product_list = product_list;
         this.temporaryProductListHolder = product_list;
@@ -49,7 +49,7 @@ export class ProductListComponent {
   public maxPrice: number = 0;
 
   public deleteItem(item: PRODUCT): void {
-    this.productService.deleteToDo(item).subscribe(
+    this.shopApiService.deleteToDo(item).subscribe(
       () => (this.product_list = this.product_list.filter(
         (t: PRODUCT): boolean => t.id !== item.id
       ))
@@ -72,7 +72,7 @@ export class ProductListComponent {
 
   public addToDo($product: Product_body): void {
     console.log($product)
-    this.productService.addProduct($product).subscribe(
+    this.shopApiService.addProduct($product).subscribe(
       async (response: Product_body) => {
         this.product_list.push(<PRODUCT>response)
         console.log(this.product_list)

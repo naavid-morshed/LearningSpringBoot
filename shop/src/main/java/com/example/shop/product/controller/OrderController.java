@@ -1,7 +1,6 @@
 package com.example.shop.product.controller;
 
 import com.example.shop.product.Model.OrderModel;
-import com.example.shop.product.entity.Order;
 import com.example.shop.product.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/")
+@CrossOrigin("*")
 public class OrderController {
     public final OrderService orderService;
 
@@ -25,7 +25,6 @@ public class OrderController {
         try {
             return orderService.createOrder(orderModel);
         } catch (Exception exception) {
-            exception.printStackTrace();
             throw new RuntimeException(exception.getMessage());
         }
     }

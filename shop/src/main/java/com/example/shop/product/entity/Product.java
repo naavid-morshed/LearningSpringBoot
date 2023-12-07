@@ -21,4 +21,11 @@ public class Product {
         this.specifications = productModel.getSpecifications();
         this.price = productModel.getPrice();
     }
+
+    // using this in config, otherwise not necessary
+    public Product(String name, String specifications, Double price) {
+        this.name = name;
+        this.specifications = specifications;
+        this.price = price;
+    }
 }
