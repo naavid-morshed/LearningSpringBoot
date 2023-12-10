@@ -1,0 +1,38 @@
+<div ngbDropdown class="mb-5">
+
+  <button type="button" class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>
+    Products
+  </button>
+
+  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+    <div ngbDropdownItem>
+
+      <div *ngFor="let item of productList"
+        (click)="addToOrder(item.id)"
+        class="text-danger"
+      >
+          {{item.name}}
+      </div>
+    </div>
+  </div>
+
+  <div class="float-end btn btn-danger">
+    Cart {{numberOfItemsAddedToCart}}
+  </div>
+
+  <app-order-table></app-order-table>
+
+  <div class="row mt-2">
+    <div class="col">
+      <input class="float-end btn btn-outline-success"
+             type="submit"
+             value="Create Order"
+             (click)="createOrder()">
+      <input class="me-3 float-end btn btn-danger"
+             type="submit"
+             value="Clear Cart"
+             (click)="clearCart()">
+    </div>
+  </div>
+
+</div>

@@ -1,6 +1,6 @@
 <div class="row my-2">
   <div class="col-9">
-    <input  type="number" [min]="minPrice" [max]="maxPrice" [(ngModel)]="fromVal">
+    <input type="number" [min]="minPrice" [max]="maxPrice" [(ngModel)]="fromVal">
     <input class="mx-1" type="number" [min]="fromVal" [max]="maxPrice" [(ngModel)]="toVal">
     <input type="submit" class="btn btn-info" value="Find" (click)="sortFromAndTo()">
   </div>

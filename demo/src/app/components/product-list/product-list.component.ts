@@ -82,8 +82,8 @@ export class ProductListComponent {
     // these two lines will reSort the min and max range
     // seems like a performance hog for a large amount of data, check new val price and sort
     // accordingly?
-    this.temporaryProductListHolder = this.product_list;
-    this.sortFromAndTo();
+    // this.temporaryProductListHolder = this.product_list;
+    // this.sortFromAndTo();
   }
 
   public updateProduct(item: PRODUCT): void {

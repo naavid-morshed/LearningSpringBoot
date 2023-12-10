@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {PRODUCT} from "../interface/PRODUCT";
 import {Observable} from "rxjs";
 import {Product_body} from "../interface/product_body";
+import {ORDER_BODY} from "../interface/order_body";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class ShopApiService {
   constructor(private http: HttpClient) {
   }
 
-  private apiUrl: string = "http://localhost:8080/api/v1/product";
+  private productApiUrl: string = "http://localhost:8080/api/v1/product";
+  private orderApiUrl: string = "http://localhost:8080/api/v1/order";
 
   private httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({
@@ -20,13 +22,13 @@ export class ShopApiService {
   };
 
   getProductJSON(): Observable<PRODUCT[]> {
-    return this.http.get<PRODUCT[]>(this.apiUrl);
+    return this.http.get<PRODUCT[]>(this.productApiUrl);
   }
 
   addProduct(product: Product_body): Observable<Product_body> {
-    return this.http.post<Product_body>(`${this.apiUrl}/addProduct`, product, this.httpOptions);
+    return this.http.post<Product_body>(`${this.productApiUrl}/addProduct`, product, this.httpOptions);
   }
-  
+
 
   updateProduct(product: PRODUCT): Observable<Product_body> {
     const productBody: Product_body = {
@@ -36,13 +38,17 @@ export class ShopApiService {
     };
 
     return this.http.put<Product_body>(
-      `${this.apiUrl}/id/${product.id}`,
+      `${this.productApiUrl}/id/${product.id}`,
       productBody,
       this.httpOptions
     )
   }
 
   deleteToDo(product: PRODUCT): Observable<PRODUCT> {
-    return this.http.delete<PRODUCT>(`${this.apiUrl}/id/${product.id}`);
+    return this.http.delete<PRODUCT>(`${this.productApiUrl}/id/${product.id}`);
+  }
+
+  createOrder(order: ORDER_BODY): Observable<ORDER_BODY>{
+    return this.http.post<ORDER_BODY>(this.orderApiUrl,order,this.httpOptions);
   }
 }
