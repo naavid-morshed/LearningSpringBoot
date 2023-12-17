@@ -4,6 +4,7 @@ import {PRODUCT} from "../interface/PRODUCT";
 import {Observable} from "rxjs";
 import {Product_body} from "../interface/product_body";
 import {ORDER_BODY} from "../interface/order_body";
+import {ORDER} from "../interface/order";
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,13 @@ export class ShopApiService {
     return this.http.get<PRODUCT[]>(this.productApiUrl);
   }
 
+  getProductById(id: number): Observable<PRODUCT> {
+    return this.http.get<PRODUCT>(`${this.productApiUrl}/productId/${id}`);
+  }
+
   addProduct(product: Product_body): Observable<Product_body> {
     return this.http.post<Product_body>(`${this.productApiUrl}/addProduct`, product, this.httpOptions);
   }
-
 
   updateProduct(product: PRODUCT): Observable<Product_body> {
     const productBody: Product_body = {
@@ -48,7 +52,15 @@ export class ShopApiService {
     return this.http.delete<PRODUCT>(`${this.productApiUrl}/id/${product.id}`);
   }
 
-  createOrder(order: ORDER_BODY): Observable<ORDER_BODY>{
-    return this.http.post<ORDER_BODY>(this.orderApiUrl,order,this.httpOptions);
+  createOrder(order: ORDER_BODY): Observable<ORDER> {
+    return this.http.post<ORDER>(this.orderApiUrl, order, this.httpOptions);
+  }
+
+  getOrderById(id: string): Observable<ORDER> {
+    return this.http.get<ORDER>(`${this.orderApiUrl}/id/${id}`, this.httpOptions)
+  }
+
+  gerOrderList():Observable<ORDER[]>{
+    return this.http.get<ORDER[]>(`${this.orderApiUrl}s`, this.httpOptions)
   }
 }

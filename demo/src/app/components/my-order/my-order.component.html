@@ -1,0 +1,49 @@
+<div class="container">
+
+    <div class="row bg-warning py-2">
+      <div class="col-4 container-fluid ">
+        <button (click)="returnHome()" class="float-end btn btn-secondary rounded-pill mt-2">&#8592;</button>
+      </div>
+
+      <div class="col-4">
+        <h1 class="d-flex justify-content-center">Scam Tech</h1>
+      </div>
+
+      <div class="col-4 container-fluid">
+        <button (click)="helpButton()" class="float-start btn btn-secondary rounded-pill mt-2">Help</button>
+      </div>
+    </div>
+
+  <div class="mt-5">
+    <h4 class="row d-flex justify-content-center">Order #{{order.id}}</h4>
+    <h6 class="row d-flex justify-content-center mb-5">Will be delivered by 05 Dec 20:40, Address : {{order.deliveryAddress}}</h6>
+
+    <div class=" row" *ngFor="let item of order.orderProductItemModelList">
+      <h3 class="col-6 ps-0">
+        1x <span class="mx-4"></span> {{item.productModel.name}}
+      </h3>
+      <h3 class="col-6 pe-0">
+        <div class="float-end">{{item.price}}</div>
+      </h3>
+    </div>
+
+    <hr>
+  </div>
+
+  <div class="row">
+    <b class="col-6 text-black text-opacity-50 ps-0">Subtotal</b>
+    <div class="col-6 d-flex justify-content-end">{{subTotal}}</div>
+  </div>
+  <div class="row">
+    <b class="col-6 text-black text-opacity-50 ps-0">Delivery Fee</b>
+    <div class="col-6 d-flex justify-content-end">Tk 50</div>
+  </div>
+  <div class="row">
+    <b class="col-6 text-black text-opacity-50 ps-0">Platform Fee</b>
+    <div class="col-6 d-flex justify-content-end">Tk 3</div>
+  </div>
+  <div class="row mt-4">
+    <b class="col-6 ps-0">Total (incl. VAT)</b>
+    <div class="col-6 d-flex justify-content-end">{{subTotal + 50 + 3}}</div>
+  </div>
+</div>
