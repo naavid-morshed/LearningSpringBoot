@@ -3,6 +3,7 @@ import {ORDER} from "../../interface/order";
 import {ShopApiService} from "../../services/shop-api.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {NgForOf} from "@angular/common";
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-list-of-orders',
@@ -17,8 +18,8 @@ import {NgForOf} from "@angular/common";
 export class ListOfOrdersComponent implements OnInit {
   orderList: ORDER[] = [];
   total: number[] = [];
-
-  constructor(private shopApiService: ShopApiService) {
+  deliveryAndPlatformFee:number = 53;
+  constructor(private shopApiService: ShopApiService, private router:Router) {
   }
 
   ngOnInit(): void {
@@ -32,8 +33,12 @@ export class ListOfOrdersComponent implements OnInit {
           totalPrice += orderProductItemModel.price;
         })
 
-        this.total.push(totalPrice);
+        this.total.push(totalPrice + this.deliveryAndPlatformFee);
       })
     });
+  }
+
+  navigateToMyOrder(id: number):void {
+    this.router.navigate(["myorder"], {queryParams: {id: id}})
   }
 }

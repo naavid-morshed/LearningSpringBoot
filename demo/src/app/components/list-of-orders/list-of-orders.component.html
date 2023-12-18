@@ -9,7 +9,7 @@
     </thead>
 
     <tbody >
-      <tr *ngFor="let item of orderList; index as i">
+      <tr *ngFor="let item of orderList; index as i" (click)="navigateToMyOrder(item.id)">
         <td>
           {{ item.id }}
         </td>

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ShopApiService} from "../../services/shop-api.service";
 import {PRODUCT} from "../../interface/PRODUCT";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgForOf, NgIf, NgStyle} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
 import {ORDER_BODY} from "../../interface/order_body";
 import {Router, RouterLink} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
@@ -13,17 +13,17 @@ import {ORDER} from "../../interface/order";
 @Component({
   selector: 'app-dropdown-list',
   standalone: true,
-  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle],
+  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage],
   templateUrl: './dropdown-list.component.html',
   styleUrl: './dropdown-list.component.css'
 })
 export class DropdownListComponent {
   productList: PRODUCT[] = [];
-  orderTable: PRODUCT[] = [];
+  // orderTable: PRODUCT[] = [];
   cartList: number[] = [];
   numberOfItemsAddedToCart: number = 0;
   total: number = 0;
-  public faTime: IconDefinition = faTimes;
+  // public faTime: IconDefinition = faTimes;
 
   orderProductItemModelList: Array<{
     price: number
@@ -45,7 +45,7 @@ export class DropdownListComponent {
 
   addToOrder(item: PRODUCT): void {
     this.cartList.push(item.id);
-    this.orderTable.push(item)
+    // this.orderTable.push(item);
     this.numberOfItemsAddedToCart++;
     this.total += item.price;
   }
@@ -79,17 +79,21 @@ export class DropdownListComponent {
 
   clearCart(): void {
     this.cartList = [];
-    this.orderTable = [];
+    // this.orderTable = [];
     this.numberOfItemsAddedToCart = 0;
     this.total = 0;
   }
 
   deleteItemFromTable(item: PRODUCT): void {
     this.total -= item.price;
-    this.orderTable.splice(this.orderTable.indexOf(item), 1);
+    // this.orderTable.splice(this.orderTable.indexOf(item), 1);
   }
 
   navigateToListOfOrders() {
     this.router.navigate(["listOfOrders"])
+  }
+
+  navigateToPlaceOrderTable() {
+    this.router.navigate(['placeOrderTable'],{queryParams:{listOfId: this.cartList}})
   }
 }

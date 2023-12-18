@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row mb-5">
+    <h1 class="text-center">Scam tech</h1>
+  </div>
+
+  <div class="row my-2 bg-warning align-items-center" *ngFor="let item of cartOfProduct" >
+    <div class="col-2 text-center ps-5 my-2 pt-2">
+      <div class="row">
+        &uarr;
+      </div>
+      <div class="row">
+        {{item.count}}
+      </div>
+      <div class="row">
+        &darr;
+      </div>
+    </div>
+
+    <div class="col-4 mt-1">
+      <img class="p-0 w-100% h-100%"
+           height="100" width="100"
+           ngSrc="assets/images/{{item.id}}.png"
+           alt="image not found"
+      >
+    </div>
+    <div class="col-4 ">{{item.name}}</div>
+    <div class="col-1 text-center">{{item.price * item.count}}</div>
+    <div class="col-1 text-center">&#10060;</div>
+    <div class="col-2"></div>
+    <div class="col-4 ps-4">{{item.price}} USD</div>
+  </div>
+</div>

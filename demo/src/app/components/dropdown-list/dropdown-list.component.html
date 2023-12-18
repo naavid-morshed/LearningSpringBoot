@@ -1,79 +1,31 @@
-<div ngbDropdown class="mb-5">
+<div class="row">
+  <div class="col-3"></div>
+  <div class="col-6">
+    <h1 class="text-center text-danger">Scam Tech</h1>
+  </div>
+  <div class="col-3">
+    <button class="ms-2 btn btn-primary float-end" (click)="navigateToPlaceOrderTable()">Cart {{numberOfItemsAddedToCart}}</button>
 
-  <button type="button" class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>
-    Products
-  </button>
+    <button class="btn btn-danger float-end" (click)="clearCart()">Clear All</button>
+  </div>
+</div>
 
-  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-    <div ngbDropdownItem *ngFor="let item of productList">
-      <button ngbDropdownItem (click)="addToOrder(item)">{{item.name}}</button>
+<div class="row" >
+  <div class="col-lg-4" *ngFor="let item of productList">
+    <div class="row mx-2 my-2">
+      <img class="p-0 w-100% h-100%"
+           height="300" width="400"
+           ngSrc="assets/images/{{item.id}}.png"
+           alt="image not found"
+      >
+
+<!--           onerror="this.ngSrc='imageNotFound.png'"-->
+
+      <div class="text-center bg-warning text-body-emphasis">
+        {{item.name}}
+      </div>
+
+      <button class="btn btn-secondary text-center" (click)="addToOrder(item)">Add to Cart</button>
     </div>
   </div>
-
-  <div class="float-end btn btn-danger">
-    Cart {{numberOfItemsAddedToCart}}
-  </div>
-
 </div>
-
-<div>
-  <table class="mt-5 table table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Specifications</th>
-        <th scope="col" class="text-center">Price</th>
-        <th scope="col" class="text-center">Remove</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let item of orderTable">
-        <td>
-          {{ item.name }}
-        </td>
-        <td>
-          {{ item.specifications }}
-        </td>
-        <td>
-          {{ item.price}}
-        </td>
-
-        <td class="text-center">
-          <fa-icon (click)="deleteItemFromTable(item)"
-                   [ngStyle]="{'color':'red'}"
-                   [icon]="faTime">
-          </fa-icon>
-        </td>
-      </tr>
-    </tbody>
-
-  </table>
-</div>
-
-<div class="row mb-5">
-  <div class="col-4">
-    Total
-  </div>
-  <div class="col-4"></div>
-  <div class="col-4 d-flex justify-content-end">
-    {{total}} $
-  </div>
-</div>
-
-<div class="row mt-2">
-  <div class="col">
-    <button class="btn btn-primary float-start" (click)="navigateToListOfOrders()">Check Orders</button>
-    <input class="float-end btn btn-outline-success"
-           type="submit"
-           value="Create Order"
-           [disabled]="orderTable.length === 0"
-           (click)="createOrder()">
-    <input class="me-3 float-end btn btn-danger"
-           type="submit"
-           value="Clear Cart"
-           [disabled]="orderTable.length === 0"
-           (click)="clearCart()">
-  </div>
-</div>
-

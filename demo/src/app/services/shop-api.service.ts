@@ -30,6 +30,20 @@ export class ShopApiService {
     return this.http.get<PRODUCT>(`${this.productApiUrl}/productId/${id}`);
   }
 
+  getProductByListOfId(idList: number[]): Observable<PRODUCT[]> {
+    let idStr: string = "";
+
+    idList.forEach((id: number, index: number): void => {
+      if (index !== idList.length - 1) {
+        idStr += id + ",";
+      } else {
+        idStr += id;
+      }
+    });
+
+    return this.http.get<PRODUCT[]>(`${this.productApiUrl}/getListOfProducts?&idList=${idStr}`);
+  }
+
   addProduct(product: Product_body): Observable<Product_body> {
     return this.http.post<Product_body>(`${this.productApiUrl}/addProduct`, product, this.httpOptions);
   }
@@ -60,7 +74,7 @@ export class ShopApiService {
     return this.http.get<ORDER>(`${this.orderApiUrl}/id/${id}`, this.httpOptions)
   }
 
-  gerOrderList():Observable<ORDER[]>{
+  gerOrderList(): Observable<ORDER[]> {
     return this.http.get<ORDER[]>(`${this.orderApiUrl}s`, this.httpOptions)
   }
 }
