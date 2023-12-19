@@ -3,16 +3,27 @@
     <h1 class="text-center">Scam tech</h1>
   </div>
 
-  <div class="row my-2 bg-warning align-items-center" *ngFor="let item of cartOfProduct" >
+  <div class="row my-2 bg-warning align-items-center" *ngFor="let item of cartOfProduct; index as index">
     <div class="col-2 text-center ps-5 my-2 pt-2">
       <div class="row">
-        &uarr;
+        <button style="margin: unset;padding: unset;border: unset;background: unset"
+                class="d-flex justify-content-start"
+                (click)="increaseCount(item)">
+          &uarr;
+        </button>
       </div>
       <div class="row">
         {{item.count}}
       </div>
       <div class="row">
-        &darr;
+
+        <button style="margin: unset;padding: unset;border: unset;background: unset"
+                class="d-flex justify-content-start"
+                (click)="decreaseCount(item)"
+                [disabled]="item.count === 1">
+          &darr;
+        </button>
+
       </div>
     </div>
 
@@ -25,7 +36,7 @@
     </div>
     <div class="col-4 ">{{item.name}}</div>
     <div class="col-1 text-center">{{item.price * item.count}}</div>
-    <div class="col-1 text-center">&#10060;</div>
+    <div class="col-1 text-center" (click)="removeFromCart(item, index)">&#10060;</div>
     <div class="col-2"></div>
     <div class="col-4 ps-4">{{item.price}} USD</div>
   </div>

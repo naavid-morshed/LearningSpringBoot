@@ -14,10 +14,10 @@ import {ORDER} from "../../interface/order";
   selector: 'app-dropdown-list',
   standalone: true,
   imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage],
-  templateUrl: './dropdown-list.component.html',
-  styleUrl: './dropdown-list.component.css'
+  templateUrl: './home-page.component.html',
+  styleUrl: './home-page.component.css'
 })
-export class DropdownListComponent {
+export class HomePageComponent {
   productList: PRODUCT[] = [];
   // orderTable: PRODUCT[] = [];
   cartList: number[] = [];
@@ -94,6 +94,6 @@ export class DropdownListComponent {
   }
 
   navigateToPlaceOrderTable() {
-    this.router.navigate(['placeOrderTable'],{queryParams:{listOfId: this.cartList}})
+    this.router.navigate(['placeOrderTable'], {queryParams: {listOfId: this.cartList}})
   }
 }

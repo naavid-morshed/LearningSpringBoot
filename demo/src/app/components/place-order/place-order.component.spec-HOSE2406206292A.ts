@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DropdownListComponent } from './dropdown-list.component';
+import { PlaceOrderComponent } from './place-order.component';
 
-describe('DropdownListComponent', () => {
-  let component: DropdownListComponent;
-  let fixture: ComponentFixture<DropdownListComponent>;
+describe('PlaceOrderTableComponent', () => {
+  let component: PlaceOrderComponent;
+  let fixture: ComponentFixture<PlaceOrderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DropdownListComponent]
+      imports: [PlaceOrderComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(DropdownListComponent);
+
+    fixture = TestBed.createComponent(PlaceOrderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

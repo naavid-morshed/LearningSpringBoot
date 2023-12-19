@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
 import {ProductListComponent} from "./components/product-list/product-list.component";
 import {ProductFormComponent} from "./components/product-form/product-form.component";
-import {DropdownListComponent} from "./components/dropdown-list/dropdown-list.component";
+import {HomePageComponent} from "./components/home-page/home-page.component";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import {DropdownListComponent} from "./components/dropdown-list/dropdown-list.co
     RouterOutlet,
     ProductListComponent,
     ProductFormComponent,
-    DropdownListComponent,
+    HomePageComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

@@ -4,9 +4,9 @@
     <h1 class="text-center text-danger">Scam Tech</h1>
   </div>
   <div class="col-3">
-    <button class="ms-2 btn btn-primary float-end" (click)="navigateToPlaceOrderTable()">Cart {{numberOfItemsAddedToCart}}</button>
+    <button class="ms-2 btn btn-primary float-end" (click)="navigateToPlaceOrderTable()" [disabled]="numberOfItemsAddedToCart === 0">Cart {{numberOfItemsAddedToCart}}</button>
 
-    <button class="btn btn-danger float-end" (click)="clearCart()">Clear All</button>
+    <button class="btn btn-danger float-end" (click)="clearCart()" [disabled]="!(numberOfItemsAddedToCart > 0)">Clear All</button>
   </div>
 </div>
 
