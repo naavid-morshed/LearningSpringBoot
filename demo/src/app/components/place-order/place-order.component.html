@@ -1,6 +1,12 @@
 <div class="container">
   <div class="row mb-5">
-    <h1 class="text-center">Scam tech</h1>
+    <div class="col-4">
+      <button class="btn btn-primary rounded-pill ms-5 mt-2" (click)="navigateToHomePage()">&larr;</button>
+    </div>
+    <div class="col-4">
+      <h1 class="text-center">Scam tech</h1>
+    </div>
+    <div class="col-4"></div>
   </div>
 
   <div class="row my-2 bg-warning align-items-center" *ngFor="let item of cartOfProduct; index as index">

@@ -6,50 +6,47 @@ import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {CART} from "../../interface/cart";
 
 @Component({
-  selector: 'app-place-order-table',
+  selector: 'app-place-order',
   standalone: true,
   imports: [
     NgForOf,
     NgOptimizedImage
   ],
-  templateUrl: './place-order-table.component.html',
-  styleUrl: './place-order-table.component.css'
+  templateUrl: './place-order.component.html',
+  styleUrl: './place-order.component.css'
 })
-export class PlaceOrderTableComponent implements OnInit {
+export class PlaceOrderComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private shopApiService: ShopApiService, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(
-      (params: Params): void => {
-        this.listOfId = params['listOfId'];
-        this.shopApiService.getProductByListOfId(this.listOfId).subscribe((responseProductBody: PRODUCT[]): void => {
-            this.productList = responseProductBody;
+    const jsonData: string = localStorage.getItem("Cart") ?? "";
 
-            this.productList.forEach((product: PRODUCT): void => {
-              // index will be negative one, if findIndex returns false
-              const index: number = this.cartOfProduct.findIndex((item: CART): boolean => item.id === product.id);
+    if (jsonData !== "") {
+      this.productList = JSON.parse(jsonData) as PRODUCT[];
 
-              if (index === -1) {
-                // If the id does not exist in the cart, add it with a count of 1
-                this.cartOfProduct.push({
-                  count: 1,
-                  id: product.id,
-                  name: product.name,
-                  specification: product.specifications,
-                  price: product.price
-                });
-              } else {
-                this.cartOfProduct[index].count++;
-              }
-            });
-          }
-        )
-      }
-    )
+      this.productList.forEach((product: PRODUCT): void => {
+        // index will be negative one, if findIndex returns false
+        const index: number = this.cartOfProduct.findIndex((item: CART): boolean => item.id === product.id);
+
+        if (index === -1) {
+          // If the id does not exist in the cart, add it with a count of 1
+          this.cartOfProduct.push({
+            count: 1,
+            id: product.id,
+            name: product.name,
+            specification: product.specifications,
+            price: product.price
+          });
+        } else {
+          this.cartOfProduct[index].count++;
+        }
+
+      });
+    }
   }
 
-  listOfId: number[] = [];
+  // listOfId: number[] = [];
   cartOfProduct: CART[] = [];
   productList: PRODUCT [] = [];
 
@@ -62,6 +59,8 @@ export class PlaceOrderTableComponent implements OnInit {
         break;
       }
     }
+
+    localStorage.setItem("Cart", JSON.stringify(this.productList));
   }
 
   increaseCount(item: CART): void {
@@ -74,6 +73,7 @@ export class PlaceOrderTableComponent implements OnInit {
         break;
       }
     }
+    localStorage.setItem("Cart", JSON.stringify(this.productList));
   }
 
   removeFromCart(item: CART, indexOfItemInCart: number): void {
@@ -86,11 +86,17 @@ export class PlaceOrderTableComponent implements OnInit {
       }
     }
 
+
     this.cartOfProduct.splice(indexOfItemInCart, 1);
-    console.log(this.cartOfProduct, this.productList)
+
+    localStorage.setItem("Cart", JSON.stringify(this.productList))
 
     if (this.cartOfProduct.length === 0) {
       this.router.navigate(['']);
     }
+  }
+
+  navigateToHomePage(): void {
+    this.router.navigate([""])
   }
 }

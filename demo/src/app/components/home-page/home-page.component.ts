@@ -11,7 +11,7 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {ORDER} from "../../interface/order";
 
 @Component({
-  selector: 'app-dropdown-list',
+  selector: 'app-home-page',
   standalone: true,
   imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage],
   templateUrl: './home-page.component.html',
@@ -20,10 +20,9 @@ import {ORDER} from "../../interface/order";
 export class HomePageComponent {
   productList: PRODUCT[] = [];
   // orderTable: PRODUCT[] = [];
-  cartList: number[] = [];
   numberOfItemsAddedToCart: number = 0;
-  total: number = 0;
   // public faTime: IconDefinition = faTimes;
+  stringifyAbleObjectOfTypeProduct: PRODUCT[] = [] as PRODUCT[];
 
   orderProductItemModelList: Array<{
     price: number
@@ -41,26 +40,32 @@ export class HomePageComponent {
         this.productList = product_list;
       }
     );
+
+    const jsonData: string = localStorage.getItem("Cart") ?? "";
+
+    if (jsonData !== "") {
+      this.stringifyAbleObjectOfTypeProduct = JSON.parse(jsonData) as PRODUCT[];
+      this.numberOfItemsAddedToCart += this.stringifyAbleObjectOfTypeProduct.length;
+    }
   }
 
   addToOrder(item: PRODUCT): void {
-    this.cartList.push(item.id);
     // this.orderTable.push(item);
     this.numberOfItemsAddedToCart++;
-    this.total += item.price;
+    this.stringifyAbleObjectOfTypeProduct.push(item)
   }
 
   createOrder(): void {
     this.orderProductItemModelList = [];
 
-    this.cartList.forEach((id: number): void => {
-      this.orderProductItemModelList.push({
-        price: this.productList.find((product: PRODUCT): boolean => product.id === id)?.price ?? 0,
-        productModel: {
-          id: id
-        }
-      });
-    });
+    // this.cartList.forEach((id: number): void => {
+    //   this.orderProductItemModelList.push({
+    //     price: this.productList.find((product: PRODUCT): boolean => product.id === id)?.price ?? 0,
+    //     productModel: {
+    //       id: id
+    //     }
+    //   });
+    // });
 
     const order: ORDER_BODY = {
       deliveryAddress: "Kollyanpur",
@@ -78,14 +83,14 @@ export class HomePageComponent {
   }
 
   clearCart(): void {
-    this.cartList = [];
     // this.orderTable = [];
     this.numberOfItemsAddedToCart = 0;
-    this.total = 0;
+
+    this.stringifyAbleObjectOfTypeProduct = [] as PRODUCT[];
+    localStorage.removeItem("Cart");
   }
 
   deleteItemFromTable(item: PRODUCT): void {
-    this.total -= item.price;
     // this.orderTable.splice(this.orderTable.indexOf(item), 1);
   }
 
@@ -94,6 +99,9 @@ export class HomePageComponent {
   }
 
   navigateToPlaceOrderTable() {
-    this.router.navigate(['placeOrderTable'], {queryParams: {listOfId: this.cartList}})
+    const jsonData: string = JSON.stringify(this.stringifyAbleObjectOfTypeProduct);
+    localStorage.setItem("Cart", jsonData);
+
+    this.router.navigate(['placeOrderTable'],);
   }
 }

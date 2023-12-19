@@ -4,6 +4,7 @@ import {RouterOutlet} from '@angular/router';
 import {ProductListComponent} from "./components/product-list/product-list.component";
 import {ProductFormComponent} from "./components/product-form/product-form.component";
 import {HomePageComponent} from "./components/home-page/home-page.component";
+import {PlaceOrderComponent} from "./components/place-order/place-order.component";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import {HomePageComponent} from "./components/home-page/home-page.component";
     ProductListComponent,
     ProductFormComponent,
     HomePageComponent,
+    PlaceOrderComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
