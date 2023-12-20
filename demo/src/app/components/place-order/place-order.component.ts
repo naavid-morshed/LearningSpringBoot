@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {PRODUCT} from "../../interface/PRODUCT";
-import {ShopApiService} from "../../services/shop-api.service";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {CART} from "../../interface/cart";
 
@@ -16,7 +15,7 @@ import {CART} from "../../interface/cart";
   styleUrl: './place-order.component.css'
 })
 export class PlaceOrderComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute, private shopApiService: ShopApiService, private router: Router) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -46,7 +45,6 @@ export class PlaceOrderComponent implements OnInit {
     }
   }
 
-  // listOfId: number[] = [];
   cartOfProduct: CART[] = [];
   productList: PRODUCT [] = [];
 
@@ -73,6 +71,7 @@ export class PlaceOrderComponent implements OnInit {
         break;
       }
     }
+
     localStorage.setItem("Cart", JSON.stringify(this.productList));
   }
 
@@ -85,7 +84,6 @@ export class PlaceOrderComponent implements OnInit {
         index--;
       }
     }
-
 
     this.cartOfProduct.splice(indexOfItemInCart, 1);
 

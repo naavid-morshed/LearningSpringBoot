@@ -1,28 +1,39 @@
 <div class="row">
-  <div class="col-3"></div>
+  <div class="col-3 ps-3">
+    <button class="btn btn-primary" (click)="navigateToWishList()">My WishList</button>
+  </div>
   <div class="col-6">
     <h1 class="text-center text-danger">Scam Tech</h1>
   </div>
   <div class="col-3">
-    <button class="ms-2 btn btn-primary float-end" (click)="navigateToPlaceOrderTable()" [disabled]="numberOfItemsAddedToCart === 0">Cart {{numberOfItemsAddedToCart}}</button>
+    <button class="ms-2 btn btn-primary float-end"
+            (click)="navigateToPlaceOrderTable()"
+            [disabled]="numberOfItemsAddedToCart === 0">
+      Cart {{numberOfItemsAddedToCart}}
+    </button>
 
-    <button class="btn btn-danger float-end" (click)="clearCart()" [disabled]="!(numberOfItemsAddedToCart > 0)">Clear All</button>
+    <button class="btn btn-danger float-end" (click)="clearCart()" [disabled]="!(numberOfItemsAddedToCart > 0)">
+      Clear All
+    </button>
   </div>
 </div>
 
-<div class="row" >
-  <div class="col-lg-4" *ngFor="let item of productList">
-    <div class="row mx-2 my-2">
+<div class="row">
+  <div class="col-lg-4" *ngFor="let item of productList;index as indexOfItem">
+    <div class="row mx-1 my-3">
       <img class="p-0 w-100% h-100%"
            height="300" width="400"
            ngSrc="assets/images/{{item.id}}.png"
            alt="image not found"
       >
 
-<!--           onerror="this.ngSrc='imageNotFound.png'"-->
-
       <div class="text-center bg-warning text-body-emphasis">
         {{item.name}}
+
+        <fa-icon class="float-end pe-3"
+                 [icon]="wishBoolean[indexOfItem] ? faHeartSolid: faHeartRegular"
+                 (click)="toggleWish(indexOfItem)">
+        </fa-icon>
       </div>
 
       <button class="btn btn-secondary text-center" (click)="addToOrder(item)">Add to Cart</button>

@@ -1,0 +1,29 @@
+<div>
+
+  <div class="row">
+    <div class="col px-0">
+      <button class="btn btn-secondary" (click)="navigateToHomePage()">Go Back</button>
+    </div>
+  </div>
+
+  <div *ngFor="let item of myWishList">
+    <div class="row align-items-center my-2 bg-warning">
+      <div class="col-4 text-center">
+        {{item.name}}
+      </div>
+
+      <div class="col-4">
+        <img ngSrc="assets/images/{{item.id}}.png"
+             alt="image not found"
+             class="p-0 w-100% h-100%"
+             height="200" width="200"
+        >
+      </div>
+
+      <div class="col-4 text-center">
+        {{item.price}}
+      </div>
+    </div>
+  </div>
+
+</div>

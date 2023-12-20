@@ -3,12 +3,11 @@ import {ShopApiService} from "../../services/shop-api.service";
 import {PRODUCT} from "../../interface/PRODUCT";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgForOf, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
-import {ORDER_BODY} from "../../interface/order_body";
 import {Router, RouterLink} from "@angular/router";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {IconDefinition} from "@fortawesome/free-brands-svg-icons";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import {ORDER} from "../../interface/order";
+
+import {faHeart as faHeartSolid} from "@fortawesome/free-solid-svg-icons";
+import {faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: 'app-home-page',
@@ -19,17 +18,11 @@ import {ORDER} from "../../interface/order";
 })
 export class HomePageComponent {
   productList: PRODUCT[] = [];
-  // orderTable: PRODUCT[] = [];
   numberOfItemsAddedToCart: number = 0;
-  // public faTime: IconDefinition = faTimes;
-  stringifyAbleObjectOfTypeProduct: PRODUCT[] = [] as PRODUCT[];
 
-  orderProductItemModelList: Array<{
-    price: number
-    productModel: {
-      id: number
-    }
-  }> = [];
+  stringifyAbleObjectOfTypeProduct: PRODUCT[] = [] as PRODUCT[];
+  wishBoolean: boolean[] = [];
+  wishList: PRODUCT[] = []
 
   constructor(private shopApiService: ShopApiService, private router: Router) {
   }
@@ -38,6 +31,23 @@ export class HomePageComponent {
     this.shopApiService.getProductJSON().subscribe(
       (product_list: PRODUCT[]): void => {
         this.productList = product_list;
+        this.wishBoolean = new Array(this.productList.length).fill(false)
+
+        this.wishList = JSON.parse(localStorage.getItem("WishList") ?? "") as PRODUCT[];
+
+        this.wishList.forEach((wishItem: PRODUCT): void => {
+          let index: number = 0;
+
+          this.productList.filter((product: PRODUCT): void => {
+            if (product.id == wishItem.id) {
+              index = this.productList.indexOf(product);
+            }
+          })
+
+          this.wishBoolean[index] = true;
+        });
+
+        console.log(this.wishBoolean);
       }
     );
 
@@ -50,58 +60,63 @@ export class HomePageComponent {
   }
 
   addToOrder(item: PRODUCT): void {
-    // this.orderTable.push(item);
     this.numberOfItemsAddedToCart++;
     this.stringifyAbleObjectOfTypeProduct.push(item)
   }
 
-  createOrder(): void {
-    this.orderProductItemModelList = [];
-
-    // this.cartList.forEach((id: number): void => {
-    //   this.orderProductItemModelList.push({
-    //     price: this.productList.find((product: PRODUCT): boolean => product.id === id)?.price ?? 0,
-    //     productModel: {
-    //       id: id
-    //     }
-    //   });
-    // });
-
-    const order: ORDER_BODY = {
-      deliveryAddress: "Kollyanpur",
-      orderProductItemModelList: this.orderProductItemModelList
-    }
-
-    this.shopApiService.createOrder(order).subscribe(
-      (orderResponse: ORDER): void => {
-        // const id: number = orderResponse.id;
-        this.router.navigate(["myorder"], {queryParams: {id: orderResponse.id}})
-      }
-    );
-
-    this.clearCart()
-  }
+  // createOrder(): void {
+  //   this.orderProductItemModelList = [];
+  //
+  //   const order: ORDER_BODY = {
+  //     deliveryAddress: "Kollyanpur",
+  //     orderProductItemModelList: this.orderProductItemModelList
+  //   }
+  //
+  //   this.shopApiService.createOrder(order).subscribe(
+  //     (orderResponse: ORDER): void => {
+  //       // const id: number = orderResponse.id;
+  //       this.router.navigate(["myorder"], {queryParams: {id: orderResponse.id}})
+  //     }
+  //   );
+  //
+  //   this.clearCart()
+  // }
 
   clearCart(): void {
-    // this.orderTable = [];
     this.numberOfItemsAddedToCart = 0;
 
     this.stringifyAbleObjectOfTypeProduct = [] as PRODUCT[];
     localStorage.removeItem("Cart");
   }
 
-  deleteItemFromTable(item: PRODUCT): void {
-    // this.orderTable.splice(this.orderTable.indexOf(item), 1);
-  }
-
-  navigateToListOfOrders() {
-    this.router.navigate(["listOfOrders"])
-  }
-
-  navigateToPlaceOrderTable() {
+  navigateToPlaceOrderTable(): void {
     const jsonData: string = JSON.stringify(this.stringifyAbleObjectOfTypeProduct);
     localStorage.setItem("Cart", jsonData);
 
     this.router.navigate(['placeOrderTable'],);
+  }
+
+  protected readonly faHeartSolid = faHeartSolid;
+  protected readonly faHeartRegular = faHeartRegular;
+
+  toggleWish(indexOfItemOfProductList: number): void {
+    this.wishBoolean[indexOfItemOfProductList] = !this.wishBoolean[indexOfItemOfProductList];
+
+    if (this.wishBoolean[indexOfItemOfProductList]) {
+      this.wishList.push(this.productList[indexOfItemOfProductList]);
+    } else {
+
+      const index: number = this.wishList.findIndex((wishItem: PRODUCT): boolean => {
+        return wishItem.id === this.productList[indexOfItemOfProductList].id
+      });
+
+      this.wishList.splice(index, 1);
+    }
+
+    localStorage.setItem("WishList", JSON.stringify(this.wishList));
+  }
+
+  navigateToWishList() {
+    this.router.navigate(["MyWishList"])
   }
 }
