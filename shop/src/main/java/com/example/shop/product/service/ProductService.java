@@ -23,7 +23,7 @@ public class ProductService {
 
     public List<ProductModel> getProducts() {
         List<ProductModel> productModelList = new ArrayList<>();
-        for(Product product: repo.findAll()){
+        for (Product product : repo.findAll()) {
             productModelList.add(new ProductModel(product));
         }
         return productModelList;
@@ -36,14 +36,22 @@ public class ProductService {
         return Optional.of(new ProductModel(product));
     }
 
+    // change later lol
+    public ProductModel getSingleProductById(Long id) {
+        Product product = repo.findById(id).orElseThrow(
+                () -> new RuntimeException("Product by id: " + id + " does not exist.")
+        );
+        return new ProductModel(product);
+    }
+
     public List<ProductModel> getProductByName(String productName) {
         List<Product> productList = repo.findByName(productName);
-        List <ProductModel> productModelList = new ArrayList<>();
+        List<ProductModel> productModelList = new ArrayList<>();
 
-        for (Product product: productList) {
+        for (Product product : productList) {
             productModelList.add(new ProductModel(product));
         }
-        return  productModelList;
+        return productModelList;
     }
 
     public ProductModel addProduct(ProductModel productModel) {
