@@ -23,7 +23,7 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<OrderProductItem> orderProductItemList = new ArrayList<>();
+    private List<OrderProductItem> orderProductItemList;
 
     public Order(OrderModel orderModel) {
         this.deliveryAddress = orderModel.getDeliveryAddress();

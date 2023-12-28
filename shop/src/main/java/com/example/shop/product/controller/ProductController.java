@@ -74,8 +74,8 @@ public class ProductController {
         return productService.updateProduct(productModel);
     }
 
-    @DeleteMapping("id/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-    }
+//    @DeleteMapping("id/{id}")
+//    public void deleteProduct(@PathVariable Long id) {
+//        productService.deleteProduct(id);
+//    }
 }
