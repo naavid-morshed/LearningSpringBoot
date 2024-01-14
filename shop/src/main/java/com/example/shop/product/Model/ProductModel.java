@@ -15,11 +15,13 @@ public class ProductModel {
     private String name;
     private String specifications;
     private Double price;
+    private String productCode;
 
     public ProductModel(Product product) {
         this.id = product.getId();
         this.name = product.getName();
         this.specifications = product.getSpecifications();
         this.price = product.getPrice();
+        this.productCode = product.getProductCode();
     }
 }

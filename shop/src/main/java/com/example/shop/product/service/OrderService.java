@@ -2,9 +2,11 @@ package com.example.shop.product.service;
 
 import com.example.shop.product.Model.OrderModel;
 import com.example.shop.product.Model.OrderProductItemModel;
+import com.example.shop.product.entity.Inventory;
 import com.example.shop.product.entity.Order;
 import com.example.shop.product.entity.OrderProductItem;
 import com.example.shop.product.entity.Product;
+import com.example.shop.product.repository.InventoryRepo;
 import com.example.shop.product.repository.OrderProductItemRepo;
 import com.example.shop.product.repository.OrderRepo;
 import com.example.shop.product.repository.ProductRepo;
@@ -21,12 +23,14 @@ public class OrderService {
     private final OrderRepo orderRepo;
     private final ProductRepo productRepo;
     private final OrderProductItemRepo orderProductItemRepo;
+    private final InventoryRepo inventoryRepo;
 
     @Autowired
-    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, OrderProductItemRepo orderProductItemRepo) {
+    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, OrderProductItemRepo orderProductItemRepo, InventoryRepo inventoryRepo) {
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
         this.orderProductItemRepo = orderProductItemRepo;
+        this.inventoryRepo = inventoryRepo;
     }
 
     @Transactional
@@ -34,14 +38,25 @@ public class OrderService {
         Order order = new Order(orderModel);
 
         for (OrderProductItemModel orderProductItemModel : orderModel.getOrderProductItemModelList()) {
-            Product product = productRepo.findById(orderProductItemModel.getProductModel().getId())
-                    .orElseThrow(() -> new RuntimeException("product not found"));
+            Product product = productRepo.findById(orderProductItemModel.getProductModel().getId()).orElseThrow(() -> new RuntimeException("product not found"));
 
-            OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
-            orderProductItem.setProduct(product);
-            orderProductItem.setOrder(order);
-            orderProductItemRepo.save(orderProductItem);
-            order.getOrderProductItemList().add(orderProductItem);
+            Inventory inventory = inventoryRepo.findInventoriesByProduct_Id(product.getId());
+
+            if (inventory.getProductCount() > 0) {
+                OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
+                orderProductItem.setProduct(product);
+                orderProductItem.setOrder(order);
+
+                orderProductItemRepo.save(orderProductItem);
+
+                order.getOrderProductItemList().add(orderProductItem);
+
+                inventory.setProductCount(inventory.getProductCount() - 1);
+                inventoryRepo.save(inventory);
+            } else {
+                throw new RuntimeException("We ran out of stock : " + product.getName() + ", ID : " + product.getId());
+            }
+
         }
 
         orderRepo.save(order);
@@ -72,10 +87,10 @@ public class OrderService {
         );
 
         Product product = productRepo.findById(product_id).orElseThrow(
-          () -> new RuntimeException("Product with ID: " + product_id + " does not exist")
+                () -> new RuntimeException("Product with ID: " + product_id + " does not exist")
         );
 
-        OrderProductItem orderProductItem = new OrderProductItem(order,product);
+        OrderProductItem orderProductItem = new OrderProductItem(order, product);
         orderProductItemRepo.save(orderProductItem);
 
         order.getOrderProductItemList().add(orderProductItem);

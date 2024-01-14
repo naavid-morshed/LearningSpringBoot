@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ProductService {
@@ -59,13 +60,44 @@ public class ProductService {
     }
 
     public ProductModel addProduct(ProductModel productModel) {
+
         Product product = new Product(productModel);
+
+        Random random = new Random();
+
+        String productCode = "prod_" + (random.nextInt(900) + 100);
+
+        while (productRepo.existsProductByProductCode(productCode)) {
+            productCode = "prod_" + (random.nextInt(900) + 100);
+        }
+
+        product.setProductCode(productCode);
+
         productRepo.save(product);
 
         inventoryRepo.save(new Inventory(product));
 
         return new ProductModel(product);
     }
+
+//    public ProductModel addProduct(ProductModel productModel) {
+//
+//        if (productRepo.existsProductByName(productModel.getName())) {
+//            Inventory inventory = inventoryRepo.findInventoryByProduct_Name(productModel.getName());
+//            inventory.setProductCount(inventory.getProductCount() + 1);
+//            inventoryRepo.save(inventory);
+//
+//            return new ProductModel(productRepo.findProductByName(productModel.getName()));
+//        } else {
+//            Product product = new Product(productModel);
+//            productRepo.save(product);
+//
+//            inventoryRepo.save(new Inventory(product));
+//
+//            return new ProductModel(product);
+//        }
+//
+//    }
 
     public List<ProductModel> addMultipleProducts(List<ProductModel> productModelList) {
 
@@ -74,6 +106,17 @@ public class ProductService {
 
         for (ProductModel productModel : productModelList) {
             Product product = new Product(productModel);
+
+            Random random = new Random();
+
+            String productCode = "prod_" + (random.nextInt(900) + 100);
+
+            while (productRepo.existsProductByProductCode(productCode)) {
+                productCode = "prod_" + (random.nextInt(900) + 100);
+            }
+
+            product.setProductCode(productCode);
+
             productRepo.save(product);
 
             inventoryList.add(new Inventory(product));

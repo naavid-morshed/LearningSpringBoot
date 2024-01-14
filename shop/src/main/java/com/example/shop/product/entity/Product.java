@@ -6,7 +6,11 @@ import lombok.*;
 
 @Entity
 @Table
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +18,9 @@ public class Product {
     private String name;
     private String specifications;
     private Double price;
+
+    @Column(unique = true, nullable = false)
+    private String productCode;
 
     public Product(ProductModel productModel) {
         this.id = productModel.getId();
@@ -23,9 +30,10 @@ public class Product {
     }
 
     // using this in config, otherwise not necessary
-    public Product(String name, String specifications, Double price) {
+    public Product(String name, String specifications, Double price, String productCode) {
         this.name = name;
         this.specifications = specifications;
         this.price = price;
+        this.productCode = productCode;
     }
 }

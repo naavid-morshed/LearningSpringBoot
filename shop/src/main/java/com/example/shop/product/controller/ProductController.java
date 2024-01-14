@@ -30,18 +30,6 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-//    @GetMapping("getListOfProducts")
-//    public List<ProductModel> getListOfProductById(@RequestParam List<Map<String, String>> idMapList) {
-//        List<ProductModel> productModelList = new ArrayList<>();
-//
-//        for (Map<String, String> entry : idMapList) {
-//            System.err.println(entry.values());
-////            productModelList.add(productService.getSingleProductById(entry.getValue()));
-//        }
-//
-//        return productModelList;
-//    }
-
     @GetMapping("getListOfProducts")
     public List<ProductModel> getListOfProductById(@RequestParam List<Long> idList) {
         List<ProductModel> productModelList = new ArrayList<>();
@@ -52,7 +40,6 @@ public class ProductController {
 
         return productModelList;
     }
-
 
     @GetMapping("productName/{productName}")
     public List<ProductModel> getProductByName(@PathVariable String productName) {

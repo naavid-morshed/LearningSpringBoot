@@ -21,7 +21,7 @@ public class Inventory {
 
     private Integer productCount;
 
-    public Inventory(Product product){
+    public Inventory(Product product) {
         this.product = product;
         this.productCount = 1;
     }
