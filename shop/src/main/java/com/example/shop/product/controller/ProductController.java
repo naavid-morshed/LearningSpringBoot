@@ -3,6 +3,7 @@ package com.example.shop.product.controller;
 import com.example.shop.product.Model.ProductModel;
 import com.example.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,13 +22,13 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<ProductModel> getProducts() {
-        return productService.getProducts();
+    public ResponseEntity<Optional<List<ProductModel>>> getProducts() {
+        return ResponseEntity.ok(productService.getProducts());
     }
 
     @GetMapping("productId/{id}")
-    public Optional<ProductModel> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Optional<ProductModel>> getProductById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @GetMapping("getListOfProducts")
@@ -47,13 +48,13 @@ public class ProductController {
     }
 
     @PostMapping("addProduct")
-    public ProductModel addProduct(@RequestBody ProductModel productModel) {
-        return productService.addProduct(productModel);
+    public ResponseEntity<Optional<ProductModel>> addProduct(@RequestBody ProductModel productModel) {
+        return ResponseEntity.ok(productService.addProduct(productModel));
     }
 
     @PostMapping("addProducts")
-    public List<ProductModel> addMultipleProducts(@RequestBody List<ProductModel> productList) {
-        return productService.addMultipleProducts(productList);
+    public ResponseEntity<Optional<List<ProductModel>>> addMultipleProducts(@RequestBody List<ProductModel> productList) {
+        return ResponseEntity.ok(productService.addMultipleProducts(productList));
     }
 
     @PutMapping("update")

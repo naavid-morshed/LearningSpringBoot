@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     @PutMapping("order/add/{order_id}/product_id/{product_id}")
-    public OrderModel addProductToOrder(@PathVariable Long order_id, @PathVariable Long product_id) {
+    public Optional<OrderModel> addProductToOrder(@PathVariable Long order_id, @PathVariable Long product_id) {
         try {
             return orderService.addProductToOrder(order_id, product_id);
         } catch (Exception exception) {
@@ -57,7 +57,7 @@ public class OrderController {
     }
 
     @GetMapping("orders")
-    public ResponseEntity<List<OrderModel>> getAllOrders() {
+    public ResponseEntity<Optional<List<OrderModel>>> getAllOrders() {
         try {
             return ResponseEntity.ok(orderService.getAllOrders());
         } catch (Exception exception) {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -47,7 +48,7 @@ public class OrderService {
                 orderProductItem.setProduct(product);
                 orderProductItem.setOrder(order);
 
-                orderProductItemRepo.save(orderProductItem);
+//                orderProductItemRepo.save(orderProductItem);
 
                 order.getOrderProductItemList().add(orderProductItem);
 
@@ -63,48 +64,30 @@ public class OrderService {
         return new OrderModel(order);
     }
 
-    public List<OrderModel> getAllOrders() {
-
-        List<OrderModel> orderModels = new ArrayList<>();
-
-        for (Order order : orderRepo.findAll()) {
-            orderModels.add(new OrderModel(order));
-        }
-        return orderModels;
+    public Optional<List<OrderModel>> getAllOrders() {
+        return Optional.of(orderRepo.findAll().stream().map(OrderModel::new).collect(Collectors.toList()));
     }
 
     public Optional<OrderModel> getOrderById(Long id) {
-        Order order = orderRepo.findById(id).orElseThrow(
-                () -> new RuntimeException("Order by ID: " + id + " does not exist.")
-        );
-        System.err.println(order.getOrderProductItemList().getFirst().getProduct());
-        return Optional.of(new OrderModel(order));
+        return Optional.of(new OrderModel(orderRepo.findById(id).orElseThrow(() -> new RuntimeException("Order by ID: " + id + " does not exist."))));
     }
 
-    public OrderModel addProductToOrder(Long order_id, Long product_id) {
-        Order order = orderRepo.findById(order_id).orElseThrow(
-                () -> new RuntimeException("Order with ID: " + order_id + " does not exist")
-        );
+    public Optional<OrderModel> addProductToOrder(Long order_id, Long product_id) {
+        Order order = orderRepo.findById(order_id).orElseThrow(() -> new RuntimeException("Order with ID: " + order_id + " does not exist"));
 
-        Product product = productRepo.findById(product_id).orElseThrow(
-                () -> new RuntimeException("Product with ID: " + product_id + " does not exist")
-        );
+        Product product = productRepo.findById(product_id).orElseThrow(() -> new RuntimeException("Product with ID: " + product_id + " does not exist"));
 
         OrderProductItem orderProductItem = new OrderProductItem(order, product);
         orderProductItemRepo.save(orderProductItem);
 
         order.getOrderProductItemList().add(orderProductItem);
         orderRepo.save(order);
-        return new OrderModel(order);
+        return Optional.of(new OrderModel(order));
     }
 
     public OrderModel removeProductFromOrder(Long order_id, Long opi_id) {
-        Order order = orderRepo.findById(order_id).orElseThrow(
-                () -> new RuntimeException("Order with ID: " + order_id + " does not exist")
-        );
-        OrderProductItem orderProductItem = orderProductItemRepo.findById(opi_id).orElseThrow(
-                () -> new RuntimeException("Product with ID: " + opi_id + " does not exist")
-        );
+        Order order = orderRepo.findById(order_id).orElseThrow(() -> new RuntimeException("Order with ID: " + order_id + " does not exist"));
+        OrderProductItem orderProductItem = orderProductItemRepo.findById(opi_id).orElseThrow(() -> new RuntimeException("Product with ID: " + opi_id + " does not exist"));
 
         orderProductItemRepo.deleteById(opi_id);
 
