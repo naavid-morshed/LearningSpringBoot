@@ -1,10 +1,12 @@
 package com.example.shop.product.entity;
 
 import com.example.shop.product.Model.OrderModel;
-import com.example.shop.product.Model.OrderProductItemModel;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
