@@ -1,6 +1,6 @@
-package com.example.learningauthwithjwt.user;
+package com.example.learningauthwithjwt.user.Entity;
 
-import com.example.learningauthwithjwt.Enums.Role;
+import com.example.learningauthwithjwt.user.Enums.Role;
 
 import jakarta.persistence.*;
 import lombok.*;
