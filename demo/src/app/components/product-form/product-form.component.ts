@@ -1,15 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators, ɵElement
+  ReactiveFormsModule
 } from "@angular/forms";
 import {ShopApiService} from "../../services/shop-api.service";
-import {Product_body} from "../../interface/product_body";
-import {PRODUCT} from "../../interface/PRODUCT";
+import {PRODUCT_BODY} from "../../interface/product_body";
+import {ActivatedRoute, Params} from "@angular/router";
+import {PRODUCT} from "../../interface/product";
 
 @Component({
   selector: 'app-product-form',
@@ -20,29 +17,49 @@ import {PRODUCT} from "../../interface/PRODUCT";
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.css'
 })
-export class ProductFormComponent {
-  addProductForm = this.formBuilder.group({
-    name: ["", Validators.required],
-    specification: ["", Validators.required],
-    price: [0, Validators.required]
+export class ProductFormComponent implements OnInit {
+  updateProductForm = this.formBuilder.group({
+    name: [""],
+    specification: [""],
+    price: [0],
+    code: [""]
   })
 
-  constructor(private formBuilder: FormBuilder, private shopApiService: ShopApiService) {
+  constructor(private formBuilder: FormBuilder, private shopApiService: ShopApiService, private route: ActivatedRoute) {
+  }
+
+  id: number = {} as number;
+  product: PRODUCT = {} as PRODUCT;
+
+  ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      this.id = Number(params['id']);
+
+      this.shopApiService.getProductById(this.id).subscribe(
+        (response: PRODUCT) => {
+          this.product = response;
+
+          this.updateProductForm.patchValue({
+            name: this.product.name,
+            specification: this.product.specifications,
+            price: this.product.price,
+            code: this.product.productCode
+          });
+        }
+      )
+    });
   }
 
   onSubmit() {
-    console.log(this.addProductForm.value, this.addProductForm.valid)
-    const productBody: Product_body = {
-      "name": this.addProductForm.value.name ?? "",
-      "price": this.addProductForm.value.price ?? 0,
-      "specifications": this.addProductForm.value.specification ?? ""
+
+    const product: PRODUCT = {
+      id: this.product.id,
+      name: this.updateProductForm.value.name ?? "",
+      price: this.updateProductForm.value.price ?? 0,
+      specifications: this.updateProductForm.value.specification ?? "",
+      productCode: this.updateProductForm.value.code ?? ""
     };
-    this.shopApiService.addProduct(productBody).subscribe(
-      async (response: Product_body) => {
-        // this.product_list.push(<PRODUCT>response)
-        // console.log(this.product_list)
-        console.log(response)
-      }
-    )
+
+    this.shopApiService.updateProduct(product);
   }
 }

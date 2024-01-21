@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
-import {ProductListComponent} from "./components/product-list/product-list.component";
+import {AdminPanel} from "./components/admin-panel/admin-panel.component";
 import {ProductFormComponent} from "./components/product-form/product-form.component";
 import {HomePageComponent} from "./components/home-page/home-page.component";
 import {PlaceOrderComponent} from "./components/place-order/place-order.component";
@@ -12,7 +12,7 @@ import {PlaceOrderComponent} from "./components/place-order/place-order.componen
   imports: [
     CommonModule,
     RouterOutlet,
-    ProductListComponent,
+    AdminPanel,
     ProductFormComponent,
     HomePageComponent,
     PlaceOrderComponent

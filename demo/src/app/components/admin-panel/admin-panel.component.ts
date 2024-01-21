@@ -7,9 +7,10 @@ import {PRODUCT_BODY} from "../../interface/product_body";
 import {NgForOf, NgStyle} from "@angular/common";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {FormsModule} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-admin-panel',
   standalone: true,
   imports: [
     NgForOf,
@@ -17,12 +18,11 @@ import {FormsModule} from "@angular/forms";
     NgStyle,
     FormsModule
   ],
-  templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+  templateUrl: './admin-panel.component.html',
 })
-export class ProductListComponent {
+export class AdminPanel {
 
-  constructor(private shopApiService: ShopApiService) {
+  constructor(private shopApiService: ShopApiService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -69,24 +69,24 @@ export class ProductListComponent {
     this.disableButton = !this.disableButton;
   }
 
-  public addToDo($product: PRODUCT_BODY): void {
-    console.log($product)
-    this.shopApiService.addProduct($product).subscribe(
-      async (response: PRODUCT_BODY) => {
-        this.product_list.push(<PRODUCT>response)
-        console.log(this.product_list)
-      }
-    )
-
-    // these two lines will reSort the min and max range
-    // seems like a performance hog for a large amount of data, check new val price and sort
-    // accordingly?
-    // this.temporaryProductListHolder = this.product_list;
-    // this.sortFromAndTo();
-  }
+  // public addProduct($product: PRODUCT_BODY): void {
+  //   console.log($product)
+  //   this.shopApiService.addProduct($product).subscribe(
+  //     async (response: PRODUCT_BODY) => {
+  //       this.product_list.push(<PRODUCT>response)
+  //       console.log(this.product_list)
+  //     }
+  //   )
+  //
+  //   // these two lines will reSort the min and max range
+  //   // seems like a performance hog for a large amount of data, check new val price and sort
+  //   // accordingly?
+  //   // this.temporaryProductListHolder = this.product_list;
+  //   // this.sortFromAndTo();
+  // }
 
   public updateProduct(item: PRODUCT): void {
-    console.log(item)
+    this.router.navigate(["updateProduct", item.id]);
   }
 
   temporaryProductListHolder: PRODUCT[] = [];

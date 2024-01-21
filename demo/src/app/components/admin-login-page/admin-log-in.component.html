@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <form [formGroup]="loginInfo" (ngSubmit)="onSubmit()">
+
+      <div>
+        <label>Admin Name: <span class="text-danger">*</span></label>
+        <input class="form-control" type="text" formControlName="name">
+      </div>
+
+      <div>
+        <label>Admin Password: <span class="text-danger">*</span></label>
+        <input class="form-control" type="password" formControlName="password">
+      </div>
+
+      <div class="float-end mt-2">
+        <input class="btn btn-primary" type="submit" value="Submit">
+      </div>
+
+    </form>
+  </div>
+  <div class="col-4"></div>
+</div>
+

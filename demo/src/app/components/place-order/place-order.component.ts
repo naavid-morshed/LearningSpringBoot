@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PRODUCT} from "../../interface/PRODUCT";
+import {PRODUCT} from "../../interface/product";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {CART} from "../../interface/cart";
 

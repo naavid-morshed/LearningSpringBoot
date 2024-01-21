@@ -3,4 +3,5 @@ export interface PRODUCT {
   name: string,
   specifications: string,
   price: number,
+  productCode: string,
 }

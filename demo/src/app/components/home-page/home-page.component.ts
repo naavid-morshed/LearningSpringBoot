@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ShopApiService} from "../../services/shop-api.service";
-import {PRODUCT} from "../../interface/PRODUCT";
+import {PRODUCT} from "../../interface/product";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgForOf, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
@@ -14,7 +14,6 @@ import {faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
   standalone: true,
   imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
 })
 export class HomePageComponent {
   productList: PRODUCT[] = [];

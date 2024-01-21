@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {PRODUCT} from "../interface/PRODUCT";
+import {PRODUCT} from "../interface/product";
 import {Observable} from "rxjs";
-import {Product_body} from "../interface/product_body";
+import {PRODUCT_BODY} from "../interface/product_body";
 import {ORDER_BODY} from "../interface/order_body";
 import {ORDER} from "../interface/order";
+import {log} from "node:util";
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +20,16 @@ export class ShopApiService {
   private httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem("auth_token") ?? "")
     }),
   };
 
   getProductJSON(): Observable<PRODUCT[]> {
-    return this.http.get<PRODUCT[]>(this.productApiUrl);
+    return this.http.get<PRODUCT[]>(this.productApiUrl, this.httpOptions);
   }
 
   getProductById(id: number): Observable<PRODUCT> {
-    return this.http.get<PRODUCT>(`${this.productApiUrl}/productId/${id}`);
+    return this.http.get<PRODUCT>(`${this.productApiUrl}/productId/${id}`, this.httpOptions);
   }
 
   // getProductByListOfId(idList: number[]): Observable<PRODUCT[]> {
@@ -44,26 +46,21 @@ export class ShopApiService {
   //   return this.http.get<PRODUCT[]>(`${this.productApiUrl}/getListOfProducts?&idList=${idStr}`);
   // }
 
-  addProduct(product: Product_body): Observable<Product_body> {
-    return this.http.post<Product_body>(`${this.productApiUrl}/addProduct`, product, this.httpOptions);
+  addProduct(product: PRODUCT_BODY): Observable<PRODUCT_BODY> {
+    return this.http.post<PRODUCT_BODY>(`${this.productApiUrl}/addProduct`, product, this.httpOptions);
   }
 
-  updateProduct(product: PRODUCT): Observable<Product_body> {
-    const productBody: Product_body = {
-      "name": product.name,
-      "specifications": product.specifications,
-      "price": product.price
-    };
-
-    return this.http.put<Product_body>(
-      `${this.productApiUrl}/id/${product.id}`,
-      productBody,
+  updateProduct(product: PRODUCT) {
+    console.log(product)
+    this.http.put(
+      `${this.productApiUrl}/update`,
+      product,
       this.httpOptions
-    )
+    ).subscribe(value => console.log(value))
   }
 
   deleteToDo(product: PRODUCT): Observable<PRODUCT> {
-    return this.http.delete<PRODUCT>(`${this.productApiUrl}/id/${product.id}`);
+    return this.http.delete<PRODUCT>(`${this.productApiUrl}/id/${product.id}`, this.httpOptions);
   }
 
   createOrder(order: ORDER_BODY): Observable<ORDER> {

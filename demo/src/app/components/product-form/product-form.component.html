@@ -1,21 +1,26 @@
 <div class="row">
   <div class="col-4"></div>
   <div class="col-4">
-    <form [formGroup]="addProductForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="updateProductForm" (ngSubmit)="onSubmit()">
 
       <div>
-        <label>Product Name: <span class="text-danger">*</span></label>
+        <label>Product Name: </label>
         <input class="form-control" type="text" formControlName="name">
       </div>
 
       <div>
-        <label>Product Specification: <span class="text-danger">*</span></label>
+        <label>Product Specification: </label>
         <input class="form-control" type="text" formControlName="specification">
       </div>
 
       <div>
-        <label>Product Price: <span class="text-danger">*</span></label>
+        <label>Product Price: </label>
         <input class="form-control" type="text" formControlName="price">
+      </div>
+
+      <div>
+        <label>Product Code: </label>
+        <input class="form-control" type="text" formControlName="code">
       </div>
 
       <div class="float-end mt-2">

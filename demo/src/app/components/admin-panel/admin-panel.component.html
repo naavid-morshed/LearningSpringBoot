@@ -24,6 +24,7 @@
       <th scope="col">Name</th>
       <th scope="col">Specifications</th>
       <th scope="col" class="text-center">Price</th>
+      <th scope="col" class="text-center">Product Code</th>
       <th scope="col" class="text-center">Edit</th>
       <th scope="col" class="text-center">Remove</th>
     </tr>
@@ -39,6 +40,9 @@
       </td>
       <td>
         {{ item.price}}
+      </td>
+      <td>
+        {{ item.productCode}}
       </td>
       <td class="text-center">
         <fa-icon (click)="updateProduct(item)" [ngStyle]="{'color':'red'}" [icon]="faEdit"></fa-icon>
