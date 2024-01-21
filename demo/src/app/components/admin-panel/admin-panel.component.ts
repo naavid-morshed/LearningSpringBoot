@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
-import {PRODUCT} from "../../interface/PRODUCT";
+import {PRODUCT} from "../../interface/product";
 import {ShopApiService} from "../../services/shop-api.service";
 import {IconDefinition} from "@fortawesome/free-brands-svg-icons";
 import {faEdit, faTimes} from "@fortawesome/free-solid-svg-icons";
-import {Product_body} from "../../interface/product_body";
+import {PRODUCT_BODY} from "../../interface/product_body";
 import {NgForOf, NgStyle} from "@angular/common";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {log} from "util";
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -70,10 +69,10 @@ export class ProductListComponent {
     this.disableButton = !this.disableButton;
   }
 
-  public addToDo($product: Product_body): void {
+  public addToDo($product: PRODUCT_BODY): void {
     console.log($product)
     this.shopApiService.addProduct($product).subscribe(
-      async (response: Product_body) => {
+      async (response: PRODUCT_BODY) => {
         this.product_list.push(<PRODUCT>response)
         console.log(this.product_list)
       }

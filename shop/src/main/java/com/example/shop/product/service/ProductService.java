@@ -7,6 +7,7 @@ import com.example.shop.product.repository.InventoryRepo;
 import com.example.shop.product.repository.ProductRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -109,10 +110,9 @@ public class ProductService {
         return Optional.of(returnList);
     }
 
-//    public void deleteProduct(Long id) {
-//        productRepo.deleteById(id);
-//        System.err.println(inventoryRepo.findAll());
-//    }
+    public void deleteProduct(Long id) {
+        productRepo.deleteById(id);
+    }
 
     @Transactional
     public ProductModel updateProduct(ProductModel productModel) {
@@ -130,6 +130,10 @@ public class ProductService {
             }
             if (productModel.getPrice() != null) {
                 toBeUpDatedProduct.setPrice(productModel.getPrice());
+            }
+
+            if (productModel.getProductCode() != null) {
+                toBeUpDatedProduct.setProductCode(productModel.getProductCode());
             }
 
             productRepo.save(toBeUpDatedProduct);

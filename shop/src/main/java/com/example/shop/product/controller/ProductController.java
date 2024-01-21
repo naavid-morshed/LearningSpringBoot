@@ -1,6 +1,7 @@
 package com.example.shop.product.controller;
 
 import com.example.shop.product.Model.ProductModel;
+import com.example.shop.product.service.InventoryService;
 import com.example.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,12 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class ProductController {
     private final ProductService productService;
+    private final InventoryService inventoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, InventoryService inventoryService) {
         this.productService = productService;
+        this.inventoryService = inventoryService;
     }
 
     @GetMapping()
@@ -62,8 +65,8 @@ public class ProductController {
         return productService.updateProduct(productModel);
     }
 
-//    @DeleteMapping("id/{id}")
-//    public void deleteProduct(@PathVariable Long id) {
-//        productService.deleteProduct(id);
-//    }
+    @DeleteMapping("id/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+    }
 }
