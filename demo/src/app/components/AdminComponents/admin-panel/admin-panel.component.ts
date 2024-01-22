@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
-import {PRODUCT} from "../../interface/product";
-import {ShopApiService} from "../../services/shop-api.service";
+import {PRODUCT} from "../../../interface/product";
+import {ShopApiService} from "../../../services/shop-api.service";
 import {IconDefinition} from "@fortawesome/free-brands-svg-icons";
 import {faEdit, faTimes} from "@fortawesome/free-solid-svg-icons";
-import {PRODUCT_BODY} from "../../interface/product_body";
 import {NgForOf, NgStyle} from "@angular/common";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {FormsModule} from "@angular/forms";
@@ -98,5 +97,9 @@ export class AdminPanel {
       this.product_list = this.temporaryProductListHolder;
       this.product_list = this.product_list.filter((product: PRODUCT) => product.price <= this.toVal && product.price >= this.fromVal);
     }
+  }
+
+  navigateToAddProductFormPage() {
+    this.router.navigate(['addProduct'])
   }
 }

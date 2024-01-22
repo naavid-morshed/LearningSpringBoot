@@ -4,11 +4,13 @@ import {Observable} from "rxjs";
 import {PRODUCT} from "../interface/product";
 import {AuthenticationRequest} from "../interface/authentication_request";
 import {Router} from "@angular/router";
+import {USER} from "../interface/user";
+import {USER_BODY} from "../interface/user_body";
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AdminLoginService {
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -25,29 +27,31 @@ export class LoginService {
     return window.localStorage.getItem("auth_token");
   }
 
-  getJwtToken(email: string, password: string): void {
+  adminAuth(email: string, password: string): void {
 
     const authenticationRequest: AuthenticationRequest = {
       email: email,
       password: password
     };
 
-    this.http.post<any>(this.loginApiUrl, authenticationRequest, this.httpOptions)
+    this.http.post(this.loginApiUrl, authenticationRequest, this.httpOptions)
       .subscribe((responseBody: any): void => {
-        if (this.getAuthToken() == null) {
-          window.localStorage.setItem("auth_token", JSON.stringify(responseBody.token));
+        const user: USER = responseBody.user;
 
-          if (this.getAuthToken() !== null) {
+        if (user.role === "ADMIN") {
+
+          if (this.getAuthToken() == null) {
+            window.localStorage.setItem("auth_token", JSON.stringify(responseBody.token));
+            this.router.navigate(["adminPanel"]);
+          } else {
             this.router.navigate(["adminPanel"]);
           }
 
         } else {
-
-          if (this.getAuthToken() !== null) {
-            this.router.navigate(["adminPanel"]);
-          }
+          console.log("You are not authorized to use admin panel.")
         }
 
       });
   }
+
 }

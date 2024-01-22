@@ -1,9 +1,7 @@
-import {Component, signal} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ShopApiService} from "../../services/shop-api.service";
-import {PRODUCT_BODY} from "../../interface/product_body";
-import {LoginService} from "../../services/login.service";
-import {AuthenticationRequest} from "../../interface/authentication_request";
+import {AdminLoginService} from "../../../services/admin-login.service";
+import {AuthenticationRequest} from "../../../interface/authentication_request";
 
 @Component({
   selector: 'app-admin-log-in-page',
@@ -19,7 +17,7 @@ export class AdminLogIn {
     password: ["", Validators.required],
   })
 
-  constructor(private formBuilder: FormBuilder, private loginService: LoginService) {
+  constructor(private formBuilder: FormBuilder, private loginService: AdminLoginService) {
   }
 
   onSubmit(): void {
@@ -29,6 +27,6 @@ export class AdminLogIn {
     };
 
     this.loginService
-      .getJwtToken(loginInfo.email, loginInfo.password);
+      .adminAuth(loginInfo.email, loginInfo.password);
   }
 }

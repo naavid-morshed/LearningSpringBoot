@@ -39,10 +39,10 @@
         {{ item.specifications }}
       </td>
       <td>
-        {{ item.price}}
+        {{ item.price }}
       </td>
       <td>
-        {{ item.productCode}}
+        {{ item.productCode }}
       </td>
       <td class="text-center">
         <fa-icon (click)="updateProduct(item)" [ngStyle]="{'color':'red'}" [icon]="faEdit"></fa-icon>
@@ -54,3 +54,13 @@
   </tbody>
 
 </table>
+
+<div class="row">
+  <div class="col">
+    <input
+      type="button"
+      class="btn btn-primary float-end"
+      value="Add Product"
+      (click)="navigateToAddProductFormPage()">
+  </div>
+</div>

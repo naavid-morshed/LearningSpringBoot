@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {ShopApiService} from "../../services/shop-api.service";
-import {ORDER} from "../../interface/order";
+import {ShopApiService} from "../../../services/shop-api.service";
+import {ORDER} from "../../../interface/order";
 import {NgForOf} from "@angular/common";
 
 @Component({

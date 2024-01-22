@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {PRODUCT} from "../interface/product";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {PRODUCT_BODY} from "../interface/product_body";
 import {ORDER_BODY} from "../interface/order_body";
 import {ORDER} from "../interface/order";
-import {log} from "node:util";
+import {PBWC} from "../interface/product_body_without_code";
+import {FormGroup, ɵElement} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -46,17 +47,24 @@ export class ShopApiService {
   //   return this.http.get<PRODUCT[]>(`${this.productApiUrl}/getListOfProducts?&idList=${idStr}`);
   // }
 
-  addProduct(product: PRODUCT_BODY): Observable<PRODUCT_BODY> {
-    return this.http.post<PRODUCT_BODY>(`${this.productApiUrl}/addProduct`, product, this.httpOptions);
+  addProduct(product: PBWC):Observable<PRODUCT> {
+
+    return this.http.post<PRODUCT>(
+      `${this.productApiUrl}/addProduct`,
+      product,
+      this.httpOptions
+    );
   }
 
-  updateProduct(product: PRODUCT) {
-    console.log(product)
-    this.http.put(
+  updateProduct(product: PRODUCT): Subscription {
+
+    return this.http.put<PRODUCT>(
       `${this.productApiUrl}/update`,
       product,
       this.httpOptions
-    ).subscribe(value => console.log(value))
+    ).subscribe((responseBody: PRODUCT): boolean => {
+      return responseBody.id !== null;
+    });
   }
 
   deleteToDo(product: PRODUCT): Observable<PRODUCT> {
@@ -68,10 +76,10 @@ export class ShopApiService {
   }
 
   getOrderById(id: string): Observable<ORDER> {
-    return this.http.get<ORDER>(`${this.orderApiUrl}/id/${id}`, this.httpOptions)
+    return this.http.get<ORDER>(`${this.orderApiUrl}/id/${id}`, this.httpOptions);
   }
 
   gerOrderList(): Observable<ORDER[]> {
-    return this.http.get<ORDER[]>(`${this.orderApiUrl}s`, this.httpOptions)
+    return this.http.get<ORDER[]>(`${this.orderApiUrl}s`, this.httpOptions);
   }
 }

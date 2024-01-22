@@ -3,21 +3,19 @@ import {
   FormBuilder,
   ReactiveFormsModule
 } from "@angular/forms";
-import {ShopApiService} from "../../services/shop-api.service";
-import {PRODUCT_BODY} from "../../interface/product_body";
-import {ActivatedRoute, Params} from "@angular/router";
-import {PRODUCT} from "../../interface/product";
+import {ShopApiService} from "../../../services/shop-api.service";
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {PRODUCT} from "../../../interface/product";
 
 @Component({
-  selector: 'app-product-form',
+  selector: 'app-update-product-form',
   standalone: true,
   imports: [
     ReactiveFormsModule
   ],
-  templateUrl: './product-form.component.html',
-  styleUrl: './product-form.component.css'
+  templateUrl: './update-product-form.component.html',
 })
-export class ProductFormComponent implements OnInit {
+export class UpdateProductFormComponent implements OnInit {
   updateProductForm = this.formBuilder.group({
     name: [""],
     specification: [""],
@@ -25,14 +23,14 @@ export class ProductFormComponent implements OnInit {
     code: [""]
   })
 
-  constructor(private formBuilder: FormBuilder, private shopApiService: ShopApiService, private route: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private shopApiService: ShopApiService, private activatedRoute: ActivatedRoute, private router: Router) {
   }
 
   id: number = {} as number;
   product: PRODUCT = {} as PRODUCT;
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
+    this.activatedRoute.params.subscribe((params: Params) => {
       this.id = Number(params['id']);
 
       this.shopApiService.getProductById(this.id).subscribe(
@@ -60,6 +58,10 @@ export class ProductFormComponent implements OnInit {
       productCode: this.updateProductForm.value.code ?? ""
     };
 
-    this.shopApiService.updateProduct(product);
+    if (this.shopApiService.updateProduct(product)) {
+      this.router.navigate(['adminPanel']);
+    } else {
+      console.log("error occurred, handle this later");
+    }
   }
 }

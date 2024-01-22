@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
-import {AdminPanel} from "./components/admin-panel/admin-panel.component";
-import {ProductFormComponent} from "./components/product-form/product-form.component";
-import {HomePageComponent} from "./components/home-page/home-page.component";
-import {PlaceOrderComponent} from "./components/place-order/place-order.component";
+import {AdminPanel} from "./components/AdminComponents/admin-panel/admin-panel.component";
+import {UpdateProductFormComponent} from "./components/AdminComponents/update-product-form/update-product-form.component";
+import {HomePageComponent} from "./components/UserComponents/home-page/home-page.component";
+import {PlaceOrderComponent} from "./components/UserComponents/place-order/place-order.component";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import {PlaceOrderComponent} from "./components/place-order/place-order.componen
     CommonModule,
     RouterOutlet,
     AdminPanel,
-    ProductFormComponent,
+    UpdateProductFormComponent,
     HomePageComponent,
     PlaceOrderComponent
   ],

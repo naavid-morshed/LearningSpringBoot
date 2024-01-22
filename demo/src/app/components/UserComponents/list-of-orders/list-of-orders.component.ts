@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ORDER} from "../../interface/order";
-import {ShopApiService} from "../../services/shop-api.service";
+import {ORDER} from "../../../interface/order";
+import {ShopApiService} from "../../../services/shop-api.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {NgForOf} from "@angular/common";
 import {Route, Router} from "@angular/router";

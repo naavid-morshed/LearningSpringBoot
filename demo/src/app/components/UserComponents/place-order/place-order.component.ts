@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PRODUCT} from "../../interface/product";
+import {PRODUCT} from "../../../interface/product";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
-import {CART} from "../../interface/cart";
+import {CART} from "../../../interface/cart";
 
 @Component({
   selector: 'app-place-order',
@@ -12,7 +12,6 @@ import {CART} from "../../interface/cart";
     NgOptimizedImage
   ],
   templateUrl: './place-order.component.html',
-  styleUrl: './place-order.component.css'
 })
 export class PlaceOrderComponent implements OnInit {
   constructor(private router: Router) {
