@@ -5,6 +5,7 @@ import com.example.shop.Auth.AuthenticationResponse;
 import com.example.shop.Auth.RegisterRequest;
 import com.example.shop.user.Entity.User;
 import com.example.shop.user.Enums.Role;
+import com.example.shop.user.model.UserModel;
 import com.example.shop.user.repository.UserRepository;
 import com.example.shop.user.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,7 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .user(new UserModel(user))
                 .build();
     }
 
@@ -63,6 +65,7 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .user(new UserModel(user))
                 .build();
     }
 }

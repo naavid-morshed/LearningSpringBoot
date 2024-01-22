@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -61,7 +58,6 @@ public class ProductService {
     }
 
     public Optional<ProductModel> addProduct(ProductModel productModel) {
-
         Product product = new Product(productModel);
 
         Random random = new Random();
@@ -110,8 +106,11 @@ public class ProductService {
         return Optional.of(returnList);
     }
 
-    public void deleteProduct(Long id) {
+    public ProductModel deleteProduct(Long id) {
+        ProductModel productModel = new ProductModel(productRepo.findProductById(id));
+        inventoryRepo.deleteById(inventoryRepo.findInventoriesByProduct_Id(id).getId());
         productRepo.deleteById(id);
+        return productModel;
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.example.shop.Auth;
 
+import com.example.shop.user.model.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,4 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthenticationResponse {
     private String token;
+    private UserModel user;
 }
