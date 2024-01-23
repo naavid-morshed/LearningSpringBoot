@@ -13,7 +13,6 @@ import {Route, Router} from "@angular/router";
     NgForOf
   ],
   templateUrl: './list-of-orders.component.html',
-  styleUrl: './list-of-orders.component.css'
 })
 export class ListOfOrdersComponent implements OnInit {
   orderList: ORDER[] = [];

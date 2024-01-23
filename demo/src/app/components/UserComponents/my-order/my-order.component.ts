@@ -11,7 +11,6 @@ import {NgForOf} from "@angular/common";
     NgForOf
   ],
   templateUrl: './my-order.component.html',
-  styleUrl: './my-order.component.css'
 })
 export class MyOrderComponent implements OnInit {
   order: ORDER = {} as ORDER;
@@ -25,16 +24,8 @@ export class MyOrderComponent implements OnInit {
       // here params['id'] is being captured then passed into api service
       this.shopApiService.getOrderById(params['id']).subscribe((orderResponseBody: ORDER): void => {
         this.order = orderResponseBody;
-        this.order.orderProductItemModelList.forEach((orderProductItemModelItem: {
-          id: number;
-          price: number;
-          productModel: {
-            id: number;
-            name: string;
-            specifications: string;
-            price: number
-          }
-        }): void => {
+
+        this.order.orderProductItemModelList.forEach((orderProductItemModelItem): void => {
           this.subTotal += orderProductItemModelItem.price;
         })
       })

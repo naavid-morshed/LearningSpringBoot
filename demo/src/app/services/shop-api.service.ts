@@ -12,7 +12,7 @@ import {FormGroup, ɵElement} from "@angular/forms";
   providedIn: 'root'
 })
 export class ShopApiService {
-  constructor(private http: HttpClient) {
+  constructor(private httpClient: HttpClient) {
   }
 
   private productApiUrl: string = "http://localhost:8080/api/v1/product";
@@ -26,11 +26,11 @@ export class ShopApiService {
   };
 
   getProductJSON(): Observable<PRODUCT[]> {
-    return this.http.get<PRODUCT[]>(this.productApiUrl, this.httpOptions);
+    return this.httpClient.get<PRODUCT[]>(this.productApiUrl, this.httpOptions);
   }
 
   getProductById(id: number): Observable<PRODUCT> {
-    return this.http.get<PRODUCT>(`${this.productApiUrl}/productId/${id}`, this.httpOptions);
+    return this.httpClient.get<PRODUCT>(`${this.productApiUrl}/productId/${id}`, this.httpOptions);
   }
 
   // getProductByListOfId(idList: number[]): Observable<PRODUCT[]> {
@@ -49,7 +49,7 @@ export class ShopApiService {
 
   addProduct(product: PBWC):Observable<PRODUCT> {
 
-    return this.http.post<PRODUCT>(
+    return this.httpClient.post<PRODUCT>(
       `${this.productApiUrl}/addProduct`,
       product,
       this.httpOptions
@@ -58,7 +58,7 @@ export class ShopApiService {
 
   updateProduct(product: PRODUCT): Subscription {
 
-    return this.http.put<PRODUCT>(
+    return this.httpClient.put<PRODUCT>(
       `${this.productApiUrl}/update`,
       product,
       this.httpOptions
@@ -68,18 +68,18 @@ export class ShopApiService {
   }
 
   deleteToDo(product: PRODUCT): Observable<PRODUCT> {
-    return this.http.delete<PRODUCT>(`${this.productApiUrl}/id/${product.id}`, this.httpOptions);
+    return this.httpClient.delete<PRODUCT>(`${this.productApiUrl}/id/${product.id}`, this.httpOptions);
   }
 
   createOrder(order: ORDER_BODY): Observable<ORDER> {
-    return this.http.post<ORDER>(this.orderApiUrl, order, this.httpOptions);
+    return this.httpClient.post<ORDER>(this.orderApiUrl, order, this.httpOptions);
   }
 
   getOrderById(id: string): Observable<ORDER> {
-    return this.http.get<ORDER>(`${this.orderApiUrl}/id/${id}`, this.httpOptions);
+    return this.httpClient.get<ORDER>(`${this.orderApiUrl}/id/${id}`, this.httpOptions);
   }
 
   gerOrderList(): Observable<ORDER[]> {
-    return this.http.get<ORDER[]>(`${this.orderApiUrl}s`, this.httpOptions);
+    return this.httpClient.get<ORDER[]>(`${this.orderApiUrl}s`, this.httpOptions);
   }
 }

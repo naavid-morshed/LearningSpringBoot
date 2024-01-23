@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {AuthenticationRequest} from "../interface/authentication_request";
@@ -31,13 +31,12 @@ export class UserLoginService {
     this.http.post(this.loginApiUrl, authenticationRequest, this.httpOptions)
       .subscribe((responseBody: any): void => {
 
-        window.localStorage.setItem("auth_token", JSON.stringify(responseBody.token));
+        localStorage.setItem("auth_token", JSON.stringify(responseBody.token));
         this.router.navigate([""]);
-
       });
   }
 
-  userRegister(userInfo: USER_BODY) {
+  userRegister(userInfo: USER_BODY): void {
 
     this.http.post(this.registerApiUrl, userInfo, this.httpOptions)
       .subscribe((responseBody: any): void => {
