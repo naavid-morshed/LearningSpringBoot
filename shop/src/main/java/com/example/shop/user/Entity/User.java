@@ -1,6 +1,7 @@
 package com.example.shop.user.Entity;
 
 import com.example.shop.user.Enums.Role;
+import com.example.shop.user.model.UserModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

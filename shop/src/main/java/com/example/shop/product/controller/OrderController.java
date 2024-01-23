@@ -1,6 +1,7 @@
 package com.example.shop.product.controller;
 
 import com.example.shop.product.Model.OrderModel;
+import com.example.shop.product.Model.OrderModelWithoutUser;
 import com.example.shop.product.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,15 @@ public class OrderController {
     public ResponseEntity<Optional<List<OrderModel>>> getAllOrders() {
         try {
             return ResponseEntity.ok(orderService.getAllOrders());
+        } catch (Exception exception) {
+            throw new RuntimeException(exception.getMessage());
+        }
+    }
+
+    @GetMapping("ordersByUser")
+    public ResponseEntity<Optional<List<OrderModelWithoutUser>>> getOrderByUser() {
+        try {
+            return ResponseEntity.ok(orderService.getOrderByUser());
         } catch (Exception exception) {
             throw new RuntimeException(exception.getMessage());
         }

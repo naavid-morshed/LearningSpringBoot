@@ -15,20 +15,17 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderModel {
+public class OrderModelWithoutUser {
     private Long id;
     private String deliveryAddress;
     private List<OrderProductItemModel> orderProductItemModelList = new ArrayList<>();
-    private UserModel userModel;
 
-    public OrderModel(Order order) {
+    public OrderModelWithoutUser(Order order) {
         this.id = order.getId();
         this.deliveryAddress = order.getDeliveryAddress();
 
         for (OrderProductItem orderProductItem : order.getOrderProductItemList()) {
             this.orderProductItemModelList.add(new OrderProductItemModel((orderProductItem)));
         }
-
-        this.setUserModel(new UserModel(order.getUser()));
     }
 }
