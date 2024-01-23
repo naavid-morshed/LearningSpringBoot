@@ -2,7 +2,6 @@ package com.example.shop.product.Model;
 
 import com.example.shop.product.entity.Order;
 import com.example.shop.product.entity.OrderProductItem;
-import com.example.shop.user.model.UserModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

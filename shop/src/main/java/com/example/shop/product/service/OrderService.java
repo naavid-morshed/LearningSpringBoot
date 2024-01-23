@@ -15,7 +15,6 @@ import com.example.shop.user.Entity.User;
 import com.example.shop.user.model.UserModel;
 import com.example.shop.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -84,9 +83,8 @@ public class OrderService {
             orderRepo.save(order);
             return new OrderModel(order);
         } else {
-            return new OrderModel();
+            throw new RuntimeException("You messed up");
         }
-
     }
 
     public Optional<List<OrderModel>> getAllOrders() {
@@ -107,6 +105,7 @@ public class OrderService {
 
         order.getOrderProductItemList().add(orderProductItem);
         orderRepo.save(order);
+
         return Optional.of(new OrderModel(order));
     }
 
@@ -118,6 +117,7 @@ public class OrderService {
 
         order.getOrderProductItemList().remove(orderProductItem);
         orderRepo.save(order);
+
         return new OrderModel(order);
     }
 
@@ -127,23 +127,24 @@ public class OrderService {
 
     public Optional<List<OrderModelWithoutUser>> getOrderByUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String email = authentication.getName();
 
             User user = userRepository.findByEmail(email).orElseThrow(
-                    () -> new RuntimeException("asdf")
+                    () -> new RuntimeException("Someone messed up. sdfgsfd")
             );
 
             List<Order> orders = orderRepo.findOrdersByUser(user);
             List<OrderModelWithoutUser> orderModels = new ArrayList<>();
 
-            for(Order order: orders){
+            for (Order order : orders) {
                 orderModels.add(new OrderModelWithoutUser(order));
             }
 
             return Optional.of(orderModels);
         } else {
-            return Optional.of(new ArrayList<>());
+            throw new RuntimeException("You messed up");
         }
     }
 }
