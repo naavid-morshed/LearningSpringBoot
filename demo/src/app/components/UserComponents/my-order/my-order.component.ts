@@ -20,14 +20,17 @@ export class MyOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((params: Params): void => {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params): void => {
       // here params['id'] is being captured then passed into api service
-      this.shopApiService.getOrderById(params['id']).subscribe((orderResponseBody: ORDER): void => {
+      console.log(queryParams['id']);
+
+      this.shopApiService.getOrderById(queryParams['id']).subscribe((orderResponseBody: ORDER): void => {
+        console.log(this.order)
         this.order = orderResponseBody;
 
         this.order.orderProductItemModelList.forEach((orderProductItemModelItem): void => {
           this.subTotal += orderProductItemModelItem.price;
-        })
+        });
       })
     })
   }
@@ -38,5 +41,9 @@ export class MyOrderComponent implements OnInit {
 
   helpButton(): void {
     alert("Help is on the way");
+  }
+
+  navigateToMyOrders() {
+    this.router.navigate(["listOfOrders"]);
   }
 }

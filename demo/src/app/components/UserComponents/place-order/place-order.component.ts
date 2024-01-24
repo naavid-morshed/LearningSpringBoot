@@ -3,6 +3,9 @@ import {Router} from "@angular/router";
 import {PRODUCT} from "../../../interface/product";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {CART} from "../../../interface/cart";
+import {ORDER_BODY, OrderProductItemModel} from "../../../interface/order_body";
+import {ShopApiService} from "../../../services/shop-api.service";
+import {ORDER} from "../../../interface/order";
 
 @Component({
   selector: 'app-place-order',
@@ -14,7 +17,7 @@ import {CART} from "../../../interface/cart";
   templateUrl: './place-order.component.html',
 })
 export class PlaceOrderComponent implements OnInit {
-  constructor(private router: Router) {
+  constructor(private router: Router, private shopApiService: ShopApiService) {
   }
 
   ngOnInit(): void {
@@ -95,5 +98,31 @@ export class PlaceOrderComponent implements OnInit {
 
   navigateToHomePage(): void {
     this.router.navigate([""])
+  }
+
+  placeOrder() {
+    const list: OrderProductItemModel[] = [];
+
+    this.productList.forEach(
+      (prod: PRODUCT) => list.push({
+        price: prod.price,
+        productModel: {
+          id: prod.id
+        },
+      })
+    )
+
+    const orderBody: ORDER_BODY = {
+      deliveryAddress: "Mohammadpur",
+      orderProductItemModelList: list
+    }
+
+    this.shopApiService.createOrder(orderBody).subscribe(
+      (order: ORDER) => this.router.navigate(
+        ["myorder"],
+        {
+          queryParams: {id: order.id}
+        })
+    )
   }
 }

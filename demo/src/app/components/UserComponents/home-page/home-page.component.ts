@@ -92,7 +92,7 @@ export class HomePageComponent {
     const jsonData: string = JSON.stringify(this.stringifyAbleObjectOfTypeProduct);
     localStorage.setItem("Cart", jsonData);
 
-    this.router.navigate(['placeOrderTable'],);
+    this.router.navigate(['placeOrder'],);
   }
 
   protected readonly faHeartSolid = faHeartSolid;
@@ -116,6 +116,14 @@ export class HomePageComponent {
   }
 
   navigateToWishList() {
-    this.router.navigate(["MyWishList"])
+    this.router.navigate(["MyWishList"]);
+  }
+
+  navigateToMyOrders() {
+    this.router.navigate(["listOfOrders"]);
+  }
+
+  navigateToMyAccount() {
+    this.router.navigate(["myaccount"]);
   }
 }

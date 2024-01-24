@@ -1,24 +1,24 @@
-export type ORDER_BODY = {
+// export type ORDER_BODY = {
+//   deliveryAddress: string
+//   orderProductItemModelList: Array<{
+//     price: number
+//     productModel: {
+//       id: number
+//     }
+//   }>
+// }
+
+export interface ORDER_BODY {
   deliveryAddress: string
-  orderProductItemModelList: Array<{
-    price: number
-    productModel: {
-      id: number
-    }
-  }>
+  orderProductItemModelList: OrderProductItemModel[]
 }
 
-// export interface ORDER_BODY {
-//   deliveryAddress: string
-//   orderProductItemModelList: OrderProductItemModelList[]
-// }
-//
-// export interface OrderProductItemModelList {
-//   price: number
-//   productModel: ProductModel
-// }
-//
-// export interface ProductModel {
-//   id: number
-// }
+export interface OrderProductItemModel {
+  price: number
+  productModel: ProductModel
+}
+
+export interface ProductModel {
+  id: number
+}
 

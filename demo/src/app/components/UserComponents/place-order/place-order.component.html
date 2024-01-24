@@ -12,7 +12,7 @@
   <div class="row my-2 bg-warning align-items-center" *ngFor="let item of cartOfProduct; index as index">
     <div class="col-2 text-center ps-5 my-2 pt-2">
       <div class="row">
-        <button class="d-flex justify-content-start uarr_darr"
+        <button class="d-flex justify-content-start"
                 (click)="increaseCount(item)">
           &uarr;
         </button>
@@ -22,7 +22,7 @@
       </div>
       <div class="row">
 
-        <button class="d-flex justify-content-start uarr_darr"
+        <button class="d-flex justify-content-start"
                 (click)="decreaseCount(item)"
                 [disabled]="item.count === 1">
           &darr;
@@ -44,4 +44,8 @@
     <div class="col-2"></div>
     <div class="col-4 ps-4">{{item.price}} USD</div>
   </div>
+
+    <div class="col ">
+      <button class="float-end btn btn-primary rounded-pill ms-5 mt-2" (click)="placeOrder()">Place Order</button>
+    </div>
 </div>

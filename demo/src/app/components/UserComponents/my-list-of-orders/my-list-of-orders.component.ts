@@ -3,7 +3,7 @@ import {ORDER} from "../../../interface/order";
 import {ShopApiService} from "../../../services/shop-api.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {NgForOf} from "@angular/common";
-import {Route, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-list-of-orders',
@@ -12,17 +12,18 @@ import {Route, Router} from "@angular/router";
     FaIconComponent,
     NgForOf
   ],
-  templateUrl: './list-of-orders.component.html',
+  templateUrl: './my-list-of-orders.component.html',
 })
-export class ListOfOrdersComponent implements OnInit {
+export class MyListOfOrdersComponent implements OnInit {
   orderList: ORDER[] = [];
   total: number[] = [];
-  deliveryAndPlatformFee:number = 53;
-  constructor(private shopApiService: ShopApiService, private router:Router) {
+  deliveryAndPlatformFee: number = 53;
+
+  constructor(private shopApiService: ShopApiService, private router: Router) {
   }
 
   ngOnInit(): void {
-    this.shopApiService.gerOrderList().subscribe((responseOrderListBody: ORDER[]): void => {
+    this.shopApiService.gerOrderListByUser().subscribe((responseOrderListBody: ORDER[]): void => {
       this.orderList = responseOrderListBody;
 
       this.orderList.forEach((order: ORDER): void => {
@@ -37,7 +38,11 @@ export class ListOfOrdersComponent implements OnInit {
     });
   }
 
-  navigateToMyOrder(id: number):void {
-    this.router.navigate(["myorder"], {queryParams: {id: id}})
+  navigateToMyOrder(id: number): void {
+    this.router.navigate(["myorder"], {queryParams: {id: id}});
+  }
+
+  returnHome() {
+    this.router.navigate(['']);
   }
 }

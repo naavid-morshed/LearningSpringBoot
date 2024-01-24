@@ -11,7 +11,6 @@ import {Router} from "@angular/router";
     NgOptimizedImage
   ],
   templateUrl: './my-wish-list.component.html',
-  styleUrl: './my-wish-list.component.css'
 })
 export class MyWishListComponent implements OnInit {
   constructor(private router:Router) {

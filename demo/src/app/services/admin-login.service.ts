@@ -45,7 +45,7 @@ export class AdminLoginService {
           }
 
         } else {
-          console.log("You are not authorized to use admin panel.")
+          console.log("You are not authorized to use admin panel.");
         }
 
       });
