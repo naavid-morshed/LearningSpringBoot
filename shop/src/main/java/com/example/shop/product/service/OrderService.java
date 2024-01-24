@@ -88,11 +88,17 @@ public class OrderService {
     }
 
     public Optional<List<OrderModel>> getAllOrders() {
-        return Optional.of(orderRepo.findAll().stream().map(OrderModel::new).collect(Collectors.toList()));
+        return Optional.of(
+                orderRepo
+                        .findAll()
+                        .stream()
+                        .map(OrderModel::new)
+                        .collect(Collectors.toList())
+        );
     }
 
-    public Optional<OrderModel> getOrderById(Long id) {
-        return Optional.of(new OrderModel(orderRepo.findById(id).orElseThrow(() -> new RuntimeException("Order by ID: " + id + " does not exist."))));
+    public Optional<OrderModelWithoutUser> getOrderById(Long id) {
+        return Optional.of(new OrderModelWithoutUser(orderRepo.findById(id).orElseThrow(() -> new RuntimeException("Order by ID: " + id + " does not exist."))));
     }
 
     public Optional<OrderModel> addProductToOrder(Long order_id, Long product_id) {
@@ -132,17 +138,17 @@ public class OrderService {
             String email = authentication.getName();
 
             User user = userRepository.findByEmail(email).orElseThrow(
-                    () -> new RuntimeException("Someone messed up. sdfgsfd")
+                    () -> new RuntimeException("Someone messed up.")
             );
 
-            List<Order> orders = orderRepo.findOrdersByUser(user);
-            List<OrderModelWithoutUser> orderModels = new ArrayList<>();
+            return Optional.of(
+                    orderRepo
+                            .findOrdersByUser(user)
+                            .stream()
+                            .map(OrderModelWithoutUser::new)
+                            .collect(Collectors.toList())
+            );
 
-            for (Order order : orders) {
-                orderModels.add(new OrderModelWithoutUser(order));
-            }
-
-            return Optional.of(orderModels);
         } else {
             throw new RuntimeException("You messed up");
         }

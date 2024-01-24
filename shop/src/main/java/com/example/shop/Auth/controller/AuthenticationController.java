@@ -3,6 +3,7 @@ package com.example.shop.Auth.controller;
 import com.example.shop.Auth.AuthenticationRequest;
 import com.example.shop.Auth.AuthenticationResponse;
 import com.example.shop.Auth.RegisterRequest;
+import com.example.shop.Auth.UpdateRequest;
 import com.example.shop.Auth.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,4 +30,12 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
+
+    @PostMapping("updateuser")
+    public ResponseEntity<AuthenticationResponse> updateUser(
+            @RequestBody UpdateRequest request
+    ) {
+        return ResponseEntity.ok(authenticationService.updateUser(request));
+    }
+
 }

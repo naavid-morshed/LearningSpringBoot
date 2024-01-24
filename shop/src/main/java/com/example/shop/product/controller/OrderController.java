@@ -76,7 +76,7 @@ public class OrderController {
     }
 
     @GetMapping("order/id/{id}")
-    public ResponseEntity<Optional<OrderModel>> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<Optional<OrderModelWithoutUser>> getOrderById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(orderService.getOrderById(id));
         } catch (Exception exception) {
