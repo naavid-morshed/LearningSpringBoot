@@ -4,12 +4,17 @@ import {Router} from "@angular/router";
 import {AuthenticationRequest} from "../interface/authentication_request";
 import {USER_BODY} from "../interface/user_body";
 import {Observable} from "rxjs";
+import {map} from 'rxjs/operators';
 import {USER} from "../interface/user";
+import {UPDATE_REQUEST} from "../interface/update_request";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserLoginService {
+export class UserService {
+
+  public static readonly addressKey: string = "address";
+  public static readonly pseudoAddress: string = "Current Location, Check My Account to update";
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -17,12 +22,21 @@ export class UserLoginService {
   private loginApiUrl: string = "http://localhost:8080/api/v1/auth/authenticate";
   private registerApiUrl: string = "http://localhost:8080/api/v1/auth/register";
   private userDetailsApiUrl: string = "http://localhost:8080/api/v1/user";
+  private updateUserApiUrl: string = "http://localhost:8080/api/v1/auth/updateuser";
 
   private httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     }),
   };
+
+  returnKey(): string {
+    return UserService.addressKey;
+  }
+
+  returnPseudoAddress(): string {
+    return UserService.pseudoAddress;
+  }
 
   userAuth(email: string, password: string): void {
 
@@ -61,5 +75,32 @@ export class UserLoginService {
         }),
       }
     )
+  }
+
+  updateUser(updatedDetails: UPDATE_REQUEST) {
+    this.http.post<any>(
+      this.updateUserApiUrl,
+      updatedDetails,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem("auth_token") ?? "")
+        }),
+      }
+    ).pipe(
+      map(r => {
+        return r.token
+      })
+    ).subscribe(
+      r => {
+        console.log(r)
+        localStorage.removeItem("auth_token")
+        localStorage.setItem("auth_token", JSON.stringify(r));
+
+        this.router.navigate(['myaccount']);
+      }
+    )
+
+
   }
 }

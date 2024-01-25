@@ -2,7 +2,19 @@
 <!--  <div>Name : {{ user.firstName + " " + user.lastName }}</div>-->
   <!--  <div>Email : {{ user.email }}</div>-->
 
+  <div class="row mb-2">
+      <div class="col">
+        <button type="submit"
+                class="float-start btn btn-primary"
+                (click)="navigateToHome()"
+        >
+          Home
+        </button>
+      </div>
+    </div>
+
   <div class="bg-body-secondary px-4 py-4">
+
     <div class="row">
       <div class="col-2">
         Name :
@@ -14,8 +26,8 @@
       <div class="col-4"></div>
 
       <div class="col-4">
-        <button type="submit" class="float-end btn btn-danger" style="width: 50%">
-          update credentials
+        <button type="submit" class="float-end btn btn-danger" style="width: 50%" (click)="navigateToChangeDetails()">
+          Update Details
         </button>
       </div>
 
@@ -38,6 +50,19 @@
                 style="width: 50%">
           Log Out
         </button>
+      </div>
+
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-2">
+        Address :
+      </div>
+
+      <input class="col-5" type="text" [(ngModel)]="addressInstance">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <button type="submit" class="float-end btn btn-outline-primary rounded-pill" style="width: 50%" (click)="changeAddress()">Update Address</button>
       </div>
 
     </div>

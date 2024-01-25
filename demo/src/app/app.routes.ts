@@ -11,6 +11,7 @@ import {AddProductFormComponent} from "./components/AdminComponents/add-product-
 import {LoginComponent} from "./components/UserComponents/auth/login/login.component";
 import {RegisterComponent} from "./components/UserComponents/auth/register/register.component";
 import {MyAccountComponent} from "./components/UserComponents/my-account/my-account.component";
+import {ChangeDetailsComponent} from "./components/UserComponents/change-details/change-details.component";
 
 export const routes: Routes = [
   {path: "", component: HomePageComponent, title: "Home Page"},
@@ -24,5 +25,6 @@ export const routes: Routes = [
   {path: "register", component: RegisterComponent, title: "Register User Page"},
   {path: "addProduct", component: AddProductFormComponent, title: "Add Product Page"},
   {path: "MyWishList", component: MyWishListComponent, title: "My WishList"},
+  {path: "updater", component: ChangeDetailsComponent, title: "My WishList"},
   {path: "myaccount", component: MyAccountComponent, title: "My Account"}
 ];

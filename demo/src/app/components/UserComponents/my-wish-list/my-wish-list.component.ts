@@ -13,8 +13,9 @@ import {Router} from "@angular/router";
   templateUrl: './my-wish-list.component.html',
 })
 export class MyWishListComponent implements OnInit {
-  constructor(private router:Router) {
+  constructor(private router: Router) {
   }
+
   ngOnInit(): void {
     this.myWishList = JSON.parse(localStorage.getItem("WishList") ?? "") as PRODUCT[];
   }
@@ -23,5 +24,22 @@ export class MyWishListComponent implements OnInit {
 
   navigateToHomePage() {
     this.router.navigate([""]);
+  }
+
+  removeFromWishList(id: number) {
+
+    this.myWishList.forEach(
+      (product, index) => {
+        if (product.id === id) {
+          this.myWishList.splice(index, 1)
+          localStorage.setItem("WishList",JSON.stringify(this.myWishList));
+          return;
+        }
+      }
+    )
+
+    if (this.myWishList.length === 0) {
+      this.router.navigate([""])
+    }
   }
 }

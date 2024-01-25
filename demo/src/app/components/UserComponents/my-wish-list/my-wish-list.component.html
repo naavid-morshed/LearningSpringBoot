@@ -7,8 +7,8 @@
   </div>
 
   <div *ngFor="let item of myWishList">
-    <div class="row align-items-center my-2 bg-warning">
-      <div class="col-4 text-center">
+    <div class="row align-items-center my-2 bg-success-subtle">
+      <div class="col-3 text-center">
         {{item.name}}
       </div>
 
@@ -20,8 +20,12 @@
         >
       </div>
 
-      <div class="col-4 text-center">
+      <div class="col-3 text-center">
         {{item.price}}
+      </div>
+
+      <div class="col-2">
+        <button class="btn btn-close" (click)="removeFromWishList(item.id)"></button>
       </div>
     </div>
   </div>

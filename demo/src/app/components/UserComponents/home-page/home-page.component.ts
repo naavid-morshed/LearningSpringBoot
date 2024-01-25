@@ -8,11 +8,12 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 import {faHeart as faHeartSolid} from "@fortawesome/free-solid-svg-icons";
 import {faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
+import {NavbarComponent} from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage],
+  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage,NavbarComponent],
   templateUrl: './home-page.component.html',
 })
 export class HomePageComponent {

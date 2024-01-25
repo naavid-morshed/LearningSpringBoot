@@ -1,18 +1,24 @@
 import {Component, OnInit} from '@angular/core';
 import {USER} from "../../../interface/user";
-import {UserLoginService} from "../../../services/user-login.service";
+import {UserService} from "../../../services/user.service";
 import {Router} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-my-account',
   standalone: true,
-  imports: [],
+  imports: [
+    FormsModule
+  ],
   templateUrl: './my-account.component.html',
 })
 export class MyAccountComponent implements OnInit {
   user: USER = {} as USER;
 
-  constructor(private userLoginService: UserLoginService, private router: Router) {
+  private address: string = "";
+  public addressInstance: string = localStorage.getItem(this.userService.returnKey()) ?? this.userService.returnPseudoAddress();
+
+  constructor(private userLoginService: UserService, private router: Router, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -28,8 +34,23 @@ export class MyAccountComponent implements OnInit {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("Cart");
     localStorage.removeItem("WishList");
+    localStorage.removeItem(this.userService.returnKey());
 
     this.router.navigate(["login"]);
   }
 
+  navigateToChangeDetails() {
+    this.router.navigate(['updater']);
+  }
+
+  changeAddress() {
+    this.address = this.addressInstance;
+    localStorage.removeItem(UserService.addressKey);
+    localStorage.setItem(UserService.addressKey, this.address);
+    console.log(this.address,this.addressInstance);
+  }
+
+  navigateToHome() {
+    this.router.navigate([""])
+  }
 }

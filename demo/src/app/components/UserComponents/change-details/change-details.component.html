@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+
+      <div>
+        <label>First Name: </label>
+        <input class="form-control" type="text" formControlName="firstName">
+      </div>
+
+      <div>
+        <label>Last Name: </label>
+        <input class="form-control" type="text" formControlName="lastName">
+      </div>
+
+      <div>
+        <label>Current Email: </label>
+        <input class="form-control" type="text" formControlName="currentEmail">
+      </div>
+
+      <div>
+        <label>New Email: </label>
+        <input class="form-control" type="text" formControlName="newEmail">
+      </div>
+
+      <div>
+        <label>Confirm Password: <span class="text-danger">*</span></label>
+        <input class="form-control" type="password" formControlName="confirmPassword">
+      </div>
+
+      <div>
+        <label>New Password: </label>
+        <input class="form-control" type="password" formControlName="newPassword">
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="float-start mt-2">
+            <button type="submit" class="btn btn-secondary" (click)="navigateToMyAccount()">Go Back</button>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="float-end mt-2">
+            <input class="btn btn-primary" type="submit" value="Submit">
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="col-4"></div>
+</div>
+

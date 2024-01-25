@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {AdminLoginService} from "../../../../services/admin-login.service";
-import {AuthenticationRequest} from "../../../../interface/authentication_request";
 import {USER_BODY} from "../../../../interface/user_body";
-import {UserLoginService} from "../../../../services/user-login.service";
+import {UserService} from "../../../../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -21,7 +20,7 @@ export class RegisterComponent {
     password: ["", Validators.required],
   })
 
-  constructor(private formBuilder: FormBuilder, private userLoginService: UserLoginService) {
+  constructor(private formBuilder: FormBuilder, private userLoginService: UserService,private router:Router) {
   }
 
   onSubmit(): void {
@@ -35,5 +34,9 @@ export class RegisterComponent {
 
     this.userLoginService
       .userRegister(registrationInfo);
+  }
+
+  navigateToLoginPage() {
+    this.router.navigate(['login'])
   }
 }
