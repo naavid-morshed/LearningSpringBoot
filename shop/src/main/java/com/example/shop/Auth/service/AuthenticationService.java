@@ -87,7 +87,7 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(request.oldEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User by :" +request.oldEmail() + " not found"));
 
-        if (!request.newPass().equals(request.oldPass()) && !request.newPass().isEmpty()) {
+        if (!request.newPass().isEmpty()) {
             user.setPassword(passwordEncoder.encode(request.newPass()));
         }
 
