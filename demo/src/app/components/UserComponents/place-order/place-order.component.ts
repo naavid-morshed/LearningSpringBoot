@@ -8,6 +8,7 @@ import {ShopApiService} from "../../../services/shop-api.service";
 import {ORDER} from "../../../interface/order";
 import {MyAccountComponent} from "../my-account/my-account.component";
 import {UserService} from "../../../services/user.service";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-place-order',
@@ -19,7 +20,7 @@ import {UserService} from "../../../services/user.service";
   templateUrl: './place-order.component.html',
 })
 export class PlaceOrderComponent implements OnInit {
-  constructor(private router: Router, private shopApiService: ShopApiService, private userService:UserService) {
+  constructor(private router: Router, private shopApiService: ShopApiService, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -114,17 +115,30 @@ export class PlaceOrderComponent implements OnInit {
       })
     )
 
-    const orderBody: ORDER_BODY = {
-      deliveryAddress: localStorage.getItem(this.userService.returnKey()) ?? this.userService.returnPseudoAddress(),
-      orderProductItemModelList: list
-    }
 
-    this.shopApiService.createOrder(orderBody).subscribe(
-      (order: ORDER) => this.router.navigate(
-        ["myorder"],
-        {
-          queryParams: {id: order.id}
-        })
-    )
+    this.userService.getUserDetails().pipe(
+      map(r => {
+        return r.address
+      })
+    ).subscribe(
+      address => {
+
+        const orderBody: ORDER_BODY = {
+
+          deliveryAddress: address,
+          orderProductItemModelList: list
+        }
+
+        this.shopApiService.createOrder(orderBody).subscribe(
+          (order: ORDER) => this.router.navigate(
+            ["myorder"],
+            {
+              queryParams: {id: order.id}
+            })
+        )
+
+      }
+    );
+
   }
 }

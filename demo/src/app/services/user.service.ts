@@ -100,7 +100,18 @@ export class UserService {
         this.router.navigate(['myaccount']);
       }
     )
+  }
 
-
+  updateAddress(address: string) {
+    this.http.post(
+      `http://localhost:8080/api/v1/auth/updateAddress`,
+      address,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem("auth_token") ?? "")
+        }),
+      }
+    ).subscribe()
   }
 }

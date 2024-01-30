@@ -27,6 +27,10 @@ export class ShopApiService {
     return this.httpClient.get<PRODUCT[]>(this.productApiUrl, this.httpOptions);
   }
 
+  getProductViaSearch(query:string):Observable<PRODUCT[]>{
+    return this.httpClient.get<PRODUCT[]>(`${this.productApiUrl}/search?query=${query}`,this.httpOptions)
+  }
+
   getProductById(id: number): Observable<PRODUCT> {
     return this.httpClient.get<PRODUCT>(`${this.productApiUrl}/productId/${id}`, this.httpOptions);
   }
@@ -45,13 +49,14 @@ export class ShopApiService {
   //   return this.http.get<PRODUCT[]>(`${this.productApiUrl}/getListOfProducts?&idList=${idStr}`);
   // }
 
-  addProduct(product: PBWC):Observable<PRODUCT> {
+  addProduct(product: PBWC): Observable<PRODUCT> {
 
     return this.httpClient.post<PRODUCT>(
       `${this.productApiUrl}/addProduct`,
       product,
       this.httpOptions
     );
+
   }
 
   updateProduct(product: PRODUCT): Subscription {

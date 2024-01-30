@@ -4,5 +4,6 @@ export interface UPDATE_REQUEST {
   oldEmail: string,
   newEmail: string,
   oldPass: string,
-  newPass: string
+  newPass: string,
+  address: string,
 }

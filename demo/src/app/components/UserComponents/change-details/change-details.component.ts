@@ -22,6 +22,7 @@ export class ChangeDetailsComponent implements OnInit {
     newEmail: [""],
     confirmPassword: ["", Validators.required],
     newPassword: [""],
+    address: [""],
   });
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) {
@@ -33,6 +34,7 @@ export class ChangeDetailsComponent implements OnInit {
         firstName: r.firstName,
         lastName: r.lastName,
         currentEmail: r.email,
+        address: r.address,
       })
     )
   }
@@ -46,6 +48,7 @@ export class ChangeDetailsComponent implements OnInit {
       newEmail: this.updateForm.value.newEmail ?? "",
       oldPass: this.updateForm.value.confirmPassword ?? "",
       newPass: this.updateForm.value.newPassword ?? "",
+      address: this.updateForm.value.address ?? "",
     };
 
     this.userService.updateUser(updateInfo);

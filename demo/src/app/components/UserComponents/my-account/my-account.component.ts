@@ -15,8 +15,8 @@ import {FormsModule} from "@angular/forms";
 export class MyAccountComponent implements OnInit {
   user: USER = {} as USER;
 
-  private address: string = "";
-  public addressInstance: string = localStorage.getItem(this.userService.returnKey()) ?? this.userService.returnPseudoAddress();
+  public address: string = "";
+  // public addressInstance: string = localStorage.getItem(this.userService.returnKey()) ?? this.userService.returnPseudoAddress();
 
   constructor(private userLoginService: UserService, private router: Router, private userService: UserService) {
   }
@@ -25,6 +25,7 @@ export class MyAccountComponent implements OnInit {
     this.userLoginService.getUserDetails().subscribe(
       (response: USER): void => {
         this.user = response;
+        this.address = response.address
       }
     )
   }
@@ -34,7 +35,6 @@ export class MyAccountComponent implements OnInit {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("Cart");
     localStorage.removeItem("WishList");
-    localStorage.removeItem(this.userService.returnKey());
 
     this.router.navigate(["login"]);
   }
@@ -44,10 +44,12 @@ export class MyAccountComponent implements OnInit {
   }
 
   changeAddress() {
-    this.address = this.addressInstance;
-    localStorage.removeItem(UserService.addressKey);
-    localStorage.setItem(UserService.addressKey, this.address);
-    console.log(this.address,this.addressInstance);
+    this.userService.updateAddress(this.address);
+
+    // this.address = this.addressInstance;
+    // localStorage.removeItem(UserService.addressKey);
+    // localStorage.setItem(UserService.addressKey, this.address);
+    // console.log(this.address,this.addressInstance);
   }
 
   navigateToHome() {

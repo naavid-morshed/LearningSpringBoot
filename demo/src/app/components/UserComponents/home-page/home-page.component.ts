@@ -9,11 +9,12 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faHeart as faHeartSolid} from "@fortawesome/free-solid-svg-icons";
 import {faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
 import {NavbarComponent} from "../navbar/navbar.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage,NavbarComponent],
+  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage, NavbarComponent, FormsModule],
   templateUrl: './home-page.component.html',
 })
 export class HomePageComponent {
@@ -98,6 +99,7 @@ export class HomePageComponent {
 
   protected readonly faHeartSolid = faHeartSolid;
   protected readonly faHeartRegular = faHeartRegular;
+  public search: string = "";
 
   toggleWish(indexOfItemOfProductList: number): void {
     this.wishBoolean[indexOfItemOfProductList] = !this.wishBoolean[indexOfItemOfProductList];
@@ -126,5 +128,15 @@ export class HomePageComponent {
 
   navigateToMyAccount() {
     this.router.navigate(["myaccount"]);
+  }
+
+  reloadPage() {
+    window.location.reload()
+  }
+
+  showSearchOutput() {
+    this.shopApiService.getProductViaSearch(this.search).subscribe(
+      (response: PRODUCT[]) => this.productList = response
+    )
   }
 }

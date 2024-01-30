@@ -7,7 +7,7 @@
     <button class="ms-1 btn btn-primary" (click)="navigateToMyOrders()">My Orders</button>
   </div>
 
-  <div class="col-5">
+  <div class="col-5 " (click)="reloadPage()">
     <h1 class="text-center text-danger">Scam Tech</h1>
   </div>
 
@@ -21,7 +21,7 @@
     <button class="ms-2 btn btn-primary float-end"
             (click)="navigateToPlaceOrderTable()"
             [disabled]="numberOfItemsAddedToCart === 0">
-      Cart {{numberOfItemsAddedToCart}}
+      Cart {{ numberOfItemsAddedToCart }}
     </button>
 
     <button class="btn btn-danger float-end" (click)="clearCart()" [disabled]="!(numberOfItemsAddedToCart > 0)">
@@ -29,6 +29,18 @@
     </button>
   </div>
 
+</div>
+
+<div class="row my-2">
+  <div class="col-2">
+<!--    <form class="form-inline mr-auto">-->
+      <input class="" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="search" style="height: 100%">
+<!--      <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="search">-->
+<!--    </form>-->
+  </div>
+  <div class="col-2">
+      <button class="btn btn-secondary btn-rounded my-0 ml-sm-2" type="submit" (click)="showSearchOutput()">Search</button>
+  </div>
 </div>
 
 <div class="row">
@@ -41,7 +53,7 @@
       >
 
       <div class="text-center bg-warning text-body-emphasis">
-        {{item.name}}
+        {{ item.name }}
 
         <fa-icon class="float-end pe-3"
                  [icon]="wishBoolean[indexOfItem] ? faHeartSolid: faHeartRegular"
