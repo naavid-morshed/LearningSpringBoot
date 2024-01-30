@@ -7,10 +7,13 @@ import com.example.shop.product.repository.InventoryRepo;
 import com.example.shop.product.repository.ProductRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -25,11 +28,13 @@ public class ProductService {
     }
 
     public Optional<List<ProductModel>> getProducts() {
-        List<ProductModel> productModelList = new ArrayList<>();
-        for (Product product : productRepo.findAll()) {
-            productModelList.add(new ProductModel(product));
-        }
-        return Optional.of(productModelList);
+        return Optional.of(
+                inventoryRepo
+                        .findProductsWhereInventoryCountIsNotZero()
+                        .stream()
+                        .map(ProductModel::new)
+                        .collect(Collectors.toList())
+        );
     }
 
     public Optional<ProductModel> getProductById(Long id) {
@@ -48,13 +53,17 @@ public class ProductService {
     }
 
     public List<ProductModel> getProductByName(String productName) {
-        List<Product> productList = productRepo.findByName(productName);
-        List<ProductModel> productModelList = new ArrayList<>();
-
-        for (Product product : productList) {
-            productModelList.add(new ProductModel(product));
-        }
-        return productModelList;
+//        List<Product> productList = productRepo.findByName(productName);
+//        List<ProductModel> productModelList = new ArrayList<>();
+//
+//        for (Product product : productList) {
+//            productModelList.add(new ProductModel(product));
+//        }
+        return productRepo
+                .findByName(productName)
+                .stream()
+                .map(ProductModel::new)
+                .collect(Collectors.toList());
     }
 
     public Optional<ProductModel> addProduct(ProductModel productModel) {
@@ -141,5 +150,13 @@ public class ProductService {
         } catch (Exception exception) {
             throw new RuntimeException(exception.getMessage());
         }
+    }
+
+    public List<ProductModel> searchProducts(String query) {
+        return productRepo
+                .searchProducts(query)
+                .stream()
+                .map(ProductModel::new)
+                .collect(Collectors.toList());
     }
 }

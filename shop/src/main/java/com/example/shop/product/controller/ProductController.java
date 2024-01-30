@@ -69,4 +69,9 @@ public class ProductController {
     public ProductModel deleteProduct(@PathVariable Long id) {
        return productService.deleteProduct(id);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductModel>> searchProducts(@RequestParam("query") String query) {
+        return ResponseEntity.ok(productService.searchProducts(query));
+    }
 }

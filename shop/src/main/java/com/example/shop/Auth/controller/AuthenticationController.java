@@ -5,9 +5,12 @@ import com.example.shop.Auth.AuthenticationResponse;
 import com.example.shop.Auth.RegisterRequest;
 import com.example.shop.Auth.UpdateRequest;
 import com.example.shop.Auth.service.AuthenticationService;
+import com.example.shop.user.model.UserModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,4 +41,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.updateUser(request));
     }
 
+    @PostMapping("updateAddress")
+    public ResponseEntity<Optional<UserModel>> updateAddress(
+            @RequestBody String request
+    ) {
+        return ResponseEntity.ok(authenticationService.updateAddress(request));
+    }
 }

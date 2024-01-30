@@ -7,9 +7,6 @@ import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 @Data
 @NoArgsConstructor
@@ -26,14 +23,15 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    private String password;
+    private String address;
 
-    public UserModel(User user){
+    public UserModel(User user) {
         this.setId(user.getId());
         this.setFirstName(user.getFirstName());
         this.setLastName(user.getLastName());
         this.setEmail(user.getEmail());
         this.setRole(user.getRole());
+        this.setAddress(user.getAddress());
 //        this.setPassword(user.getPassword());
     }
 

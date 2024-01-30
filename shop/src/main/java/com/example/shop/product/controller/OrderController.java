@@ -26,6 +26,7 @@ public class OrderController {
         try {
             return orderService.createOrder(orderModel);
         } catch (Exception exception) {
+            System.err.println(exception.getMessage());
             throw new RuntimeException(exception.getMessage());
         }
     }

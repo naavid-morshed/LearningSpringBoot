@@ -1,7 +1,6 @@
 package com.example.shop.user.Entity;
 
 import com.example.shop.user.Enums.Role;
-import com.example.shop.user.model.UserModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +36,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = true)
+    private String address;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

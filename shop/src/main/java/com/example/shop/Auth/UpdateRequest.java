@@ -5,5 +5,6 @@ public record UpdateRequest(String firstName,
                             String oldEmail,
                             String newEmail,
                             String oldPass,
-                            String newPass) {
+                            String newPass,
+                            String address) {
 }

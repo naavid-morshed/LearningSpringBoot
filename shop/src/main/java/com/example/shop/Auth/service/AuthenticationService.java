@@ -10,16 +10,16 @@ import com.example.shop.user.model.UserModel;
 import com.example.shop.user.repository.UserRepository;
 import com.example.shop.user.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +66,6 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-
         String jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse
@@ -103,6 +102,10 @@ public class AuthenticationService {
             user.setEmail(request.newEmail());
         }
 
+        if (!request.address().isEmpty()){
+            user.setAddress(request.address());
+        }
+
         userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
@@ -112,6 +115,26 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .user(new UserModel(user))
                 .build();
+    }
+
+    public Optional<UserModel> updateAddress(String request) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String email = authentication.getName();
+
+            User user = userRepository.findByEmail(email).orElseThrow(
+                    () -> new RuntimeException("User by email : " + email + " does not exist.")
+            );
+
+            user.setAddress(request);
+            userRepository.save(user);
+
+            return Optional.of(new UserModel(user));
+        } else {
+            throw new RuntimeException("You messed up");
+        }
     }
 
 //

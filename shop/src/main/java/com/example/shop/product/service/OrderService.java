@@ -52,6 +52,8 @@ public class OrderService {
 
             Inventory inventory = inventoryRepo.findInventoriesByProduct_Id(product.getId());
 
+            final int count = inventory.getProductCount();
+
             if (inventory.getProductCount() > 0) {
                 OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
                 orderProductItem.setProduct(product);
@@ -64,7 +66,7 @@ public class OrderService {
                 inventory.setProductCount(inventory.getProductCount() - 1);
                 inventoryRepo.save(inventory);
             } else {
-                throw new RuntimeException("We ran out of stock : " + product.getName() + ", ID : " + product.getId());
+                throw new RuntimeException("Only " + count + " left in stock.");
             }
 
         }

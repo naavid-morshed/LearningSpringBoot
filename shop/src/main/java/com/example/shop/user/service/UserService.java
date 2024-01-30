@@ -1,6 +1,5 @@
 package com.example.shop.user.service;
 
-import com.example.shop.product.Model.OrderModel;
 import com.example.shop.user.Entity.User;
 import com.example.shop.user.model.UserModel;
 import com.example.shop.user.repository.UserRepository;
@@ -19,11 +18,12 @@ public class UserService {
 
     public Optional<UserModel> getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String email = authentication.getName();
 
             User user = userRepository.findByEmail(email).orElseThrow(
-                    () -> new RuntimeException("asdf")
+                    () -> new RuntimeException("User by email : " + email + " does not exist.")
             );
 
             return Optional.of(new UserModel(user));
