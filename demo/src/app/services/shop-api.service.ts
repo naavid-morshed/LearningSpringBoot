@@ -27,8 +27,8 @@ export class ShopApiService {
     return this.httpClient.get<PRODUCT[]>(this.productApiUrl, this.httpOptions);
   }
 
-  getProductViaSearch(query:string):Observable<PRODUCT[]>{
-    return this.httpClient.get<PRODUCT[]>(`${this.productApiUrl}/search?query=${query}`,this.httpOptions)
+  getProductViaSearch(query: string): Observable<PRODUCT[]> {
+    return this.httpClient.get<PRODUCT[]>(`${this.productApiUrl}/search?query=${query}`, this.httpOptions)
   }
 
   getProductById(id: number): Observable<PRODUCT> {
@@ -68,6 +68,7 @@ export class ShopApiService {
     ).subscribe((responseBody: PRODUCT): boolean => {
       return responseBody.id !== null;
     });
+
   }
 
   deleteToDo(product: PRODUCT): Observable<PRODUCT> {

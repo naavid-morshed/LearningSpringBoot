@@ -6,9 +6,9 @@ import {CART} from "../../../interface/cart";
 import {ORDER_BODY, OrderProductItemModel} from "../../../interface/order_body";
 import {ShopApiService} from "../../../services/shop-api.service";
 import {ORDER} from "../../../interface/order";
-import {MyAccountComponent} from "../my-account/my-account.component";
 import {UserService} from "../../../services/user.service";
 import {map} from "rxjs/operators";
+import {USER} from "../../../interface/user";
 
 @Component({
   selector: 'app-place-order',
@@ -115,30 +115,29 @@ export class PlaceOrderComponent implements OnInit {
       })
     )
 
-
     this.userService.getUserDetails().pipe(
-      map(r => {
+      map((r: USER) => {
         return r.address
       })
     ).subscribe(
-      address => {
+      (address: string) => {
 
         const orderBody: ORDER_BODY = {
-
           deliveryAddress: address,
           orderProductItemModelList: list
         }
 
-        this.shopApiService.createOrder(orderBody).subscribe(
-          (order: ORDER) => this.router.navigate(
-            ["myorder"],
-            {
-              queryParams: {id: order.id}
-            })
-        )
+        this.shopApiService.createOrder(orderBody).pipe(
+          map((response: ORDER) => {
+            return response.id
+          })
+        ).subscribe({
+          next: (orderId: number) => this.router.navigate(["myorder"], {queryParams: {id: orderId}}),
+          error: err => alert(err.error.message),
+          complete: () => console.log("Api Call Complete")
+        })
 
       }
     );
-
   }
 }

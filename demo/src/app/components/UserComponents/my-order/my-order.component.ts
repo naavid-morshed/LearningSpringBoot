@@ -22,10 +22,8 @@ export class MyOrderComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((queryParams: Params): void => {
       // here params['id'] is being captured then passed into api service
-      console.log(queryParams['id']);
 
       this.shopApiService.getOrderById(queryParams['id']).subscribe((orderResponseBody: ORDER): void => {
-        console.log(this.order)
         this.order = orderResponseBody;
 
         this.order.orderProductItemModelList.forEach((orderProductItemModelItem): void => {
