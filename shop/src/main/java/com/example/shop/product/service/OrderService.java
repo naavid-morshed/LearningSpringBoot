@@ -1,5 +1,7 @@
 package com.example.shop.product.service;
 
+import com.example.shop.exception.InsufficientStockException;
+import com.example.shop.exception.OutOfStockException;
 import com.example.shop.product.Model.OrderModel;
 import com.example.shop.product.Model.OrderModelWithoutUser;
 import com.example.shop.product.Model.OrderProductItemModel;
@@ -21,9 +23,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,14 +50,27 @@ public class OrderService {
     public OrderModel createOrder(OrderModel orderModel) {
         Order order = new Order(orderModel);
 
+        orderModel.getOrderProductItemModelList()
+                .stream()
+                .map(orderProductItemModel -> orderProductItemModel.getProductModel().getId())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .forEach((productId, productCountFromResponse) -> {
+                    Inventory inventory = inventoryRepo.findInventoriesByProduct_Id(productId);
+
+                    if (inventory.getProductCount() == 0) {
+                        throw new OutOfStockException("We ran out of stock : " + inventory.getProduct().getName());
+                    }
+
+                    if (inventory.getProductCount() < productCountFromResponse) {
+                        throw new InsufficientStockException("Only " + inventory.getProductCount() + " " + inventory.getProduct().getName() + " left in stock.");
+                    }
+                });
+
         for (OrderProductItemModel orderProductItemModel : orderModel.getOrderProductItemModelList()) {
             Product product = productRepo.findById(orderProductItemModel.getProductModel().getId()).orElseThrow(() -> new RuntimeException("product not found"));
 
             Inventory inventory = inventoryRepo.findInventoriesByProduct_Id(product.getId());
 
-            final int count = inventory.getProductCount();
-
-            if (inventory.getProductCount() > 0) {
                 OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
                 orderProductItem.setProduct(product);
                 orderProductItem.setOrder(order);
@@ -65,10 +81,6 @@ public class OrderService {
 
                 inventory.setProductCount(inventory.getProductCount() - 1);
                 inventoryRepo.save(inventory);
-            } else {
-                throw new RuntimeException("Only " + count + " left in stock.");
-            }
-
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -87,6 +99,7 @@ public class OrderService {
         } else {
             throw new RuntimeException("You messed up");
         }
+
     }
 
     public Optional<List<OrderModel>> getAllOrders() {
