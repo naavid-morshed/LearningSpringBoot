@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {AuthenticationRequest} from "../interface/authentication_request";
-import {USER_BODY} from "../interface/user_body";
+import {AuthenticationRequest} from "../dto/authentication_request";
+import {USER_BODY} from "../dto/user_body";
 import {Observable} from "rxjs";
 import {map} from 'rxjs/operators';
-import {USER} from "../interface/user";
-import {UPDATE_REQUEST} from "../interface/update_request";
+import {USER} from "../dto/user";
+import {UPDATE_REQUEST} from "../dto/update_request";
 
 @Injectable({
   providedIn: 'root'

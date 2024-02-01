@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ORDER} from "../../../interface/order";
+import {ORDER} from "../../../dto/order";
 import {ShopApiService} from "../../../services/shop-api.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {NgForOf} from "@angular/common";

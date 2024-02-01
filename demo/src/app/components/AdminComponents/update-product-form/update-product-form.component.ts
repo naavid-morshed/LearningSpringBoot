@@ -5,7 +5,7 @@ import {
 } from "@angular/forms";
 import {ShopApiService} from "../../../services/shop-api.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {PRODUCT} from "../../../interface/product";
+import {PRODUCT} from "../../../dto/product";
 
 @Component({
   selector: 'app-update-product-form',

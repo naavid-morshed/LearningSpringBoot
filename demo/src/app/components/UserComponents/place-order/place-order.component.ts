@@ -1,26 +1,33 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PRODUCT} from "../../../interface/product";
+import {PRODUCT} from "../../../dto/product";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
-import {CART} from "../../../interface/cart";
-import {ORDER_BODY, OrderProductItemModel} from "../../../interface/order_body";
+import {CART} from "../../../dto/cart";
+import {ORDER_BODY, OrderProductItemModel} from "../../../dto/order_body";
 import {ShopApiService} from "../../../services/shop-api.service";
-import {ORDER} from "../../../interface/order";
+import {ORDER} from "../../../dto/order";
 import {UserService} from "../../../services/user.service";
 import {map} from "rxjs/operators";
-import {USER} from "../../../interface/user";
+import {USER} from "../../../dto/user";
+import {ToastrService} from "ngx-toastr";
+import {log} from "node:util";
 
 @Component({
   selector: 'app-place-order',
   standalone: true,
   imports: [
     NgForOf,
-    NgOptimizedImage
+    NgOptimizedImage,
   ],
   templateUrl: './place-order.component.html',
 })
 export class PlaceOrderComponent implements OnInit {
-  constructor(private router: Router, private shopApiService: ShopApiService, private userService: UserService) {
+  constructor(
+    private router: Router,
+    private shopApiService: ShopApiService,
+    private userService: UserService,
+    private toastr: ToastrService
+  ) {
   }
 
   ngOnInit(): void {
@@ -130,11 +137,11 @@ export class PlaceOrderComponent implements OnInit {
         this.shopApiService.createOrder(orderBody).pipe(
           map((response: ORDER) => {
             return response.id
-          })
+          }),
         ).subscribe({
           next: (orderId: number) => this.router.navigate(["myorder"], {queryParams: {id: orderId}}),
-          error: err => alert(err.error.message),
-          complete: () => console.log("Api Call Complete")
+          error: err => this.toastr.error(err.error.message, "Insufficient Stock"),
+          complete: () => console.log("Order Complete")
         })
 
       }

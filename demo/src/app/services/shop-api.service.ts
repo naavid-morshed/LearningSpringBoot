@@ -1,25 +1,27 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {PRODUCT} from "../interface/product";
+import {PRODUCT} from "../dto/product";
 import {Observable, Subscription} from "rxjs";
-import {ORDER_BODY} from "../interface/order_body";
-import {ORDER} from "../interface/order";
-import {PBWC} from "../interface/product_body_without_code";
+import {ORDER_BODY} from "../dto/order_body";
+import {ORDER} from "../dto/order";
+import {PBWC} from "../dto/product_body_without_code";
+import {environment} from "../environments/environment";
+import {HttpService} from "./http.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopApiService {
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,private httpService:HttpService) {
   }
 
-  private productApiUrl: string = "http://localhost:8080/api/v1/product";
-  private orderApiUrl: string = "http://localhost:8080/api/v1/order";
+  private productApiUrl: string = `${environment.serverUrl}api/v1/product`;
+  private orderApiUrl: string = `${environment.serverUrl}api/v1/order`;
 
   private httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem("auth_token") ?? "")
+      Authorization: 'Bearer ' + this.httpService.jwt
     }),
   };
 

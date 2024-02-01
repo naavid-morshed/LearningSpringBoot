@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {PRODUCT} from "../../../interface/product";
+import {PRODUCT} from "../../../dto/product";
 import {ShopApiService} from "../../../services/shop-api.service";
 import {IconDefinition} from "@fortawesome/free-brands-svg-icons";
 import {faEdit, faTimes} from "@fortawesome/free-solid-svg-icons";

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {PRODUCT} from "../../../interface/product";
+import {PRODUCT} from "../../../dto/product";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
 

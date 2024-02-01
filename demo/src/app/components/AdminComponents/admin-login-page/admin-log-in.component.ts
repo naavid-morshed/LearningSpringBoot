@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AdminLoginService} from "../../../services/admin-login.service";
-import {AuthenticationRequest} from "../../../interface/authentication_request";
+import {AuthenticationRequest} from "../../../dto/authentication_request";
 
 @Component({
   selector: 'app-admin-log-in-page',

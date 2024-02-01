@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {USER_BODY} from "../../../../interface/user_body";
+import {USER_BODY} from "../../../../dto/user_body";
 import {UserService} from "../../../../services/user.service";
 import {Router} from "@angular/router";
 

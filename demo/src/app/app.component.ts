@@ -17,11 +17,9 @@ import {NavbarComponent} from "./components/UserComponents/navbar/navbar.compone
     UpdateProductFormComponent,
     HomePageComponent,
     PlaceOrderComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'demo';
 }

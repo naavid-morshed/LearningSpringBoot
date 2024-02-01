@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {ShopApiService} from "../../../services/shop-api.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {PRODUCT} from "../../../interface/product";
-import {PRODUCT_BODY} from "../../../interface/product_body";
-import {PBWC} from "../../../interface/product_body_without_code";
+import {PRODUCT} from "../../../dto/product";
+import {PRODUCT_BODY} from "../../../dto/product_body";
+import {PBWC} from "../../../dto/product_body_without_code";
 
 @Component({
   selector: 'app-add-product-form',

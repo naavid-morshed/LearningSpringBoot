@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user.service";
-import {USER_BODY} from "../../../interface/user_body";
-import {UPDATE_REQUEST} from "../../../interface/update_request";
-import {USER} from "../../../interface/user";
+import {UPDATE_REQUEST} from "../../../dto/update_request";
+import {USER} from "../../../dto/user";
 import {Router} from "@angular/router";
 
 @Component({

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ShopApiService} from "../../../services/shop-api.service";
-import {PRODUCT} from "../../../interface/product";
+import {PRODUCT} from "../../../dto/product";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgForOf, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
