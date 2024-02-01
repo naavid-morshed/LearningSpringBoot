@@ -14,17 +14,16 @@ import com.example.shop.product.repository.OrderProductItemRepo;
 import com.example.shop.product.repository.OrderRepo;
 import com.example.shop.product.repository.ProductRepo;
 import com.example.shop.user.Entity.User;
-import com.example.shop.user.model.UserModel;
 import com.example.shop.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -71,16 +70,16 @@ public class OrderService {
 
             Inventory inventory = inventoryRepo.findInventoriesByProduct_Id(product.getId());
 
-                OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
-                orderProductItem.setProduct(product);
-                orderProductItem.setOrder(order);
+            OrderProductItem orderProductItem = new OrderProductItem(orderProductItemModel);
+            orderProductItem.setProduct(product);
+            orderProductItem.setOrder(order);
 
 //                orderProductItemRepo.save(orderProductItem);
 
-                order.getOrderProductItemList().add(orderProductItem);
+            order.getOrderProductItemList().add(orderProductItem);
 
-                inventory.setProductCount(inventory.getProductCount() - 1);
-                inventoryRepo.save(inventory);
+            inventory.setProductCount(inventory.getProductCount() - 1);
+            inventoryRepo.save(inventory);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -88,10 +87,8 @@ public class OrderService {
             String email = authentication.getName();
 
             User user = userRepository.findByEmail(email).orElseThrow(
-                    () -> new RuntimeException("asdf")
+                    () -> new UsernameNotFoundException("You are not authorized")
             );
-
-            System.err.println(new UserModel(user));
 
             order.setUser(user);
             orderRepo.save(order);
