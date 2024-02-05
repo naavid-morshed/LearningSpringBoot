@@ -1,12 +1,15 @@
 import {Component} from '@angular/core';
 import {PRODUCT} from "../../../dto/product";
-import {ShopApiService} from "../../../services/shop-api.service";
 import {IconDefinition} from "@fortawesome/free-brands-svg-icons";
 import {faEdit, faTimes} from "@fortawesome/free-solid-svg-icons";
 import {NgForOf, NgStyle} from "@angular/common";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
+import {HttpService} from "../../../services/http.service";
+import {map} from "rxjs/operators";
+import {environment} from "../../../environments/environment";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-admin-panel',
@@ -21,16 +24,26 @@ import {Router} from "@angular/router";
 })
 export class AdminPanel {
 
-  constructor(private shopApiService: ShopApiService, private router: Router) {
+  constructor(
+    private router: Router,
+    private httpService: HttpService,
+    private toastr: ToastrService,
+  ) {
   }
 
   ngOnInit(): void {
-    this.shopApiService.getProductJSON().subscribe(
-      (product_list: PRODUCT[]): void => {
-        this.product_list = product_list;
-        this.temporaryProductListHolder = product_list;
-      }
-    );
+    this.httpService.get(environment.productUrl)
+      .pipe(
+        map(r => {
+          return r as PRODUCT[]
+        })
+      )
+      .subscribe(
+        (product_list: PRODUCT[]): void => {
+          this.product_list = product_list;
+          this.temporaryProductListHolder = product_list;
+        }
+      );
 
     this.minPrice = this.product_list.length > 0 ? this.product_list.reduce((min, product) => product.price < min ? product.price : min, this.product_list[0].price) : 0;
     this.maxPrice = this.product_list.length > 0 ? this.product_list.reduce((max, product) => product.price > max ? product.price : max, this.product_list[0].price) : 0;
@@ -47,11 +60,14 @@ export class AdminPanel {
   public maxPrice: number = 0;
 
   public deleteItem(item: PRODUCT): void {
-    this.shopApiService.deleteToDo(item).subscribe(
-      () => (this.product_list = this.product_list.filter(
-        (t: PRODUCT): boolean => t.id !== item.id
-      ))
-    );
+    this.httpService.delete(`${environment.productUrl}/id/${item.id}`)
+      .subscribe({
+          next: () => this.product_list = this.product_list.filter(
+            (t: PRODUCT): boolean => t.id !== item.id
+          ),
+          complete: () => this.toastr.warning("Deletion Complete")
+        }
+      );
   }
 
   public disableButton: boolean = false;

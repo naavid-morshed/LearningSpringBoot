@@ -5,7 +5,6 @@ import {AdminPanel} from "./components/AdminComponents/admin-panel/admin-panel.c
 import {UpdateProductFormComponent} from "./components/AdminComponents/update-product-form/update-product-form.component";
 import {HomePageComponent} from "./components/UserComponents/home-page/home-page.component";
 import {PlaceOrderComponent} from "./components/UserComponents/place-order/place-order.component";
-import {NavbarComponent} from "./components/UserComponents/navbar/navbar.component";
 
 @Component({
   selector: 'app-root',
@@ -17,7 +16,6 @@ import {NavbarComponent} from "./components/UserComponents/navbar/navbar.compone
     UpdateProductFormComponent,
     HomePageComponent,
     PlaceOrderComponent,
-    NavbarComponent,
   ],
   templateUrl: './app.component.html',
 })

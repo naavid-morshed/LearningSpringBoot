@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {ShopApiService} from "../../../services/shop-api.service";
 import {PRODUCT} from "../../../dto/product";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgForOf, NgIf, NgOptimizedImage, NgStyle} from "@angular/common";
@@ -8,13 +7,16 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 import {faHeart as faHeartSolid} from "@fortawesome/free-solid-svg-icons";
 import {faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
-import {NavbarComponent} from "../navbar/navbar.component";
 import {FormsModule} from "@angular/forms";
+import {LocalStoreService} from "../../../services/local-store.service";
+import {environment} from "../../../environments/environment";
+import {HttpService} from "../../../services/http.service";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage, NavbarComponent, FormsModule],
+  imports: [NgbDropdownModule, NgForOf, NgIf, RouterLink, FaIconComponent, NgStyle, NgOptimizedImage, FormsModule],
   templateUrl: './home-page.component.html',
 })
 export class HomePageComponent {
@@ -25,34 +27,46 @@ export class HomePageComponent {
   wishBoolean: boolean[] = [];
   wishList: PRODUCT[] = []
 
-  constructor(private shopApiService: ShopApiService, private router: Router) {
+  constructor(
+    private localStore: LocalStoreService,
+    private router: Router,
+    private httpService: HttpService,
+  ) {
   }
 
   ngOnInit(): void {
-    this.shopApiService.getProductJSON().subscribe(
+    this.httpService.get(environment.productUrl)
+      .pipe(
+        map(r => {
+          return r as PRODUCT[];
+        })
+      )
+      .subscribe(
       (product_list: PRODUCT[]): void => {
+
         this.productList = product_list;
         this.wishBoolean = new Array(this.productList.length).fill(false)
 
-        this.wishList = JSON.parse(localStorage.getItem("WishList") ?? "") as PRODUCT[];
+        if (!!this.localStore.getData(environment.wishListKey)) {
+          this.wishList = JSON.parse(this.localStore.getData(environment.wishListKey)) as PRODUCT[];
 
-        this.wishList.forEach((wishItem: PRODUCT): void => {
-          let index: number = 0;
+          this.wishList.forEach((wishItem: PRODUCT): void => {
+            let index: number = 0;
 
-          this.productList.filter((product: PRODUCT): void => {
-            if (product.id == wishItem.id) {
-              index = this.productList.indexOf(product);
-            }
-          })
+            this.productList.filter((product: PRODUCT): void => {
+              if (product.id == wishItem.id) {
+                index = this.productList.indexOf(product);
+              }
+            })
 
-          this.wishBoolean[index] = true;
-        });
+            this.wishBoolean[index] = true;
+          });
+        }
 
-        console.log(this.wishBoolean);
       }
     );
 
-    const jsonData: string = localStorage.getItem("Cart") ?? "";
+    const jsonData: string = this.localStore.getData(environment.cartKey);
 
     if (jsonData !== "") {
       this.stringifyAbleObjectOfTypeProduct = JSON.parse(jsonData) as PRODUCT[];
@@ -63,6 +77,8 @@ export class HomePageComponent {
   addToOrder(item: PRODUCT): void {
     this.numberOfItemsAddedToCart++;
     this.stringifyAbleObjectOfTypeProduct.push(item)
+
+    this.localStore.saveData(environment.cartKey, JSON.stringify(this.stringifyAbleObjectOfTypeProduct));
   }
 
   // createOrder(): void {
@@ -87,13 +103,10 @@ export class HomePageComponent {
     this.numberOfItemsAddedToCart = 0;
 
     this.stringifyAbleObjectOfTypeProduct = [] as PRODUCT[];
-    localStorage.removeItem("Cart");
+    this.localStore.removeData(environment.cartKey);
   }
 
   navigateToPlaceOrderTable(): void {
-    const jsonData: string = JSON.stringify(this.stringifyAbleObjectOfTypeProduct);
-    localStorage.setItem("Cart", jsonData);
-
     this.router.navigate(['placeOrder'],);
   }
 
@@ -115,7 +128,7 @@ export class HomePageComponent {
       this.wishList.splice(index, 1);
     }
 
-    localStorage.setItem("WishList", JSON.stringify(this.wishList));
+    this.localStore.saveData(environment.wishListKey, JSON.stringify(this.wishList));
   }
 
   navigateToWishList() {
@@ -135,7 +148,13 @@ export class HomePageComponent {
   }
 
   showSearchOutput() {
-    this.shopApiService.getProductViaSearch(this.search).subscribe(
+    this.httpService.get(`${environment.productUrl}/search?query=${this.search}`)
+      .pipe(
+        map(r => {
+          return r as PRODUCT[]
+        })
+      )
+      .subscribe(
       (response: PRODUCT[]) => this.productList = response
     )
   }

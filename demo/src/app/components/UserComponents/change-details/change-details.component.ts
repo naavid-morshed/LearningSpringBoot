@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {UserService} from "../../../services/user.service";
 import {UPDATE_REQUEST} from "../../../dto/update_request";
 import {USER} from "../../../dto/user";
 import {Router} from "@angular/router";
+import {HttpService} from "../../../services/http.service";
+import {map} from "rxjs/operators";
+import {LocalStoreService} from "../../../services/local-store.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-change-details',
@@ -24,18 +27,31 @@ export class ChangeDetailsComponent implements OnInit {
     address: [""],
   });
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private httpService: HttpService,
+    private localStore: LocalStoreService,
+  ) {
   }
 
   ngOnInit(): void {
-    this.userService.getUserDetails().subscribe(
-      (r: USER): void => this.updateForm.patchValue({
-        firstName: r.firstName,
-        lastName: r.lastName,
-        currentEmail: r.email,
-        address: r.address,
+    this.httpService.get(`${environment.serverUrl}/api/v1/user`)
+      .pipe(
+        map((value: any) => {
+          return value as USER;
+        })
+      )
+      .subscribe({
+        next: (response: USER): void => {
+          this.updateForm.patchValue({
+            firstName: response.firstName,
+            lastName: response.lastName,
+            currentEmail: response.email,
+            address: response.address,
+          });
+        },
       })
-    )
   }
 
   onSubmit(): void {
@@ -50,7 +66,16 @@ export class ChangeDetailsComponent implements OnInit {
       address: this.updateForm.value.address ?? "",
     };
 
-    this.userService.updateUser(updateInfo);
+    this.httpService.post(`${environment.authUrl}/updateuser`, updateInfo)
+      .pipe(
+        map((r: any) => {
+          return r.token
+        })
+      )
+      .subscribe({
+        next: (token: string) => this.localStore.saveData(environment.authKey, token),
+        complete: () => this.router.navigate(['myaccount'])
+      })
   }
 
   navigateToMyAccount(): void {

@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
-import {ShopApiService} from "../../../services/shop-api.service";
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {PRODUCT} from "../../../dto/product";
-import {PRODUCT_BODY} from "../../../dto/product_body";
+import {Router} from "@angular/router";
 import {PBWC} from "../../../dto/product_body_without_code";
+import {HttpService} from "../../../services/http.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-add-product-form',
@@ -21,7 +20,11 @@ export class AddProductFormComponent {
     price: [0],
   })
 
-  constructor(private formBuilder: FormBuilder, private shopApiService: ShopApiService, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private httpService: HttpService,
+  ) {
   }
 
   onSubmit() {
@@ -32,15 +35,10 @@ export class AddProductFormComponent {
       price: this.addProductForm.value.price ?? 0,
     };
 
-    // const productForm = new FormData;
-    // productForm.append('formData', this.addProductForm);
-    //
-    // console.log(productForm);
-    //
-    // let url = '/addProduct';
-
-    this.shopApiService.addProduct(product).subscribe();
-    this.router.navigate(['adminPanel']);
+    this.httpService.post(`${environment.productUrl}/addProduct`, product)
+      .subscribe({
+        complete: () => this.router.navigate(['adminPanel'])
+      });
 
   }
 }

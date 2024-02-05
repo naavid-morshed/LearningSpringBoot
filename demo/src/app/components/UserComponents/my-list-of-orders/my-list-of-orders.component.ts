@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ORDER} from "../../../dto/order";
-import {ShopApiService} from "../../../services/shop-api.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {NgForOf} from "@angular/common";
 import {Router} from "@angular/router";
+import {HttpService} from "../../../services/http.service";
+import {map} from 'rxjs';
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-list-of-orders',
@@ -19,23 +21,32 @@ export class MyListOfOrdersComponent implements OnInit {
   total: number[] = [];
   deliveryAndPlatformFee: number = 53;
 
-  constructor(private shopApiService: ShopApiService, private router: Router) {
+  constructor(
+    private router: Router,
+    private httpService: HttpService,
+  ) {
   }
 
   ngOnInit(): void {
-    this.shopApiService.gerOrderListByUser().subscribe((responseOrderListBody: ORDER[]): void => {
-      this.orderList = responseOrderListBody;
-
-      this.orderList.forEach((order: ORDER): void => {
-        let totalPrice: number = 0;
-
-        order.orderProductItemModelList.forEach(orderProductItemModel => {
-          totalPrice += orderProductItemModel.price;
+    this.httpService.get(`${environment.orderUrl}/ordersByUser`)
+      .pipe(
+        map(r => {
+          return r as ORDER[];
         })
+      )
+      .subscribe((responseOrderListBody: ORDER[]): void => {
+        this.orderList = responseOrderListBody;
 
-        this.total.push(totalPrice + this.deliveryAndPlatformFee);
-      })
-    });
+        this.orderList.forEach((order: ORDER): void => {
+          let totalPrice: number = 0;
+
+          order.orderProductItemModelList.forEach(orderProductItemModel => {
+            totalPrice += orderProductItemModel.price;
+          })
+
+          this.total.push(totalPrice + this.deliveryAndPlatformFee);
+        })
+      });
   }
 
   navigateToMyOrder(id: number): void {

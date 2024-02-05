@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {UserService} from "../../../../services/user.service";
 import {Router} from "@angular/router";
+import {AuthenticationRequest} from "../../../../dto/authentication_request";
+import {HttpService} from "../../../../services/http.service";
+import {map} from "rxjs/operators";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-login',
@@ -17,13 +20,31 @@ export class LoginComponent {
     password: ["", Validators.required],
   })
 
-  constructor(private formBuilder: FormBuilder, private userLoginService: UserService, private router:Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private httpService: HttpService,
+    private router: Router
+  ) {
   }
 
   onSubmit(): void {
 
-    this.userLoginService
-      .userAuth(this.loginInfo.value.email ?? "", this.loginInfo.value.password ?? "");
+    const authenticationRequest: AuthenticationRequest = {
+      email: this.loginInfo.value.email ?? "",
+      password: this.loginInfo.value.password ?? ""
+    };
+
+    this.httpService.post(`${environment.authUrl}/authenticate`, authenticationRequest)
+      .pipe(
+        map((responseBody: any) => {
+            return responseBody.token;
+          }
+        )
+      )
+      .subscribe({
+        next: (token: string) => this.httpService.jwt = token,
+        complete: () => this.router.navigate([""]),
+      });
   }
 
   navigateToRegisterPage() {

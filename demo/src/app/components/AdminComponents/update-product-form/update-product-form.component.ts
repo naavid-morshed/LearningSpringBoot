@@ -3,9 +3,11 @@ import {
   FormBuilder,
   ReactiveFormsModule
 } from "@angular/forms";
-import {ShopApiService} from "../../../services/shop-api.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {PRODUCT} from "../../../dto/product";
+import {HttpService} from "../../../services/http.service";
+import {map} from "rxjs/operators";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-update-product-form',
@@ -23,7 +25,12 @@ export class UpdateProductFormComponent implements OnInit {
     code: [""]
   })
 
-  constructor(private formBuilder: FormBuilder, private shopApiService: ShopApiService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private httpService: HttpService,
+  ) {
   }
 
   id: number = {} as number;
@@ -33,18 +40,24 @@ export class UpdateProductFormComponent implements OnInit {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.id = Number(params['id']);
 
-      this.shopApiService.getProductById(this.id).subscribe(
-        (response: PRODUCT) => {
-          this.product = response;
+      this.httpService.get(`${environment.productUrl}/productId/${this.id}`)
+        .pipe(
+          map(r => {
+            return r as PRODUCT
+          })
+        )
+        .subscribe(
+          (response: PRODUCT) => {
+            this.product = response;
 
-          this.updateProductForm.patchValue({
-            name: this.product.name,
-            specification: this.product.specifications,
-            price: this.product.price,
-            code: this.product.productCode
-          });
-        }
-      )
+            this.updateProductForm.patchValue({
+              name: this.product.name,
+              specification: this.product.specifications,
+              price: this.product.price,
+              code: this.product.productCode
+            });
+          }
+        )
     });
   }
 
@@ -58,7 +71,17 @@ export class UpdateProductFormComponent implements OnInit {
       productCode: this.updateProductForm.value.code ?? ""
     };
 
-    if (this.shopApiService.updateProduct(product)) {
+    if (this.httpService.put(`${environment.productUrl}/update`, product)
+      .pipe(
+        map(r => {
+          return r as PRODUCT;
+        })
+      )
+      .subscribe((responseBody: PRODUCT): boolean => {
+          return responseBody.id !== null;
+        }
+      )) {
+
       this.router.navigate(['adminPanel']);
     } else {
       console.log("error occurred, handle this later");

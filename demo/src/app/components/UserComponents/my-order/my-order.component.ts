@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {ShopApiService} from "../../../services/shop-api.service";
 import {ORDER} from "../../../dto/order";
 import {NgForOf} from "@angular/common";
+import {HttpService} from "../../../services/http.service";
+import {map} from "rxjs/operators";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-my-order',
@@ -16,20 +18,30 @@ export class MyOrderComponent implements OnInit {
   order: ORDER = {} as ORDER;
   subTotal: number = 0;
 
-  constructor(private activatedRoute: ActivatedRoute, private shopApiService: ShopApiService, private router: Router) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private httpService: HttpService,
+  ) {
   }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((queryParams: Params): void => {
       // here params['id'] is being captured then passed into api service
 
-      this.shopApiService.getOrderById(queryParams['id']).subscribe((orderResponseBody: ORDER): void => {
-        this.order = orderResponseBody;
+      this.httpService.get(`${environment.orderUrl}/order/id/${queryParams['id']}`)
+        .pipe(
+          map(r => {
+            return r as ORDER;
+          })
+        )
+        .subscribe((orderResponseBody: ORDER): void => {
+          this.order = orderResponseBody;
 
-        this.order.orderProductItemModelList.forEach((orderProductItemModelItem): void => {
-          this.subTotal += orderProductItemModelItem.price;
-        });
-      })
+          this.order.orderProductItemModelList.forEach((orderProductItemModelItem): void => {
+            this.subTotal += orderProductItemModelItem.price;
+          });
+        })
     })
   }
 

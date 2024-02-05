@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {USER_BODY} from "../../../../dto/user_body";
-import {UserService} from "../../../../services/user.service";
 import {Router} from "@angular/router";
+import {environment} from "../../../../environments/environment";
+import {HttpService} from "../../../../services/http.service";
+import {map} from "rxjs/operators";
+import {LocalStoreService} from "../../../../services/local-store.service";
 
 @Component({
   selector: 'app-register',
@@ -20,7 +23,12 @@ export class RegisterComponent {
     password: ["", Validators.required],
   })
 
-  constructor(private formBuilder: FormBuilder, private userLoginService: UserService,private router:Router) {
+  constructor(
+    private httpService: HttpService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private localStore: LocalStoreService,
+  ) {
   }
 
   onSubmit(): void {
@@ -32,11 +40,20 @@ export class RegisterComponent {
       password: this.registerInfo.value.password ?? "",
     };
 
-    this.userLoginService
-      .userRegister(registrationInfo);
+    this.httpService
+      .post(`${environment.authUrl}/register`, registrationInfo)
+      .pipe(
+        map((r: any) => {
+          return r.token;
+        })
+      )
+      .subscribe({
+        next: (token: string) => this.localStore.saveData(environment.authKey, token),
+        complete:() => this.router.navigate([""])
+      });
   }
 
   navigateToLoginPage() {
-    this.router.navigate(['login'])
+    this.router.navigate(['login']);
   }
 }
