@@ -16,17 +16,19 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class ProductController {
     private final ProductService productService;
-    private final InventoryService inventoryService;
 
     @Autowired
-    public ProductController(ProductService productService, InventoryService inventoryService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.inventoryService = inventoryService;
     }
 
     @GetMapping()
     public ResponseEntity<Optional<List<ProductModel>>> getProducts() {
-        return ResponseEntity.ok(productService.getProducts());
+        try {
+            return ResponseEntity.ok(productService.getProducts());
+        } catch (Exception exception) {
+            throw new RuntimeException(exception.getMessage());
+        }
     }
 
     @GetMapping("productId/{id}")
@@ -67,7 +69,7 @@ public class ProductController {
 
     @DeleteMapping("id/{id}")
     public ProductModel deleteProduct(@PathVariable Long id) {
-       return productService.deleteProduct(id);
+        return productService.deleteProduct(id);
     }
 
     @GetMapping("/search")
