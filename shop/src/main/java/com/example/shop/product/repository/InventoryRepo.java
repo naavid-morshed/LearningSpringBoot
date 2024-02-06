@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InventoryRepo extends JpaRepository<Inventory, Long> {
     Inventory findInventoriesByProduct_Id(Long productId);
 
-    @Query("select i.product from Inventory i where i.productCount > 0")
+    @Query("select product from Inventory where productCount > 0")
     List<Product> findProductsWhereInventoryCountIsNotZero();
 }

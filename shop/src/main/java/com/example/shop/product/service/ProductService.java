@@ -27,14 +27,11 @@ public class ProductService {
         this.inventoryRepo = inventoryRepo;
     }
 
-    public Optional<List<ProductModel>> getProducts() {
-        return Optional.of(
-                inventoryRepo
-                        .findProductsWhereInventoryCountIsNotZero()
-                        .stream()
-                        .map(ProductModel::new)
-                        .collect(Collectors.toList())
-        );
+    public List<ProductModel> getProducts() {
+        return inventoryRepo.findProductsWhereInventoryCountIsNotZero()
+                .stream()
+                .map(ProductModel::new)
+                .collect(Collectors.toList());
     }
 
     public Optional<ProductModel> getProductById(Long id) {
@@ -53,12 +50,6 @@ public class ProductService {
     }
 
     public List<ProductModel> getProductByName(String productName) {
-//        List<Product> productList = productRepo.findByName(productName);
-//        List<ProductModel> productModelList = new ArrayList<>();
-//
-//        for (Product product : productList) {
-//            productModelList.add(new ProductModel(product));
-//        }
         return productRepo
                 .findByName(productName)
                 .stream()

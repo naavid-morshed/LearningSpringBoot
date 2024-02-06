@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,4 +26,5 @@ public class ProductModel {
         this.price = product.getPrice();
         this.productCode = product.getProductCode();
     }
+
 }

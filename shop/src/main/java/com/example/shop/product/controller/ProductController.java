@@ -1,7 +1,6 @@
 package com.example.shop.product.controller;
 
 import com.example.shop.product.Model.ProductModel;
-import com.example.shop.product.service.InventoryService;
 import com.example.shop.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,10 @@ public class ProductController {
         this.productService = productService;
     }
 
+//    @RequestMapping(value = "api/v1/product", method = RequestMethod.GET)
+//    @CrossOrigin("*")
     @GetMapping()
-    public ResponseEntity<Optional<List<ProductModel>>> getProducts() {
+    public ResponseEntity<List<ProductModel>> getProducts() {
         try {
             return ResponseEntity.ok(productService.getProducts());
         } catch (Exception exception) {
@@ -36,16 +37,16 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    @GetMapping("getListOfProducts")
-    public List<ProductModel> getListOfProductById(@RequestParam List<Long> idList) {
-        List<ProductModel> productModelList = new ArrayList<>();
-
-        for (Long id : idList) {
-            productModelList.add(productService.getSingleProductById(id));
-        }
-
-        return productModelList;
-    }
+//    @GetMapping("getListOfProducts")
+//    public List<ProductModel> getListOfProductById(@RequestParam List<Long> idList) {
+//        List<ProductModel> productModelList = new ArrayList<>();
+//
+//        for (Long id : idList) {
+//            productModelList.add(productService.getSingleProductById(id));
+//        }
+//
+//        return productModelList;
+//    }
 
     @GetMapping("productName/{productName}")
     public List<ProductModel> getProductByName(@PathVariable String productName) {
