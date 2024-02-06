@@ -7,7 +7,8 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {PRODUCT} from "../../../dto/product";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-update-product-form',
@@ -33,14 +34,12 @@ export class UpdateProductFormComponent implements OnInit {
   ) {
   }
 
-  id: number = {} as number;
   product: PRODUCT = {} as PRODUCT;
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.id = Number(params['id']);
+    this.activatedRoute.queryParams.subscribe((queryParams: Params):void => {
 
-      this.httpService.get(`${environment.productUrl}/productId/${this.id}`)
+      this.httpService.get(`${ApiUrls.productUrl}/productId/${queryParams["id"]}`)
         .pipe(
           map(r => {
             return r as PRODUCT
@@ -71,7 +70,7 @@ export class UpdateProductFormComponent implements OnInit {
       productCode: this.updateProductForm.value.code ?? ""
     };
 
-    if (this.httpService.put(`${environment.productUrl}/update`, product)
+    if (this.httpService.put(`${ApiUrls.productUrl}/update`, product)
       .pipe(
         map(r => {
           return r as PRODUCT;
@@ -82,7 +81,7 @@ export class UpdateProductFormComponent implements OnInit {
         }
       )) {
 
-      this.router.navigate(['adminPanel']);
+      this.router.navigate([RouterUrls.adminPanel.url]);
     } else {
       console.log("error occurred, handle this later");
     }

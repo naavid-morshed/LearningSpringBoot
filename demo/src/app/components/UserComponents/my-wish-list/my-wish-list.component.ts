@@ -3,7 +3,8 @@ import {PRODUCT} from "../../../dto/product";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
 import {LocalStoreService} from "../../../services/local-store.service";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
+import {KeyStore} from "../../../environments/keystorage";
 
 @Component({
   selector: 'app-my-wish-list',
@@ -23,8 +24,8 @@ export class MyWishListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (!!this.localStore.getData(environment.wishListKey)) {
-      this.myWishList = JSON.parse(this.localStore.getData(environment.wishListKey)) as PRODUCT[];
+    if (!!this.localStore.getData(KeyStore.wishListKey)) {
+      this.myWishList = this.localStore.getData(KeyStore.wishListKey) as PRODUCT[];
     }
 
   }
@@ -41,7 +42,7 @@ export class MyWishListComponent implements OnInit {
       (product: PRODUCT, index: number) => {
         if (product.id === id) {
           this.myWishList.splice(index, 1)
-          this.localStore.saveData(environment.wishListKey, JSON.stringify(this.myWishList));
+          this.localStore.saveData(KeyStore.wishListKey, this.myWishList);
           return;
         }
       }

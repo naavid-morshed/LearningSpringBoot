@@ -4,7 +4,7 @@ import {ORDER} from "../../../dto/order";
 import {NgForOf} from "@angular/common";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
 
 @Component({
   selector: 'app-my-order',
@@ -29,7 +29,7 @@ export class MyOrderComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams: Params): void => {
       // here params['id'] is being captured then passed into api service
 
-      this.httpService.get(`${environment.orderUrl}/order/id/${queryParams['id']}`)
+      this.httpService.get(`${ApiUrls.orderUrl}/order/id/${queryParams['id']}`)
         .pipe(
           map(r => {
             return r as ORDER;

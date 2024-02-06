@@ -5,7 +5,8 @@ import {NgForOf} from "@angular/common";
 import {Router} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import {map} from 'rxjs';
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-list-of-orders',
@@ -28,7 +29,7 @@ export class MyListOfOrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpService.get(`${environment.orderUrl}/ordersByUser`)
+    this.httpService.get(`${ApiUrls.orderUrl}/ordersByUser`)
       .pipe(
         map(r => {
           return r as ORDER[];
@@ -50,7 +51,10 @@ export class MyListOfOrdersComponent implements OnInit {
   }
 
   navigateToMyOrder(id: number): void {
-    this.router.navigate(["myorder"], {queryParams: {id: id}});
+    this.router.navigate(
+      [RouterUrls.myOrder.url],
+      {queryParams: {id: id}}
+    );
   }
 
   returnHome() {

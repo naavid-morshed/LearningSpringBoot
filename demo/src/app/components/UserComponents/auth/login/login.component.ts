@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {AuthenticationRequest} from "../../../../dto/authentication_request";
 import {HttpService} from "../../../../services/http.service";
 import {map} from "rxjs/operators";
-import {environment} from "../../../../environments/environment";
+import {ApiUrls} from "../../../../environments/api-urls";
 
 @Component({
   selector: 'app-login',
@@ -34,7 +34,7 @@ export class LoginComponent {
       password: this.loginInfo.value.password ?? ""
     };
 
-    this.httpService.post(`${environment.authUrl}/authenticate`, authenticationRequest)
+    this.httpService.post(`${ApiUrls.authUrl}/authenticate`, authenticationRequest)
       .pipe(
         map((responseBody: any) => {
             return responseBody.token;

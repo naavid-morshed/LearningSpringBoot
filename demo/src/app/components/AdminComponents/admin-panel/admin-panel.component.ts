@@ -8,8 +8,9 @@ import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
 import {ToastrService} from "ngx-toastr";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-admin-panel',
@@ -32,7 +33,7 @@ export class AdminPanel {
   }
 
   ngOnInit(): void {
-    this.httpService.get(environment.productUrl)
+    this.httpService.get(ApiUrls.productUrl)
       .pipe(
         map(r => {
           return r as PRODUCT[]
@@ -60,7 +61,7 @@ export class AdminPanel {
   public maxPrice: number = 0;
 
   public deleteItem(item: PRODUCT): void {
-    this.httpService.delete(`${environment.productUrl}/id/${item.id}`)
+    this.httpService.delete(`${ApiUrls.productUrl}/id/${item.id}`)
       .subscribe({
           next: () => this.product_list = this.product_list.filter(
             (t: PRODUCT): boolean => t.id !== item.id
@@ -84,24 +85,14 @@ export class AdminPanel {
     this.disableButton = !this.disableButton;
   }
 
-  // public addProduct($product: PRODUCT_BODY): void {
-  //   console.log($product)
-  //   this.shopApiService.addProduct($product).subscribe(
-  //     async (response: PRODUCT_BODY) => {
-  //       this.product_list.push(<PRODUCT>response)
-  //       console.log(this.product_list)
-  //     }
-  //   )
-  //
-  //   // these two lines will reSort the min and max range
-  //   // seems like a performance hog for a large amount of data, check new val price and sort
-  //   // accordingly?
-  //   // this.temporaryProductListHolder = this.product_list;
-  //   // this.sortFromAndTo();
-  // }
-
   public updateProduct(item: PRODUCT): void {
-    this.router.navigate(["updateProduct", item.id]);
+    this.router.navigate(
+      [RouterUrls.updateProduct.url],
+      {
+        queryParams: {id: item.id},
+        // queryParamsHandling: "preserve"
+      }
+    );
   }
 
   temporaryProductListHolder: PRODUCT[] = [];

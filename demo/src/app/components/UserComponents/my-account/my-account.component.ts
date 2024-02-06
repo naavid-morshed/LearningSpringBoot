@@ -5,7 +5,8 @@ import {FormsModule} from "@angular/forms";
 import {LocalStoreService} from "../../../services/local-store.service";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
+import {KeyStore} from "../../../environments/keystorage";
 
 @Component({
   selector: 'app-my-account',
@@ -30,7 +31,7 @@ export class MyAccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpService.get(`${environment.serverUrl}/api/v1/user`)
+    this.httpService.get(`${ApiUrls.serverUrl}/api/v1/user`)
       .pipe(
         map(r => {
           return r as USER;
@@ -46,20 +47,20 @@ export class MyAccountComponent implements OnInit {
 
   logOut(): void {
 
-    this.localStore.clearData();
+    this.localStore.removeData(KeyStore.authKey);
 
     this.router.navigate(["login"]);
   }
 
-  navigateToChangeDetails() {
+  navigateToChangeDetails(): void {
     this.router.navigate(['updater']);
   }
 
-  changeAddress() {
+  changeAddress(): void {
     this.httpService.post("http://localhost:8080/api/v1/auth/updateAddress", this.address).subscribe();
   }
 
-  navigateToHome() {
-    this.router.navigate([""])
+  navigateToHome(): void {
+    this.router.navigateByUrl("")
   }
 }

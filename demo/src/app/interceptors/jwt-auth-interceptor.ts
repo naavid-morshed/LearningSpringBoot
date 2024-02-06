@@ -5,7 +5,7 @@ import {
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpService} from "../services/http.service";
-import {environment} from "../environments/environment";
+import {ApiUrls} from "../environments/api-urls";
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class JwtAuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const isLoggedIn: boolean = this.httpService.isLoggedIn;
-    const isToServer: boolean = req.url.startsWith(environment.serverUrl);
+    const isToServer: boolean = req.url.startsWith(ApiUrls.serverUrl);
 
     if (isLoggedIn && isToServer) {
       req = req.clone({

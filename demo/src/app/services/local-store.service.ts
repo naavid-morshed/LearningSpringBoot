@@ -5,44 +5,56 @@ import {isPlatformBrowser} from "@angular/common";
   providedIn: 'root'
 })
 export class LocalStoreService {
+  isThisPlatformBrowser: boolean;
+
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    this.isThisPlatformBrowser = isPlatformBrowser(this.platformId);
   }
 
-  public saveData(key: string, value: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(key, value);
+  // get isThisPlatformBrowser(): boolean {
+  //   return isPlatformBrowser(this.platformId);
+  // }
+
+  public saveData(key: string, data: object | string): void {
+    if (this.isThisPlatformBrowser) {
+      localStorage.setItem(
+        key,
+        (typeof data === 'object') ? JSON.stringify(data) : data as string
+      );
     }
   }
 
-  public getData(key: string): string {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(key) ?? ""
+  public hasData(key: string): boolean {
+    if (this.isThisPlatformBrowser) {
+      return !!localStorage.getItem(key);
+    } else {
+      return false;
     }
-    return "";
+  }
+
+  public getData(key: string): object | string {
+    if (this.isThisPlatformBrowser) {
+      const item: string = localStorage.getItem(key) ?? "";
+      try {
+        return JSON.parse(item);
+      } catch {
+        return item;
+      }
+    } else {
+      return "";
+    }
+
   }
 
   public removeData(key: string): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.isThisPlatformBrowser) {
       localStorage.removeItem(key);
     }
   }
 
   public clearData(): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.isThisPlatformBrowser) {
       localStorage.clear();
     }
   }
-
-  // public saveData(key: string, value: string): void {
-  //   if (isPlatformBrowser(this.platformId)) {
-  //     localStorage.setItem(key, JSON.stringify(value));
-  //   }
-  // }
-  //
-  // public getData(key: string): string {
-  //   if (isPlatformBrowser(this.platformId)) {
-  //     return JSON.parse(localStorage.getItem(key) ?? "")
-  //   }
-  //   return "";
-  // }
 }

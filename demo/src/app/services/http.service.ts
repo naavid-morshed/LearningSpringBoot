@@ -1,16 +1,19 @@
-import {Injectable, Signal} from '@angular/core';
-import {environment} from "../environments/environment";
+import {Injectable} from '@angular/core';
+import {ApiUrls} from "../environments/api-urls";
 import {LocalStoreService} from "./local-store.service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {PRODUCT} from "../dto/product";
+import {KeyStore} from "../environments/keystorage";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
 
-  constructor(private localStore: LocalStoreService, private httpClient: HttpClient) {
+  constructor(
+    private localStore: LocalStoreService,
+    private httpClient: HttpClient
+  ) {
   }
 
   get isLoggedIn(): boolean {
@@ -18,13 +21,13 @@ export class HttpService {
   }
 
   get jwt(): string {
-    return this.localStore.getData(environment.authKey)
+    return this.localStore.getData(KeyStore.authKey) as string;
     // return localStorage.getItem(environment.auth_token) ?? ""
     // return JSON.parse(localStorage.getItem(environment.auth_token) ?? "");
   }
 
   set jwt(token: string) {
-    this.localStore.saveData(environment.authKey, token)
+    this.localStore.saveData(KeyStore.authKey, token)
     // localStorage.setItem(environment.auth_token,token);
     // localStorage.setItem(environment.auth_token, JSON.stringify(token));
   }

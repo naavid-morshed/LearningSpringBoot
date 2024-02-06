@@ -9,8 +9,9 @@ import {map} from "rxjs/operators";
 import {USER} from "../../../dto/user";
 import {ToastrService} from "ngx-toastr";
 import {LocalStoreService} from "../../../services/local-store.service";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
 import {HttpService} from "../../../services/http.service";
+import {KeyStore} from "../../../environments/keystorage";
 
 @Component({
   selector: 'app-place-order',
@@ -31,10 +32,10 @@ export class PlaceOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const jsonData: string = this.localStore.getData(environment.cartKey);
+    const dataExistsInStorage: boolean = !!this.localStore.getData(KeyStore.cartKey);
 
-    if (jsonData !== "") {
-      this.productList = JSON.parse(jsonData) as PRODUCT[];
+    if (dataExistsInStorage) {
+      this.productList = this.localStore.getData(KeyStore.cartKey) as PRODUCT[];
 
       this.productList.forEach((product: PRODUCT): void => {
         // index will be negative one, if findIndex returns false
@@ -70,7 +71,7 @@ export class PlaceOrderComponent implements OnInit {
       }
     }
 
-    this.localStore.saveData(environment.cartKey, JSON.stringify(this.productList));
+    this.localStore.saveData(KeyStore.cartKey, this.productList);
   }
 
   increaseCount(item: CART): void {
@@ -84,7 +85,7 @@ export class PlaceOrderComponent implements OnInit {
       }
     }
 
-    this.localStore.saveData(environment.cartKey, JSON.stringify(this.productList));
+    this.localStore.saveData(KeyStore.cartKey, this.productList);
   }
 
   removeFromCart(item: CART, indexOfItemInCart: number): void {
@@ -99,7 +100,7 @@ export class PlaceOrderComponent implements OnInit {
 
     this.cartOfProduct.splice(indexOfItemInCart, 1);
 
-    this.localStore.saveData(environment.cartKey, JSON.stringify(this.productList))
+    this.localStore.saveData(KeyStore.cartKey, this.productList)
 
     if (this.cartOfProduct.length === 0) {
       this.router.navigate(['']);
@@ -122,7 +123,7 @@ export class PlaceOrderComponent implements OnInit {
       })
     )
 
-    this.httpService.get(`${environment.serverUrl}/api/v1/user`)
+    this.httpService.get(`${ApiUrls.serverUrl}/api/v1/user`)
       .pipe(
         map((r: any) => {
           const response: USER = r as USER;
@@ -136,7 +137,7 @@ export class PlaceOrderComponent implements OnInit {
           orderProductItemModelList: list
         }
 
-        this.httpService.post(`${environment.orderUrl}/order`, orderBody).pipe(
+        this.httpService.post(`${ApiUrls.orderUrl}/order`, orderBody).pipe(
           map((response: any) => {
             const r: ORDER = response as ORDER;
             return r.id
@@ -144,7 +145,7 @@ export class PlaceOrderComponent implements OnInit {
         ).subscribe({
           next: (orderId: number) => this.router.navigate(["myorder"], {queryParams: {id: orderId}}),
           error: err => this.toastr.error(err.error.message, "Insufficient Stock"),
-          complete: () => this.localStore.removeData(environment.cartKey)
+          complete: () => this.localStore.removeData(KeyStore.cartKey)
         })
 
       }

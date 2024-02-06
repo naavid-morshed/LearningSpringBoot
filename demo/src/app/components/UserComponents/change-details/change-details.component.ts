@@ -6,7 +6,8 @@ import {Router} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
 import {LocalStoreService} from "../../../services/local-store.service";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
+import {KeyStore} from "../../../environments/keystorage";
 
 @Component({
   selector: 'app-change-details',
@@ -36,7 +37,7 @@ export class ChangeDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpService.get(`${environment.serverUrl}/api/v1/user`)
+    this.httpService.get(`${ApiUrls.serverUrl}/api/v1/user`)
       .pipe(
         map((value: any) => {
           return value as USER;
@@ -66,14 +67,14 @@ export class ChangeDetailsComponent implements OnInit {
       address: this.updateForm.value.address ?? "",
     };
 
-    this.httpService.post(`${environment.authUrl}/updateuser`, updateInfo)
+    this.httpService.post(`${ApiUrls.authUrl}/updateuser`, updateInfo)
       .pipe(
         map((r: any) => {
           return r.token
         })
       )
       .subscribe({
-        next: (token: string) => this.localStore.saveData(environment.authKey, token),
+        next: (token: string) => this.localStore.saveData(KeyStore.authKey, token),
         complete: () => this.router.navigate(['myaccount'])
       })
   }

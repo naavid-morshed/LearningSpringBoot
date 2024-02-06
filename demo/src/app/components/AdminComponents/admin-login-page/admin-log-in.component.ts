@@ -6,7 +6,9 @@ import {USER} from "../../../dto/user";
 import {ToastrService} from "ngx-toastr";
 import {Router} from "@angular/router";
 import {LocalStoreService} from "../../../services/local-store.service";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
+import {KeyStore} from "../../../environments/keystorage";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-admin-log-in-page',
@@ -38,16 +40,16 @@ export class AdminLogIn {
     };
 
     this.httpService
-      .post(`${environment.authUrl}/authenticate`, loginInfo)
+      .post(`${ApiUrls.authUrl}/authenticate`, loginInfo)
       .subscribe({
         next: (r: any) => {
           const response: USER = r.user;
           const token: string = r.token;
 
           if (response.role === "ADMIN") {
-            this.localStore.saveData(environment.authKey, token);
+            this.localStore.saveData(KeyStore.authKey, token);
 
-            this.router.navigate(["adminPanel"]).catch(error => {
+            this.router.navigateByUrl(RouterUrls.adminPanel.url).catch(error => {
               this.toastr.error("Navigation error: ", error);
             });
 

@@ -9,9 +9,10 @@ import {faHeart as faHeartSolid} from "@fortawesome/free-solid-svg-icons";
 import {faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
 import {FormsModule} from "@angular/forms";
 import {LocalStoreService} from "../../../services/local-store.service";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
+import {KeyStore} from "../../../environments/keystorage";
 
 @Component({
   selector: 'app-home-page',
@@ -23,7 +24,7 @@ export class HomePageComponent {
   productList: PRODUCT[] = [];
   numberOfItemsAddedToCart: number = 0;
 
-  stringifyAbleObjectOfTypeProduct: PRODUCT[] = [] as PRODUCT[];
+  cart: PRODUCT[] = [] as PRODUCT[];
   wishBoolean: boolean[] = [];
   wishList: PRODUCT[] = []
 
@@ -35,75 +36,56 @@ export class HomePageComponent {
   }
 
   ngOnInit(): void {
-    this.httpService.get(environment.productUrl)
+    this.httpService
+      .get(ApiUrls.productUrl)
       .pipe(
         map(r => {
           return r as PRODUCT[];
         })
       )
       .subscribe(
-      (product_list: PRODUCT[]): void => {
+        (product_list: PRODUCT[]): void => {
+          this.productList = product_list;
+          this.wishBoolean = new Array(this.productList.length).fill(false);
 
-        this.productList = product_list;
-        this.wishBoolean = new Array(this.productList.length).fill(false)
+          if (this.localStore.hasData(KeyStore.wishListKey)) {
+            this.wishList = this.localStore.getData(KeyStore.wishListKey) as PRODUCT[];
 
-        if (!!this.localStore.getData(environment.wishListKey)) {
-          this.wishList = JSON.parse(this.localStore.getData(environment.wishListKey)) as PRODUCT[];
+            this.wishList.forEach((wishItem: PRODUCT): void => {
+              let index: number = 0;
 
-          this.wishList.forEach((wishItem: PRODUCT): void => {
-            let index: number = 0;
+              this.productList.filter((product: PRODUCT): void => {
+                if (product.id == wishItem.id) {
+                  index = this.productList.indexOf(product);
+                }
+              })
 
-            this.productList.filter((product: PRODUCT): void => {
-              if (product.id == wishItem.id) {
-                index = this.productList.indexOf(product);
-              }
-            })
+              this.wishBoolean[index] = true;
+            });
+          }
 
-            this.wishBoolean[index] = true;
-          });
         }
+      );
 
-      }
-    );
 
-    const jsonData: string = this.localStore.getData(environment.cartKey);
-
-    if (jsonData !== "") {
-      this.stringifyAbleObjectOfTypeProduct = JSON.parse(jsonData) as PRODUCT[];
-      this.numberOfItemsAddedToCart += this.stringifyAbleObjectOfTypeProduct.length;
+    if (this.localStore.hasData(KeyStore.cartKey)) {
+      this.cart = this.localStore.getData(KeyStore.cartKey) as PRODUCT[];
+      this.numberOfItemsAddedToCart += this.cart.length;
     }
   }
 
   addToOrder(item: PRODUCT): void {
     this.numberOfItemsAddedToCart++;
-    this.stringifyAbleObjectOfTypeProduct.push(item)
+    this.cart.push(item)
 
-    this.localStore.saveData(environment.cartKey, JSON.stringify(this.stringifyAbleObjectOfTypeProduct));
+    this.localStore.saveData(KeyStore.cartKey, this.cart);
   }
-
-  // createOrder(): void {
-  //   this.orderProductItemModelList = [];
-  //
-  //   const order: ORDER_BODY = {
-  //     deliveryAddress: "Kollyanpur",
-  //     orderProductItemModelList: this.orderProductItemModelList
-  //   }
-  //
-  //   this.shopApiService.createOrder(order).subscribe(
-  //     (orderResponse: ORDER): void => {
-  //       // const id: number = orderResponse.id;
-  //       this.router.navigate(["myorder"], {queryParams: {id: orderResponse.id}})
-  //     }
-  //   );
-  //
-  //   this.clearCart()
-  // }
 
   clearCart(): void {
     this.numberOfItemsAddedToCart = 0;
 
-    this.stringifyAbleObjectOfTypeProduct = [] as PRODUCT[];
-    this.localStore.removeData(environment.cartKey);
+    this.cart = [] as PRODUCT[];
+    this.localStore.removeData(KeyStore.cartKey);
   }
 
   navigateToPlaceOrderTable(): void {
@@ -128,7 +110,7 @@ export class HomePageComponent {
       this.wishList.splice(index, 1);
     }
 
-    this.localStore.saveData(environment.wishListKey, JSON.stringify(this.wishList));
+    this.localStore.saveData(KeyStore.wishListKey, this.wishList);
   }
 
   navigateToWishList() {
@@ -148,14 +130,14 @@ export class HomePageComponent {
   }
 
   showSearchOutput() {
-    this.httpService.get(`${environment.productUrl}/search?query=${this.search}`)
+    this.httpService.get(`${ApiUrls.productUrl}/search?query=${this.search}`)
       .pipe(
         map(r => {
           return r as PRODUCT[]
         })
       )
       .subscribe(
-      (response: PRODUCT[]) => this.productList = response
-    )
+        (response: PRODUCT[]) => this.productList = response
+      )
   }
 }

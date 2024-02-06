@@ -3,7 +3,8 @@ import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {PBWC} from "../../../dto/product_body_without_code";
 import {HttpService} from "../../../services/http.service";
-import {environment} from "../../../environments/environment";
+import {ApiUrls} from "../../../environments/api-urls";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-add-product-form',
@@ -35,9 +36,9 @@ export class AddProductFormComponent {
       price: this.addProductForm.value.price ?? 0,
     };
 
-    this.httpService.post(`${environment.productUrl}/addProduct`, product)
+    this.httpService.post(`${ApiUrls.productUrl}/addProduct`, product)
       .subscribe({
-        complete: () => this.router.navigate(['adminPanel'])
+        complete: () => this.router.navigateByUrl(RouterUrls.adminPanel.url)
       });
 
   }
