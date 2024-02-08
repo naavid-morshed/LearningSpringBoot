@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-//    @RequestMapping(value = "api/v1/product", method = RequestMethod.GET)
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @CrossOrigin("*")
     @GetMapping()
     public ResponseEntity<List<ProductModel>> getProducts() {
