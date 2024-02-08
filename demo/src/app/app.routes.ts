@@ -15,37 +15,45 @@ import {RegisterComponent} from "./components/UserComponents/auth/register/regis
 import {MyAccountComponent} from "./components/UserComponents/my-account/my-account.component";
 import {ChangeDetailsComponent} from "./components/UserComponents/change-details/change-details.component";
 import {RouterUrls} from "./environments/route-urls";
+import {authGuard} from "./guards/auth.guard";
+import {adminAuthGuard} from "./guards/admin-auth.guard";
 
 export const routes: Routes = [
   {
     path: RouterUrls.homePage.url,
     component: HomePageComponent,
-    title: RouterUrls.homePage.title
+    title: RouterUrls.homePage.title,
+    canActivate: [authGuard]
   },
   {
     path: RouterUrls.myOrder.url,
     component: MyOrderComponent,
-    title: RouterUrls.myOrder.title
+    title: RouterUrls.myOrder.title,
+    canActivate: [authGuard]
   },
   {
     path: RouterUrls.myListOfOrders.url,
     component: MyListOfOrdersComponent,
-    title: RouterUrls.myListOfOrders.title
+    title: RouterUrls.myListOfOrders.title,
+    canActivate: [authGuard]
   },
   {
     path: RouterUrls.placeOrder.url,
     component: PlaceOrderComponent,
-    title: RouterUrls.placeOrder.title
+    title: RouterUrls.placeOrder.title,
+    canActivate: [authGuard]
   },
   {
     path: RouterUrls.adminPanel.url,
     component: AdminPanel,
-    title: RouterUrls.adminPanel.title
+    title: RouterUrls.adminPanel.title,
+    canActivate: [adminAuthGuard]
   },
   {
     path: RouterUrls.updateProduct.url,
     component: UpdateProductFormComponent,
-    title: RouterUrls.updateProduct.title
+    title: RouterUrls.updateProduct.title,
+    canActivate: [adminAuthGuard]
   },
   {
     path: RouterUrls.adminLogIn.url,
@@ -65,21 +73,25 @@ export const routes: Routes = [
   {
     path: RouterUrls.addProduct.url,
     component: AddProductFormComponent,
-    title: RouterUrls.addProduct.title
+    title: RouterUrls.addProduct.title,
+    canActivate: [adminAuthGuard]
   },
   {
     path: RouterUrls.myWishList.url,
     component: MyWishListComponent,
-    title: RouterUrls.myWishList.title
+    title: RouterUrls.myWishList.title,
+    canActivate: [authGuard]
   },
   {
     path: RouterUrls.changeDetails.url,
     component: ChangeDetailsComponent,
-    title: RouterUrls.changeDetails.title
+    title: RouterUrls.changeDetails.title,
+    canActivate: [authGuard]
   },
   {
     path: RouterUrls.myaccount.url,
     component: MyAccountComponent,
-    title: RouterUrls.myaccount.title
+    title: RouterUrls.myaccount.title,
+    canActivate: [authGuard]
   }
 ];

@@ -20,7 +20,7 @@ import {RouterUrls} from "../../../environments/route-urls";
 })
 export class AdminLogIn {
   loginInfo = this.formBuilder.group({
-    name: ["", Validators.required],
+    email: ["", Validators.required],
     password: ["", Validators.required],
   })
 
@@ -34,29 +34,25 @@ export class AdminLogIn {
   }
 
   onSubmit(): void {
-    const loginInfo: AuthenticationRequest = {
-      email: this.loginInfo.value.name ?? "",
-      password: this.loginInfo.value.password ?? "",
-    };
+    this.httpService.post(
+      `${ApiUrls.authUrl}/authenticate`,
+      this.loginInfo.getRawValue() as AuthenticationRequest
+    ).subscribe({
+      next: (r: any): void => {
+        const response: USER = r.user;
+        const token: string = r.token;
 
-    this.httpService
-      .post(`${ApiUrls.authUrl}/authenticate`, loginInfo)
-      .subscribe({
-        next: (r: any) => {
-          const response: USER = r.user;
-          const token: string = r.token;
+        if (response.role === "ADMIN") {
+          this.localStore.saveData(KeyStore.authKey, token);
 
-          if (response.role === "ADMIN") {
-            this.localStore.saveData(KeyStore.authKey, token);
+          this.router.navigateByUrl(RouterUrls.adminPanel.url).catch(error => {
+            this.toastr.error("Navigation error: ", error);
+          });
 
-            this.router.navigateByUrl(RouterUrls.adminPanel.url).catch(error => {
-              this.toastr.error("Navigation error: ", error);
-            });
-
-          } else {
-            this.toastr.error("You are not authorized to use admin panel.");
-          }
-        },
-      });
+        } else {
+          this.toastr.error("You are not authorized to use admin panel.");
+        }
+      },
+    });
   }
 }

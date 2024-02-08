@@ -58,6 +58,6 @@ export class MyListOfOrdersComponent implements OnInit {
   }
 
   returnHome() {
-    this.router.navigate(['']);
+    this.router.navigate([RouterUrls.homePage.url]);
   }
 }

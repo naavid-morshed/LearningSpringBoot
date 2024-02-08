@@ -12,6 +12,7 @@ import {LocalStoreService} from "../../../services/local-store.service";
 import {ApiUrls} from "../../../environments/api-urls";
 import {HttpService} from "../../../services/http.service";
 import {KeyStore} from "../../../environments/keystorage";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-place-order',
@@ -32,9 +33,8 @@ export class PlaceOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const dataExistsInStorage: boolean = !!this.localStore.getData(KeyStore.cartKey);
-
-    if (dataExistsInStorage) {
+    this.localStore.hasData(KeyStore.cartKey);
+    if (this.localStore.hasData(KeyStore.cartKey)) {
       this.productList = this.localStore.getData(KeyStore.cartKey) as PRODUCT[];
 
       this.productList.forEach((product: PRODUCT): void => {
@@ -103,12 +103,12 @@ export class PlaceOrderComponent implements OnInit {
     this.localStore.saveData(KeyStore.cartKey, this.productList)
 
     if (this.cartOfProduct.length === 0) {
-      this.router.navigate(['']);
+      this.navigateToHomePage();
     }
   }
 
   navigateToHomePage(): void {
-    this.router.navigate([""])
+    this.router.navigate([RouterUrls.homePage.url])
   }
 
   placeOrder() {
@@ -127,10 +127,10 @@ export class PlaceOrderComponent implements OnInit {
       .pipe(
         map((r: any) => {
           const response: USER = r as USER;
-          return response.address
+          return response.address as string;
         })
       ).subscribe(
-      (address: string) => {
+      (address: string): void => {
 
         const orderBody: ORDER_BODY = {
           deliveryAddress: address,
@@ -143,9 +143,14 @@ export class PlaceOrderComponent implements OnInit {
             return r.id
           }),
         ).subscribe({
-          next: (orderId: number) => this.router.navigate(["myorder"], {queryParams: {id: orderId}}),
+          next: (orderId: number): void => {
+            this.router.navigate(
+              [RouterUrls.myOrder.url],
+              {queryParams: {id: orderId}}
+            )
+          },
           error: err => this.toastr.error(err.error.message, "Insufficient Stock"),
-          complete: () => this.localStore.removeData(KeyStore.cartKey)
+          complete: () => this.localStore.removeData(KeyStore.cartKey),
         })
 
       }

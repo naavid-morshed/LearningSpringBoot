@@ -5,15 +5,13 @@ import {isPlatformBrowser} from "@angular/common";
   providedIn: 'root'
 })
 export class LocalStoreService {
-  isThisPlatformBrowser: boolean;
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
-    this.isThisPlatformBrowser = isPlatformBrowser(this.platformId);
   }
 
-  // get isThisPlatformBrowser(): boolean {
-  //   return isPlatformBrowser(this.platformId);
-  // }
+  get isThisPlatformBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
 
   public saveData(key: string, data: object | string): void {
     if (this.isThisPlatformBrowser) {

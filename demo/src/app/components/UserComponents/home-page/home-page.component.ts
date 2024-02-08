@@ -13,6 +13,7 @@ import {ApiUrls} from "../../../environments/api-urls";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
 import {KeyStore} from "../../../environments/keystorage";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-home-page',
@@ -36,42 +37,42 @@ export class HomePageComponent {
   }
 
   ngOnInit(): void {
-    this.httpService
-      .get(ApiUrls.productUrl)
-      .pipe(
-        map(r => {
-          return r as PRODUCT[];
-        })
-      )
-      .subscribe(
-        (product_list: PRODUCT[]): void => {
-          this.productList = product_list;
-          this.wishBoolean = new Array(this.productList.length).fill(false);
+        this.httpService
+          .get(ApiUrls.productUrl)
+          .pipe(
+            map(r => {
+              return r as PRODUCT[];
+            })
+          )
+          .subscribe(
+            (product_list: PRODUCT[]): void => {
+              this.productList = product_list;
+              this.wishBoolean = new Array(this.productList.length).fill(false);
 
-          if (this.localStore.hasData(KeyStore.wishListKey)) {
-            this.wishList = this.localStore.getData(KeyStore.wishListKey) as PRODUCT[];
+              if (this.localStore.hasData(KeyStore.wishListKey)) {
+                this.wishList = this.localStore.getData(KeyStore.wishListKey) as PRODUCT[];
 
-            this.wishList.forEach((wishItem: PRODUCT): void => {
-              let index: number = 0;
+                this.wishList.forEach((wishItem: PRODUCT): void => {
+                  let index: number = 0;
 
-              this.productList.filter((product: PRODUCT): void => {
-                if (product.id == wishItem.id) {
-                  index = this.productList.indexOf(product);
-                }
-              })
+                  this.productList.filter((product: PRODUCT): void => {
+                    if (product.id == wishItem.id) {
+                      index = this.productList.indexOf(product);
+                    }
+                  })
 
-              this.wishBoolean[index] = true;
-            });
-          }
+                  this.wishBoolean[index] = true;
+                });
+              }
 
+            }
+          );
+
+
+        if (this.localStore.hasData(KeyStore.cartKey)) {
+          this.cart = this.localStore.getData(KeyStore.cartKey) as PRODUCT[];
+          this.numberOfItemsAddedToCart += this.cart.length;
         }
-      );
-
-
-    if (this.localStore.hasData(KeyStore.cartKey)) {
-      this.cart = this.localStore.getData(KeyStore.cartKey) as PRODUCT[];
-      this.numberOfItemsAddedToCart += this.cart.length;
-    }
   }
 
   addToOrder(item: PRODUCT): void {
@@ -89,7 +90,7 @@ export class HomePageComponent {
   }
 
   navigateToPlaceOrderTable(): void {
-    this.router.navigate(['placeOrder'],);
+    this.router.navigate([RouterUrls.placeOrder.url],);
   }
 
   protected readonly faHeartSolid = faHeartSolid;
@@ -114,15 +115,15 @@ export class HomePageComponent {
   }
 
   navigateToWishList() {
-    this.router.navigate(["MyWishList"]);
+    this.router.navigate([RouterUrls.myWishList.url]);
   }
 
   navigateToMyOrders() {
-    this.router.navigate(["listOfOrders"]);
+    this.router.navigate([RouterUrls.myListOfOrders.url]);
   }
 
   navigateToMyAccount() {
-    this.router.navigate(["myaccount"]);
+    this.router.navigate([RouterUrls.myaccount.url]);
   }
 
   reloadPage() {

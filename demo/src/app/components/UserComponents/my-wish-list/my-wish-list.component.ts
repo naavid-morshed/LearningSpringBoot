@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {LocalStoreService} from "../../../services/local-store.service";
 import {ApiUrls} from "../../../environments/api-urls";
 import {KeyStore} from "../../../environments/keystorage";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-my-wish-list',
@@ -33,13 +34,13 @@ export class MyWishListComponent implements OnInit {
   myWishList: PRODUCT[] = []
 
   navigateToHomePage() {
-    this.router.navigate([""]);
+    this.router.navigate([RouterUrls.homePage.url]);
   }
 
-  removeFromWishList(id: number) {
+  removeFromWishList(id: number): void {
 
     this.myWishList.forEach(
-      (product: PRODUCT, index: number) => {
+      (product: PRODUCT, index: number): void => {
         if (product.id === id) {
           this.myWishList.splice(index, 1)
           this.localStore.saveData(KeyStore.wishListKey, this.myWishList);
@@ -49,7 +50,7 @@ export class MyWishListComponent implements OnInit {
     )
 
     if (this.myWishList.length === 0) {
-      this.router.navigate([""])
+      this.navigateToHomePage();
     }
   }
 }

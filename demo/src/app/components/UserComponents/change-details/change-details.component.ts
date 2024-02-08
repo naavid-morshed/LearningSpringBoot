@@ -8,6 +8,7 @@ import {map} from "rxjs/operators";
 import {LocalStoreService} from "../../../services/local-store.service";
 import {ApiUrls} from "../../../environments/api-urls";
 import {KeyStore} from "../../../environments/keystorage";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-change-details',
@@ -21,10 +22,10 @@ export class ChangeDetailsComponent implements OnInit {
   updateForm = this.formBuilder.group({
     firstName: [""],
     lastName: [""],
-    currentEmail: ["", Validators.required],
+    oldEmail: ["", Validators.required],
     newEmail: [""],
-    confirmPassword: ["", Validators.required],
-    newPassword: [""],
+    oldPass: ["", Validators.required],
+    newPass: [""],
     address: [""],
   });
 
@@ -48,7 +49,7 @@ export class ChangeDetailsComponent implements OnInit {
           this.updateForm.patchValue({
             firstName: response.firstName,
             lastName: response.lastName,
-            currentEmail: response.email,
+            oldEmail: response.email,
             address: response.address,
           });
         },
@@ -57,29 +58,29 @@ export class ChangeDetailsComponent implements OnInit {
 
   onSubmit(): void {
 
-    const updateInfo: UPDATE_REQUEST = {
-      firstName: this.updateForm.value.firstName ?? "",
-      lastName: this.updateForm.value.lastName ?? "",
-      oldEmail: this.updateForm.value.currentEmail ?? "",
-      newEmail: this.updateForm.value.newEmail ?? "",
-      oldPass: this.updateForm.value.confirmPassword ?? "",
-      newPass: this.updateForm.value.newPassword ?? "",
-      address: this.updateForm.value.address ?? "",
-    };
+    // const updateInfo: UPDATE_REQUEST = {
+    //   firstName: this.updateForm.value.firstName ?? "",
+    //   lastName: this.updateForm.value.lastName ?? "",
+    //   oldEmail: this.updateForm.value.currentEmail ?? "",
+    //   newEmail: this.updateForm.value.newEmail ?? "",
+    //   oldPass: this.updateForm.value.confirmPassword ?? "",
+    //   newPass: this.updateForm.value.newPassword ?? "",
+    //   address: this.updateForm.value.address ?? "",
+    // };
 
-    this.httpService.post(`${ApiUrls.authUrl}/updateuser`, updateInfo)
+    this.httpService.post(`${ApiUrls.authUrl}/updateuser`, this.updateForm.value as UPDATE_REQUEST)
       .pipe(
         map((r: any) => {
           return r.token
         })
       )
       .subscribe({
-        next: (token: string) => this.localStore.saveData(KeyStore.authKey, token),
-        complete: () => this.router.navigate(['myaccount'])
+        next: (token: string) => this.httpService.jwt = token,
+        complete: () => this.router.navigate([RouterUrls.myaccount.url])
       })
   }
 
   navigateToMyAccount(): void {
-    this.router.navigate(['myaccount'])
+    this.router.navigate([RouterUrls.myaccount.url])
   }
 }

@@ -2,21 +2,17 @@ import {inject} from "@angular/core";
 import {HttpService} from "../services/http.service";
 import {HttpHandlerFn, HttpRequest} from "@angular/common/http";
 import {ApiUrls} from "../environments/api-urls";
+import {LocalStoreService} from "../services/local-store.service";
 
 export function AuthInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
-  const isLoggedIn: boolean = inject(HttpService).isLoggedIn;
-  const isToServer: boolean = req.url.startsWith(ApiUrls.serverUrl);
-
-  if (isLoggedIn && isToServer) {
-
-    const newReq: HttpRequest<unknown> = req.clone({
+  if (
+    inject(LocalStoreService).isThisPlatformBrowser &&
+    inject(HttpService).isLoggedIn &&
+    req.url.startsWith(ApiUrls.serverUrl)
+  ) {
+    req = req.clone({
       setHeaders: {Authorization: `Bearer ${inject(HttpService).jwt}`},
     });
-
-    return next(newReq);
-
-  } else {
-    return next(req);
   }
-
+  return next(req);
 }

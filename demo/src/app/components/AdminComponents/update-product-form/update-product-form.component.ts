@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
   FormBuilder,
-  ReactiveFormsModule
+  ReactiveFormsModule, Validators
 } from "@angular/forms";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {PRODUCT} from "../../../dto/product";
@@ -20,8 +20,9 @@ import {RouterUrls} from "../../../environments/route-urls";
 })
 export class UpdateProductFormComponent implements OnInit {
   updateProductForm = this.formBuilder.group({
+    id: [0, Validators.required],
     name: [""],
-    specification: [""],
+    specifications: [""],
     price: [0],
     code: [""]
   })
@@ -36,8 +37,8 @@ export class UpdateProductFormComponent implements OnInit {
 
   product: PRODUCT = {} as PRODUCT;
 
-  ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((queryParams: Params):void => {
+  ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params): void => {
 
       this.httpService.get(`${ApiUrls.productUrl}/productId/${queryParams["id"]}`)
         .pipe(
@@ -46,12 +47,13 @@ export class UpdateProductFormComponent implements OnInit {
           })
         )
         .subscribe(
-          (response: PRODUCT) => {
+          (response: PRODUCT): void => {
             this.product = response;
 
             this.updateProductForm.patchValue({
+              id: this.product.id,
               name: this.product.name,
-              specification: this.product.specifications,
+              specifications: this.product.specifications,
               price: this.product.price,
               code: this.product.productCode
             });
@@ -61,16 +63,7 @@ export class UpdateProductFormComponent implements OnInit {
   }
 
   onSubmit() {
-
-    const product: PRODUCT = {
-      id: this.product.id,
-      name: this.updateProductForm.value.name ?? "",
-      price: this.updateProductForm.value.price ?? 0,
-      specifications: this.updateProductForm.value.specification ?? "",
-      productCode: this.updateProductForm.value.code ?? ""
-    };
-
-    if (this.httpService.put(`${ApiUrls.productUrl}/update`, product)
+    if (this.httpService.put(`${ApiUrls.productUrl}/update`, this.updateProductForm.value as PRODUCT)
       .pipe(
         map(r => {
           return r as PRODUCT;

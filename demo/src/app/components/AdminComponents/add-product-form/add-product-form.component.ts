@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {PBWC} from "../../../dto/product_body_without_code";
 import {HttpService} from "../../../services/http.service";
@@ -16,8 +16,8 @@ import {RouterUrls} from "../../../environments/route-urls";
 })
 export class AddProductFormComponent {
   addProductForm = this.formBuilder.group({
-    name: [""],
-    specification: [""],
+    name: ["", Validators.required],
+    specifications: [""],
     price: [0],
   })
 
@@ -28,18 +28,13 @@ export class AddProductFormComponent {
   ) {
   }
 
-  onSubmit() {
-
-    const product: PBWC = {
-      name: this.addProductForm.value.name ?? "",
-      specifications: this.addProductForm.value.specification ?? "",
-      price: this.addProductForm.value.price ?? 0,
-    };
-
-    this.httpService.post(`${ApiUrls.productUrl}/addProduct`, product)
-      .subscribe({
-        complete: () => this.router.navigateByUrl(RouterUrls.adminPanel.url)
-      });
+  onSubmit(): void {
+    this.httpService.post(
+      `${ApiUrls.productUrl}/addProduct`,
+      this.addProductForm.value as PBWC
+    ).subscribe({
+      complete: () => this.router.navigateByUrl(RouterUrls.adminPanel.url)
+    });
 
   }
 }

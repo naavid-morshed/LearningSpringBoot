@@ -5,6 +5,7 @@ import {AuthenticationRequest} from "../../../../dto/authentication_request";
 import {HttpService} from "../../../../services/http.service";
 import {map} from "rxjs/operators";
 import {ApiUrls} from "../../../../environments/api-urls";
+import {RouterUrls} from "../../../../environments/route-urls";
 
 @Component({
   selector: 'app-login',
@@ -28,26 +29,23 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-
-    const authenticationRequest: AuthenticationRequest = {
-      email: this.loginInfo.value.email ?? "",
-      password: this.loginInfo.value.password ?? ""
-    };
-
-    this.httpService.post(`${ApiUrls.authUrl}/authenticate`, authenticationRequest)
+    this.httpService.post(
+      `${ApiUrls.authUrl}/authenticate`,
+      this.loginInfo.value as AuthenticationRequest
+    )
       .pipe(
         map((responseBody: any) => {
-            return responseBody.token;
+            return responseBody.token as string;
           }
         )
       )
       .subscribe({
         next: (token: string) => this.httpService.jwt = token,
-        complete: () => this.router.navigate([""]),
+        complete: () => this.router.navigate([RouterUrls.homePage.url]),
       });
   }
 
   navigateToRegisterPage() {
-    this.router.navigate(['register'])
+    this.router.navigate([RouterUrls.register.url])
   }
 }

@@ -8,6 +8,7 @@ import {provideAnimations} from "@angular/platform-browser/animations";
 import {provideToastr} from "ngx-toastr";
 import {AuthInterceptor} from "./interceptors/jwt-auth-interceptor-fn";
 
+// @ts-ignore
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes), // for providing routes

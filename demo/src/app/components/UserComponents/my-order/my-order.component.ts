@@ -5,6 +5,7 @@ import {NgForOf} from "@angular/common";
 import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
 import {ApiUrls} from "../../../environments/api-urls";
+import {RouterUrls} from "../../../environments/route-urls";
 
 @Component({
   selector: 'app-my-order',
@@ -46,7 +47,7 @@ export class MyOrderComponent implements OnInit {
   }
 
   returnHome(): void {
-    this.router.navigate([""]);
+    this.router.navigate([RouterUrls.homePage.url]);
   }
 
   helpButton(): void {
@@ -54,6 +55,6 @@ export class MyOrderComponent implements OnInit {
   }
 
   navigateToMyOrders() {
-    this.router.navigate(["listOfOrders"]);
+    this.router.navigate([RouterUrls.myListOfOrders.url]);
   }
 }

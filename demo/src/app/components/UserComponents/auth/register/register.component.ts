@@ -7,6 +7,7 @@ import {HttpService} from "../../../../services/http.service";
 import {map} from "rxjs/operators";
 import {LocalStoreService} from "../../../../services/local-store.service";
 import {KeyStore} from "../../../../environments/keystorage";
+import {RouterUrls} from "../../../../environments/route-urls";
 
 @Component({
   selector: 'app-register',
@@ -33,16 +34,8 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-
-    const registrationInfo: USER_BODY = {
-      firstName: this.registerInfo.value.firstName ?? "",
-      lastName: this.registerInfo.value.lastName ?? "",
-      email: this.registerInfo.value.email ?? "",
-      password: this.registerInfo.value.password ?? "",
-    };
-
     this.httpService
-      .post(`${ApiUrls.authUrl}/register`, registrationInfo)
+      .post(`${ApiUrls.authUrl}/register`, this.registerInfo.value as USER_BODY)
       .pipe(
         map((r: any) => {
           return r.token;
@@ -50,11 +43,11 @@ export class RegisterComponent {
       )
       .subscribe({
         next: (token: string) => this.localStore.saveData(KeyStore.authKey, token),
-        complete:() => this.router.navigate([""])
+        complete:() => this.router.navigate([RouterUrls.homePage.url])
       });
   }
 
   navigateToLoginPage() {
-    this.router.navigate(['login']);
+    this.router.navigate([RouterUrls.login.url]);
   }
 }

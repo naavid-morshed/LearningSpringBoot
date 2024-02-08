@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {ApiUrls} from "../environments/api-urls";
 import {LocalStoreService} from "./local-store.service";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {KeyStore} from "../environments/keystorage";
+import {SsrCookieService} from "ngx-cookie-service-ssr";
 
 @Injectable({
   providedIn: 'root'
@@ -11,25 +12,25 @@ import {KeyStore} from "../environments/keystorage";
 export class HttpService {
 
   constructor(
-    private localStore: LocalStoreService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private cookieService: SsrCookieService,
+    private localStore:LocalStoreService,
   ) {
   }
 
-  get isLoggedIn(): boolean {
-    return !!this.jwt
+  get isLoggedIn() {
+    return (this.cookieService.check(KeyStore.authKey))
   }
 
   get jwt(): string {
-    return this.localStore.getData(KeyStore.authKey) as string;
-    // return localStorage.getItem(environment.auth_token) ?? ""
-    // return JSON.parse(localStorage.getItem(environment.auth_token) ?? "");
+    return this.cookieService.get(KeyStore.authKey);
+    // return this.localStore.getData(KeyStore.authKey) as string;
   }
 
   set jwt(token: string) {
-    this.localStore.saveData(KeyStore.authKey, token)
-    // localStorage.setItem(environment.auth_token,token);
-    // localStorage.setItem(environment.auth_token, JSON.stringify(token));
+    // this.cookieService.delete(KeyStore.authKey)
+    this.cookieService.set(KeyStore.authKey, token)
+    // this.localStore.saveData(KeyStore.authKey, token)
   }
 
   get(url: string): Observable<unknown> {

@@ -7,6 +7,8 @@ import {HttpService} from "../../../services/http.service";
 import {map} from "rxjs/operators";
 import {ApiUrls} from "../../../environments/api-urls";
 import {KeyStore} from "../../../environments/keystorage";
+import {RouterUrls} from "../../../environments/route-urls";
+import {SsrCookieService} from "ngx-cookie-service-ssr";
 
 @Component({
   selector: 'app-my-account',
@@ -21,12 +23,11 @@ export class MyAccountComponent implements OnInit {
 
   public address: string = "";
 
-  // public addressInstance: string = localStorage.getItem(this.userService.returnKey()) ?? this.userService.returnPseudoAddress();
-
   constructor(
     private localStore: LocalStoreService,
     private router: Router,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private cookieService: SsrCookieService,
   ) {
   }
 
@@ -47,13 +48,13 @@ export class MyAccountComponent implements OnInit {
 
   logOut(): void {
 
-    this.localStore.removeData(KeyStore.authKey);
+    this.cookieService.delete(KeyStore.authKey);
 
-    this.router.navigate(["login"]);
+    this.router.navigate([RouterUrls.login.url]);
   }
 
   navigateToChangeDetails(): void {
-    this.router.navigate(['updater']);
+    this.router.navigate([RouterUrls.changeDetails.url]);
   }
 
   changeAddress(): void {
@@ -61,6 +62,6 @@ export class MyAccountComponent implements OnInit {
   }
 
   navigateToHome(): void {
-    this.router.navigateByUrl("")
+    this.router.navigateByUrl(RouterUrls.homePage.url)
   }
 }
